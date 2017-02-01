@@ -436,10 +436,11 @@ plant = function(x, y, seed) {
         box.style.backgroundImage = "url(" + GAME_CONFIG.seeds[seed].imageLarge + ")";
         var soil = document.getElementById("soil" + x + y);
         soil.style.display = "none";
-        var progressBar = document.getElementById("progressBar" + x + y);
-        progressBar.style.display = "block";
         state["plot" + x + y].seedType = seed;
         state["plot" + x + y].timeLeft = GAME_CONFIG.seeds[seed].harvestTimeSeconds;
+        updateDisplay();
+        var progressBar = document.getElementById("progressBar" + x + y);
+        progressBar.style.display = "block";
     } else {
         window.alert("No " + GAME_CONFIG.seeds[seed].name + " seeds to plant.");
     }
@@ -484,6 +485,27 @@ tick = function() {
         };
     };
 };
+
+updateDisplay = function() {
+    for(i = 0; i <= 2; i++) {
+        for(j = 0; j <= 2; j++) {
+            if(state["plot" + i + j].seedType != 0) {
+                var x = state["plot" + i + j].timeLeft;
+                var y = state["plot" + i + j].seedType;
+                var percent = x / GAME_CONFIG.seeds[y].harvestTimeSeconds
+                document.getElementById("filler" + i + j).style.width = percent * 100 + "%";
+                var clock = Math.floor(x / 60) + ":" + x % 60;
+                document.getElementById("time" + i + j).innerHTML = clock;
+                if (x == 0) {
+                    document.getElementById("progressBar" + i + j).style.display = "none";
+                    document.getElementById("button" + i + j).style.display = "block";
+                }
+
+            };
+        };
+    };
+};
+
 
 setInterval(tick, 1000);
 

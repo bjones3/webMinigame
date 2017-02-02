@@ -4,76 +4,80 @@
     <meta charset="UTF-8">
     <title>Title</title>
 <style>
-    .container {
+    div.plotBox {
+        position: relative;
         width: 185px;
         height: 185px;
         border: 4px solid black;
         margin: 5px;
         box-shadow: 3px 3px 3px green;
     }
-    .container2 {
-        position: relative;
-        display: inline-block;
-        width: 20%;
-        height: 20%;
-        margin-left: 4%;
-        margin-right: 4%;
-        margin-top: 5%;
+    div.sowPlantButton {
+        float: left;
+        width: 37px;
+        height: 37px;
+        margin-left: 12px;
+        margin-right: 7px;
+        margin-top: 9px;
         border: 2px solid black;
         border-radius: 5px;
     }
-    .container3 {
-        position: relative;
-        width: 60%;
-        height: 60%;
-        top: -25%;
-        left: 17%;
+    div.invisPlantContainer {
+        display: none;
+        position: absolute;
+        width: 115px;
+        height: 115px;
+        top: 20px;
+        left: 33px;
+        background-repeat: no-repeat;
+        background-size: contain;
     }
-        .a {
+        div.sowPlantButtonA {
             background-image: url("static/alfalfa.jpg");
             background-repeat: no-repeat;
             background-size: contain;
         }
-        .b {
+        div.sowPlantButtonB {
             background-image: url("static/broccoli.jpg");
             background-repeat: no-repeat;
             background-size: contain;
         }
-        .c {
+        div.sowPlantButtonC {
             background-image: url("static/cabbage.jpg");
             background-repeat: no-repeat;
             background-size: contain;
         }
-    .soil {
-        position: relative;
-        width: 90%;
-        margin-left: 5%;
-        top: -39px;
+    img.soil {
+        position: absolute;
+        width: 165px;
+        left: 10px;
+        top: 128px;
     }
-    table#t02 {
+    table#seedCosts {
         position: absolute;
         top: 10px;
         left: 650px;
         text-align: center;
     }
-    .border {
+    div.border {
         border: 2px solid black;
         height: 16px;
         width: 30px;
         box-shadow: 3px 3px 3px green;
     }
     div.progressBar {
-        position: relative;
+        display: none;
+        position: absolute;
         width: 160px;
         height: 20px;
-        top: -65px;
+        top: 144px;
         left: 10.5px;
         border: 2px solid black;
         background-color: lightblue;
     }
     div.progressBar div.filler {
         position: absolute;
-        width: 77%;
+        width: 100%;
         height: 100%;
         background-color: orange;
     }
@@ -82,155 +86,51 @@
         width: 100%;
         text-align: center;
     }
-    .button {
-        position: relative;
+    button.button {
+        display: none;
+        position: absolute;
         width: 164px;
         height: 24px;
-        top: -89px;
+        top: 144px;
         left: 10.5px;
         border: 2px solid black;
     }
+    div#cash {
+        position: absolute;
+        top: 300px;
+        left: 700px;
+        font-size: 30px;
+        font-weight: bold;
+    {
 
 </style>
 </head>
 <body>
 
 <table>
+{% for i in range(3) %}
     <tr>
+    {% for j in range(3) %}
         <td>
-            <div id = "soil_0_0" class = "container">
-                <div id = "alfalfa00" class = "container2 a" style = ></div>
-                <div id = "broccoli00" class = "container2 b"></div>
-                <div id = "cabbage00" class = "container2 c"></div>
-                <div id = "growing00" class = "container3 a"></div>
-                <img src = "static/soil.jpg" class = "soil">
-                <div class = "progressBar">
-                    <div class = "filler"></div>
-                    <div class = "time">12:34</div>
+            <div id = "plot{{ i }}{{ j }}" class = "plotBox">
+                <div id = "alfalfa{{ i }}{{ j }}" class = "sowPlantButton sowPlantButtonA" onclick = "sow({{ i }}, {{ j }}, 'a')"></div>
+                <div id = "broccoli{{ i }}{{ j }}" class = "sowPlantButton sowPlantButtonB" onclick = "sow({{ i }}, {{ j }}, 'b')"></div>
+                <div id = "cabbage{{ i }}{{ j }}" class = "sowPlantButton sowPlantButtonC" onclick = "sow({{ i }}, {{ j }}, 'c')"></div>
+                <div id = "growing{{ i }}{{ j }}" class = "invisPlantContainer"></div>
+                <img id = "soil{{ i }}{{ j }}" src = "static/soil.jpg" class = "soil">
+                <div id = "progressBar{{ i }}{{ j }}" class = "progressBar">
+                    <div id = "filler{{ i }}{{ j }}" class = "filler"></div>
+                    <div id = "time{{ i }}{{ j }}" class = "time"></div>
                 </div>
-                <button class="button">Harvest</button>
+                <button id = "button{{ i }}{{ j }}" class="button" onclick = "harvest({{ i }}, {{ j }})">Harvest</button>
             </div>
         </td>
-        <td>
-            <div id = "soil_0_1" class = "container">
-                <div id = "alfalfa01" class = "container2 a"></div>
-                <div id = "broccoli01" class = "container2 b"></div>
-                <div id = "cabbage01" class = "container2 c"></div>
-                <div id = "growing01" class = "container3 a"></div>
-                <img src = "static/soil.jpg" class = "soil">
-                <div class = "progressBar">
-                    <div class = "filler"></div>
-                    <div class = "time">12:34</div>
-                </div>
-                <button class="button">Harvest</button>
-            </div>
-        </td>
-        <td>
-            <div id = "soil_0_2" class = "container">
-                <div id = "alfalfa02" class = "container2 a"></div>
-                <div id = "broccoli02" class = "container2 b"></div>
-                <div id = "cabbage02" class = "container2 c"></div>
-                <div id = "growing02" class = "container3 a"></div>
-                <img src = "static/soil.jpg" class = "soil">
-                <div class = "progressBar">
-                    <div class = "filler"></div>
-                    <div class = "time">12:34</div>
-                </div>
-                <button class="button">Harvest</button>
-            </div>
-        </td>
+    {% endfor %}
     </tr>
-    <tr>
-        <td>
-            <div id = "soil_1_0" class = "container">
-                <div id = "alfalfa10" class = "container2 a"></div>
-                <div id = "broccoli10" class = "container2 b"></div>
-                <div id = "cabbage10" class = "container2 c"></div>
-                <div id = "growing10" class = "container3 a"></div>
-                <img src = "static/soil.jpg" class = "soil">
-                <div class = "progressBar">
-                    <div class = "filler"></div>
-                    <div class = "time">12:34</div>
-                </div>
-                <button class="button">Harvest</button>
-            </div>
-        </td>
-        <td>
-            <div id = "soil_1_1" class = "container">
-                <div id = "alfalfa11" class = "container2 a"></div>
-                <div id = "broccoli11" class = "container2 b"></div>
-                <div id = "cabbage11" class = "container2 c"></div>
-                <div id = "growing11" class = "container3 a"></div>
-                <img src = "static/soil.jpg" class = "soil">
-                <div class = "progressBar">
-                    <div class = "filler"></div>
-                    <div class = "time">12:34</div>
-                </div>
-                <button class="button">Harvest</button>
-            </div>
-        </td>
-        <td>
-            <div id = "soil_1_2" class = "container">
-                <div id = "alfalfa12" class = "container2 a"></div>
-                <div id = "broccoli12" class = "container2 b"></div>
-                <div id = "cabbage12" class = "container2 c"></div>
-                <div id = "growing12" class = "container3 a"></div>
-                <img src = "static/soil.jpg" class = "soil">
-                <div class = "progressBar">
-                    <div class = "filler"></div>
-                    <div class = "time">12:34</div>
-                </div>
-                <button class="button">Harvest</button>
-            </div>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <div id = "soil_2_0" class = "container">
-                <div id = "alfalfa20" class = "container2 a"></div>
-                <div id = "broccoli20" class = "container2 b"></div>
-                <div id = "cabbage20" class = "container2 c"></div>
-                <div id = "growing20" class = "container3 a"></div>
-                <img src = "static/soil.jpg" class = "soil">
-                <div class = "progressBar">
-                    <div class = "filler"></div>
-                    <div class = "time">12:34</div>
-                </div>
-                <button class="button">Harvest</button>
-            </div>
-        </td>
-        <td>
-            <div id = "soil_02_1" class = "container">
-                <div id = "alfalfa21" class = "container2 a"></div>
-                <div id = "broccoli21" class = "container2 b"></div>
-                <div id = "cabbage21" class = "container2 c"></div>
-                <div id = "growing21" class = "container3 a"></div>
-                <img src = "static/soil.jpg" class = "soil">
-                <div class = "progressBar">
-                    <div class = "filler"></div>
-                    <div class = "time">12:34</div>
-                </div>
-                <button class="button">Harvest</button>
-            </div>
-        </td>
-        <td>
-            <div id = "soil_2_2" class = "container">
-                <div id = "alfalfa22" class = "container2 a"></div>
-                <div id = "broccoli22" class = "container2 b"></div>
-                <div id = "cabbage22" class = "container2 c"></div>
-                <div id = "growing22" class = "container3 a"></div>
-                <img src = "static/soil.jpg" class = "soil">
-                <div class = "progressBar">
-                    <div class = "filler"></div>
-                    <div class = "time">12:34</div>
-                </div>
-                <button class="button">Harvest</button>
-            </div>
-        </td>
-    </tr>
+{% endfor %}
 </table>
 
-<table id = "t02">
+<table id = "seedCosts">
     <tr>
         <td>
         </td>
@@ -255,13 +155,13 @@
             <div style = "text-align: left;">Alfalfa Sprouts</div>
         </td>
         <td>
-            <div class = "border">$1</div>
+            <div id = "sellA" class = "border" onclick = "sell('a')"></div>
         </td>
         <td>
-            <div>7</div>
+            <div id = "owneda"></div>
         </td>
         <td>
-            <div class = "border">$3</div>
+            <div id = "buyA" class = "border" onclick = "buy('a')"></div>
         </td>
     </tr>
     <tr>
@@ -272,13 +172,13 @@
             <div style = "text-align: left;">Broccoli</div>
         </td>
         <td>
-            <div class = "border">$1</div>
+            <div id = "sellB" class = "border" onclick = "sell('b')"></div>
         </td>
         <td>
-            <div>0</div>
+            <div id = "ownedb"></div>
         </td>
         <td>
-            <div class = "border">$6</div>
+            <div id = "buyB" class = "border" onclick = "buy('b')"></div>
         </td>
     </tr>
     <tr>
@@ -286,19 +186,207 @@
             <img src = "static/cabbage.jpg" style = "width: 20px;">
         </td>
         <td>
-            <div  style = "text-align: left;">Cabbage</div>
+            <div style = "text-align: left;">Cabbage</div>
         </td>
         <td>
-            <div class = "border">$2</div>
+            <div  id = "sellC" class = "border" onclick = "sell('c')"></div>
         </td>
         <td>
-            <div>2</div>
+            <div id = "ownedc"></div>
         </td>
         <td>
-            <div class = "border">$12</div>
+            <div id = "buyC" class = "border" onclick = "buy('c')"></div>
         </td>
     </tr>
 </table>
+<div id = "cash"></div>
+
+<script>
+var GAME_CONFIG = {
+    startingCash: 10,
+    seeds: {
+        a: {
+            name: "Alfalfa Sprouts",
+            imageSmall: "static/alfalfa.jpg",
+            imageMedium: "static/alfalfa.jpg",
+            imageLarge: "static/alfalfa.jpg",
+            buyCost: 3,
+            sellCost: 1,
+            harvestYield: 4,
+            harvestTimeSeconds: 40
+        },
+        b: {
+            name: "Broccoli",
+            imageSmall: "static/broccoli.jpg",
+            imageMedium: "static/broccoli.jpg",
+            imageLarge: "static/broccoli.jpg",
+            buyCost: 6,
+            sellCost: 1,
+            harvestYield: 9,
+            harvestTimeSeconds: 120
+        },
+        c: {
+            name: "Cabbage",
+            imageSmall: "static/cabbage.jpg",
+            imageMedium: "static/cabbage.jpg",
+            imageLarge: "static/cabbage.jpg",
+            buyCost: 12,
+            sellCost: 2,
+            harvestYield: 10,
+            harvestTimeSeconds: 300
+        }
+    }
+};
+
+var state = {
+    cash: GAME_CONFIG.startingCash,
+    a: 0,
+    b: 0,
+    c: 0
+};
+for (var i = 0; i <= 2; i++) {
+    for (var j = 0; j <= 2; j++) {
+        state[("plot" + i + j)] = {seedType: 0, sowTime: 0};
+    }
+};
+
+var reset = function() {
+    state.cash = GAME_CONFIG.startingCash;
+    state.a = 0;
+    state.b = 0;
+    state.c = 0;
+
+    for (var i = 0; i <= 2; i++) {
+        for (var j = 0; j <= 2; j++) {
+            state[("plot" + i + j)].seedType = 0;
+            state[("plot" + i + j)].sowTime = 0;
+        };
+    };
+
+    classDisplay = function(className, displayType) {
+        var x = document.getElementsByClassName(className);
+        for (var i = 0; i < x.length; i++) {
+            x[i].style.display = (displayType);
+        };
+    };
+    classDisplay("sowPlantButton", "block");
+    classDisplay("invisBlockContainer", "none");
+    classDisplay("soil", "block");
+    classDisplay("progressBar", "none");
+    classDisplay("button", "none");
+
+    document.getElementById("cash").innerHTML = "CASH: $" + state.cash;
+    document.getElementById("owneda").innerHTML = 0;
+    document.getElementById("ownedb").innerHTML = 0;
+    document.getElementById("ownedc").innerHTML = 0;
+    document.getElementById("buyA").innerHTML = "$" + GAME_CONFIG.seeds.a.buyCost;
+    document.getElementById("buyB").innerHTML = "$" + GAME_CONFIG.seeds.b.buyCost;
+    document.getElementById("buyC").innerHTML = "$" + GAME_CONFIG.seeds.c.buyCost;
+    document.getElementById("sellA").innerHTML = "$" + GAME_CONFIG.seeds.a.sellCost;
+    document.getElementById("sellB").innerHTML = "$" + GAME_CONFIG.seeds.b.sellCost;
+    document.getElementById("sellC").innerHTML = "$" + GAME_CONFIG.seeds.c.sellCost;
+};
+
+document.onreadystatechange = function() {
+  if (document.readyState === 'complete') {
+    reset();
+  }
+};
+
+var buy = function(seed) {
+    if (state.cash < GAME_CONFIG.seeds[seed].buyCost) {
+        window.alert("Not enough cash.");
+        return;
+    };
+    state[seed] ++;
+    document.getElementById("owned" + seed).innerHTML = state[seed];
+    state.cash -= GAME_CONFIG.seeds[seed].buyCost;
+    document.getElementById("cash").innerHTML = "CASH: $" + state.cash;
+};
+
+var sell = function(seed) {
+    if (state[seed] <= 0) {
+        window.alert("No " + GAME_CONFIG.seeds[seed].name + " seeds to sell.");
+        return;
+    };
+    state[seed] --;
+    document.getElementById("owned" + seed).innerHTML = state[seed];
+    state.cash += GAME_CONFIG.seeds[seed].sellCost;
+    document.getElementById("cash").innerHTML = "CASH: $" + state.cash;
+};
+
+var sow = function(x, y, seed) {
+    if (state[seed] <= 0) {
+        window.alert("No " + GAME_CONFIG.seeds[seed].name + " seeds to plant.");
+        return;
+    };
+    state[seed] --;
+    document.getElementById("owned" + seed).innerHTML = state[seed];
+    var plotBox = document.getElementById("plot" + x + y);
+    var sowButtons = plotBox.getElementsByClassName("sowPlantButton");
+    for(var i = 0; i < sowButtons.length; i++) {
+        sowButtons[i].style.display = "none";
+    }
+    var growingImage = document.getElementById("growing" + x + y);
+    growingImage.style.display = "block";
+    growingImage.style.backgroundImage = "url(" + GAME_CONFIG.seeds[seed].imageLarge + ")";
+    var soil = document.getElementById("soil" + x + y);
+    soil.style.display = "none";
+    state["plot" + x + y].seedType = seed;
+    state["plot" + x + y].sowTime = new Date().getTime();
+    tick();
+    var progressBar = document.getElementById("progressBar" + x + y);
+    progressBar.style.display = "block";
+};
+
+var harvest = function(x, y) {
+    var seed = state["plot" + x + y].seedType;
+    state[seed] += GAME_CONFIG.seeds[seed].harvestYield;
+    document.getElementById("owned" + seed).innerHTML = state[seed];
+    var plotBox = document.getElementById("plot" + x + y);
+    var sowButtons = plotBox.getElementsByClassName("sowPlantButton");
+    for(var i = 0; i < sowButtons.length; i++) {
+        sowButtons[i].style.display = "block";
+    };
+    var growingImage = document.getElementById("growing" + x + y);
+    growingImage.style.display = "none";
+    growingImage.style.backgroundImage = "url(" + GAME_CONFIG.seeds[seed].imageLarge + ")";
+    var soil = document.getElementById("soil" + x + y);
+    soil.style.display = "block";
+    var button = document.getElementById("button" + x + y);
+    button.style.display = "none";
+    seed = 0;
+};
+
+var tick = function() {
+    for (var i = 0; i <= 2; i++) {
+        for (var j = 0; j <= 2; j++) {
+            if(state["plot" + i + j].seedType != 0) {
+                var startTime = state["plot" + i + j].sowTime;
+                var currentTime = new Date().getTime();
+                var timePassed = Math.floor((currentTime - startTime) / 1000);
+                var typeSeed = state["plot" + i + j].seedType;
+                var harvestTime = GAME_CONFIG.seeds[typeSeed].harvestTimeSeconds;
+                var countdown = harvestTime - timePassed;
+                var percentTimeLeft = countdown / harvestTime;
+                document.getElementById("filler" + i + j).style.width = percentTimeLeft * 100 + "%";
+                var clockDisplay = '0' + Math.floor(countdown / 60) + ":" + countdown % 60;
+                if (countdown % 60 < 10) {
+                    clockDisplay = '0' + Math.floor(countdown / 60) + ":0" + countdown % 60;
+                }
+                document.getElementById("time" + i + j).innerHTML = clockDisplay;
+                if (countdown == 0) {
+                    document.getElementById("progressBar" + i + j).style.display = "none";
+                    document.getElementById("button" + i + j).style.display = "block";
+                }
+
+            };
+        };
+    };
+};
+
+setInterval(tick, 100);
+</script>
 
 </body>
 </html>

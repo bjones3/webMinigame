@@ -53,7 +53,7 @@
         left: 10px;
         top: 128px;
     }
-    table#t02 {
+    table#seedCosts {
         position: absolute;
         top: 10px;
         left: 650px;
@@ -130,7 +130,7 @@
 {% endfor %}
 </table>
 
-<table id = "t02">
+<table id = "seedCosts">
     <tr>
         <td>
         </td>
@@ -155,13 +155,13 @@
             <div style = "text-align: left;">Alfalfa Sprouts</div>
         </td>
         <td>
-            <div class = "border" onclick = "sell('a')">$1</div>
+            <div id = "sellA" class = "border" onclick = "sell('a')"></div>
         </td>
         <td>
-            <div id = "owneda">0</div>
+            <div id = "owneda"></div>
         </td>
         <td>
-            <div class = "border" onclick = "buy('a')">$3</div>
+            <div id = "buyA" class = "border" onclick = "buy('a')"></div>
         </td>
     </tr>
     <tr>
@@ -172,13 +172,13 @@
             <div style = "text-align: left;">Broccoli</div>
         </td>
         <td>
-            <div class = "border" onclick = "sell('b')">$1</div>
+            <div id = "sellB" class = "border" onclick = "sell('b')"></div>
         </td>
         <td>
-            <div id = "ownedb">0</div>
+            <div id = "ownedb"></div>
         </td>
         <td>
-            <div class = "border" onclick = "buy('b')">$6</div>
+            <div id = "buyB" class = "border" onclick = "buy('b')"></div>
         </td>
     </tr>
     <tr>
@@ -186,20 +186,20 @@
             <img src = "static/cabbage.jpg" style = "width: 20px;">
         </td>
         <td>
-            <div  style = "text-align: left;">Cabbage</div>
+            <div style = "text-align: left;">Cabbage</div>
         </td>
         <td>
-            <div class = "border" onclick = "sell('c')">$2</div>
+            <div  id = "sellC" class = "border" onclick = "sell('c')"></div>
         </td>
         <td>
-            <div id = "ownedc">0</div>
+            <div id = "ownedc"></div>
         </td>
         <td>
-            <div class = "border" onclick = "buy('c')">$12</div>
+            <div id = "buyC" class = "border" onclick = "buy('c')"></div>
         </td>
     </tr>
 </table>
-<div id = "cash">CASH: $10</div>
+<div id = "cash"></div>
 
 <script>
 var GAME_CONFIG = {
@@ -207,18 +207,16 @@ var GAME_CONFIG = {
     seeds: {
         a: {
             name: "Alfalfa Sprouts",
-            image: "static/alfalfa.jpg",
             imageSmall: "static/alfalfa.jpg",
             imageMedium: "static/alfalfa.jpg",
             imageLarge: "static/alfalfa.jpg",
             buyCost: 3,
             sellCost: 1,
             harvestYield: 4,
-            harvestTimeSeconds: 3
+            harvestTimeSeconds: 40
         },
         b: {
             name: "Broccoli",
-            image: "static/broccoli.jpg",
             imageSmall: "static/broccoli.jpg",
             imageMedium: "static/broccoli.jpg",
             imageLarge: "static/broccoli.jpg",
@@ -229,7 +227,6 @@ var GAME_CONFIG = {
         },
         c: {
             name: "Cabbage",
-            image: "static/cabbage.jpg",
             imageSmall: "static/cabbage.jpg",
             imageMedium: "static/cabbage.jpg",
             imageLarge: "static/cabbage.jpg",
@@ -247,90 +244,138 @@ var state = {
     b: 0,
     c: 0
 };
-for(i = 0; i <= 2; i++) {
-      for(j = 0; j <= 2; j++) {
-          state[("plot" + i + j)] = {seedType: 0, timeLeft: 0};
-
-        }
+for (var i = 0; i <= 2; i++) {
+    for (var j = 0; j <= 2; j++) {
+        state[("plot" + i + j)] = {seedType: 0, sowTime: 0};
+    }
 };
 
-buy = function(seed) {
-    if (state.cash >= GAME_CONFIG.seeds[seed].buyCost) {
-        state[seed] ++;
-        document.getElementById("owned" + seed).innerHTML = state[seed];
-        state.cash -= GAME_CONFIG.seeds[seed].buyCost;
-        document.getElementById("cash").innerHTML = "CASH: $" + state.cash;
-    } else {
+var reset = function() {
+    state.cash = GAME_CONFIG.startingCash;
+    state.a = 0;
+    state.b = 0;
+    state.c = 0;
+
+    for (var i = 0; i <= 2; i++) {
+        for (var j = 0; j <= 2; j++) {
+            state[("plot" + i + j)].seedType = 0;
+            state[("plot" + i + j)].sowTime = 0;
+        };
+    };
+
+    classDisplay = function(className, displayType) {
+        var x = document.getElementsByClassName(className);
+        for (var i = 0; i < x.length; i++) {
+            x[i].style.display = (displayType);
+        };
+    };
+    classDisplay("sowPlantButton", "block");
+    classDisplay("invisBlockContainer", "none");
+    classDisplay("soil", "block");
+    classDisplay("progressBar", "none");
+    classDisplay("button", "none");
+
+    document.getElementById("cash").innerHTML = "CASH: $" + state.cash;
+    document.getElementById("owneda").innerHTML = 0;
+    document.getElementById("ownedb").innerHTML = 0;
+    document.getElementById("ownedc").innerHTML = 0;
+    document.getElementById("buyA").innerHTML = "$" + GAME_CONFIG.seeds.a.buyCost;
+    document.getElementById("buyB").innerHTML = "$" + GAME_CONFIG.seeds.b.buyCost;
+    document.getElementById("buyC").innerHTML = "$" + GAME_CONFIG.seeds.c.buyCost;
+    document.getElementById("sellA").innerHTML = "$" + GAME_CONFIG.seeds.a.sellCost;
+    document.getElementById("sellB").innerHTML = "$" + GAME_CONFIG.seeds.b.sellCost;
+    document.getElementById("sellC").innerHTML = "$" + GAME_CONFIG.seeds.c.sellCost;
+};
+
+document.onreadystatechange = function() {
+  if (document.readyState === 'complete') {
+    reset();
+  }
+};
+
+var buy = function(seed) {
+    if (state.cash < GAME_CONFIG.seeds[seed].buyCost) {
         window.alert("Not enough cash.");
-    }
+        return;
+    };
+    state[seed] ++;
+    document.getElementById("owned" + seed).innerHTML = state[seed];
+    state.cash -= GAME_CONFIG.seeds[seed].buyCost;
+    document.getElementById("cash").innerHTML = "CASH: $" + state.cash;
 };
 
-sell = function(seed) {
-    if (state[seed] > 0) {
-        state[seed] --;
-        document.getElementById("owned" + seed).innerHTML = state[seed];
-        state.cash += GAME_CONFIG.seeds[seed].sellCost;
-        document.getElementById("cash").innerHTML = "CASH: $" + state.cash;
-    } else {
+var sell = function(seed) {
+    if (state[seed] <= 0) {
         window.alert("No " + GAME_CONFIG.seeds[seed].name + " seeds to sell.");
-    }
+        return;
+    };
+    state[seed] --;
+    document.getElementById("owned" + seed).innerHTML = state[seed];
+    state.cash += GAME_CONFIG.seeds[seed].sellCost;
+    document.getElementById("cash").innerHTML = "CASH: $" + state.cash;
 };
 
-sow = function(x, y, seed) {
-    if (state[seed] > 0) {
-        state[seed] --;
-        document.getElementById("owned" + seed).innerHTML = state[seed];
-        var bigBox = document.getElementById("plot" + x + y);
-        var medBoxes = bigBox.getElementsByClassName("sowPlantButton");
-        for(i = 0; i < medBoxes.length; i++) {
-            medBoxes[i].style.display = "none";
-        }
-        var box = document.getElementById("growing" + x + y);
-        box.style.display = "block";
-        box.style.backgroundImage = "url(" + GAME_CONFIG.seeds[seed].imageLarge + ")";
-        var soil = document.getElementById("soil" + x + y);
-        soil.style.display = "none";
-        state["plot" + x + y].seedType = seed;
-        state["plot" + x + y].timeLeft = GAME_CONFIG.seeds[seed].harvestTimeSeconds;
-        updateDisplay();
-        var progressBar = document.getElementById("progressBar" + x + y);
-        progressBar.style.display = "block";
-    } else {
+var sow = function(x, y, seed) {
+    if (state[seed] <= 0) {
         window.alert("No " + GAME_CONFIG.seeds[seed].name + " seeds to plant.");
+        return;
+    };
+    state[seed] --;
+    document.getElementById("owned" + seed).innerHTML = state[seed];
+    var plotBox = document.getElementById("plot" + x + y);
+    var sowButtons = plotBox.getElementsByClassName("sowPlantButton");
+    for(var i = 0; i < sowButtons.length; i++) {
+        sowButtons[i].style.display = "none";
     }
+    var growingImage = document.getElementById("growing" + x + y);
+    growingImage.style.display = "block";
+    growingImage.style.backgroundImage = "url(" + GAME_CONFIG.seeds[seed].imageLarge + ")";
+    var soil = document.getElementById("soil" + x + y);
+    soil.style.display = "none";
+    state["plot" + x + y].seedType = seed;
+    state["plot" + x + y].sowTime = new Date().getTime();
+    tick();
+    var progressBar = document.getElementById("progressBar" + x + y);
+    progressBar.style.display = "block";
 };
 
-harvest = function(x, y) {
+var harvest = function(x, y) {
     var seed = state["plot" + x + y].seedType;
     state[seed] += GAME_CONFIG.seeds[seed].harvestYield;
     document.getElementById("owned" + seed).innerHTML = state[seed];
-    var bigBox = document.getElementById("plot" + x + y);
-    var medBoxes = bigBox.getElementsByClassName("sowPlantButton");
-    for(i = 0; i < medBoxes.length; i++) {
-        medBoxes[i].style.display = "block";
-    }
-    var box = document.getElementById("growing" + x + y);
-    box.style.display = "none";
-    box.style.backgroundImage = "url(" + GAME_CONFIG.seeds[seed].imageLarge + ")";
+    var plotBox = document.getElementById("plot" + x + y);
+    var sowButtons = plotBox.getElementsByClassName("sowPlantButton");
+    for(var i = 0; i < sowButtons.length; i++) {
+        sowButtons[i].style.display = "block";
+    };
+    var growingImage = document.getElementById("growing" + x + y);
+    growingImage.style.display = "none";
+    growingImage.style.backgroundImage = "url(" + GAME_CONFIG.seeds[seed].imageLarge + ")";
     var soil = document.getElementById("soil" + x + y);
     soil.style.display = "block";
     var button = document.getElementById("button" + x + y);
     button.style.display = "none";
     seed = 0;
-}
+};
 
-tick = function() {
-    for(i = 0; i <= 2; i++) {
-        for(j = 0; j <= 2; j++) {
+var tick = function() {
+    for (var i = 0; i <= 2; i++) {
+        for (var j = 0; j <= 2; j++) {
             if(state["plot" + i + j].seedType != 0) {
-                var x = state["plot" + i + j].timeLeft;
-                var y = state["plot" + i + j].seedType;
-                var percent = x / GAME_CONFIG.seeds[y].harvestTimeSeconds
-                document.getElementById("filler" + i + j).style.width = percent * 100 + "%";
-                var clock = Math.floor(x / 60) + ":" + x % 60;
-                document.getElementById("time" + i + j).innerHTML = clock;
-                state["plot" + i + j].timeLeft --;
-                if (x == 0) {
+                var startTime = state["plot" + i + j].sowTime;
+                var currentTime = new Date().getTime();
+                var timePassed = Math.floor((currentTime - startTime) / 1000);
+                var typeSeed = state["plot" + i + j].seedType;
+                var harvestTime = GAME_CONFIG.seeds[typeSeed].harvestTimeSeconds;
+                var countdown = harvestTime - timePassed;
+                var percentTimeLeft = countdown / harvestTime;
+                document.getElementById("filler" + i + j).style.width = percentTimeLeft * 100 + "%";
+                var clockDisplay = '0' + Math.floor(countdown / 60) + ":" + countdown % 60;
+                if (countdown % 60 < 10) {
+                    clockDisplay = '0' + Math.floor(countdown / 60) + ":0" + countdown % 60;
+                }
+                document.getElementById("time" + i + j).innerHTML = clockDisplay;
+                if (countdown == 0) {
                     document.getElementById("progressBar" + i + j).style.display = "none";
                     document.getElementById("button" + i + j).style.display = "block";
                 }
@@ -340,30 +385,7 @@ tick = function() {
     };
 };
 
-updateDisplay = function() {
-    for(i = 0; i <= 2; i++) {
-        for(j = 0; j <= 2; j++) {
-            if(state["plot" + i + j].seedType != 0) {
-                var x = state["plot" + i + j].timeLeft;
-                var y = state["plot" + i + j].seedType;
-                var percent = x / GAME_CONFIG.seeds[y].harvestTimeSeconds
-                document.getElementById("filler" + i + j).style.width = percent * 100 + "%";
-                var clock = Math.floor(x / 60) + ":" + x % 60;
-                document.getElementById("time" + i + j).innerHTML = clock;
-                if (x == 0) {
-                    document.getElementById("progressBar" + i + j).style.display = "none";
-                    document.getElementById("button" + i + j).style.display = "block";
-                }
-
-            };
-        };
-    };
-};
-
-
-setInterval(tick, 1000);
-
-
+setInterval(tick, 100);
 </script>
 
 </body>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Title</title>
 <style>
-    .container {
+    div.plotBox {
         position: relative;
         width: 185px;
         height: 185px;
@@ -12,42 +12,44 @@
         margin: 5px;
         box-shadow: 3px 3px 3px green;
     }
-    .container2 {
+    div.sowPlantButton {
         float: left;
-        width: 20%;
-        height: 20%;
-        margin-left: 6.5%;
-        margin-right: 4%;
-        margin-top: 5%;
+        width: 37px;
+        height: 37px;
+        margin-left: 12px;
+        margin-right: 7px;
+        margin-top: 9px;
         border: 2px solid black;
         border-radius: 5px;
     }
-    .container3 {
+    div.invisPlantContainer {
         display: none;
         position: absolute;
-        width: 60%;
-        height: 60%;
+        width: 115px;
+        height: 115px;
         top: 20px;
-        left: 40px;
+        left: 33px;
+        background-repeat: no-repeat;
+        background-size: contain;
     }
-        .a {
+        div.sowPlantButtonA {
             background-image: url("static/alfalfa.jpg");
             background-repeat: no-repeat;
             background-size: contain;
         }
-        .b {
+        div.sowPlantButtonB {
             background-image: url("static/broccoli.jpg");
             background-repeat: no-repeat;
             background-size: contain;
         }
-        .c {
+        div.sowPlantButtonC {
             background-image: url("static/cabbage.jpg");
             background-repeat: no-repeat;
             background-size: contain;
         }
-    .soil {
+    img.soil {
         position: absolute;
-        width: 90%;
+        width: 165px;
         left: 10px;
         top: 128px;
     }
@@ -57,7 +59,7 @@
         left: 650px;
         text-align: center;
     }
-    .border {
+    div.border {
         border: 2px solid black;
         height: 16px;
         width: 30px;
@@ -84,7 +86,7 @@
         width: 100%;
         text-align: center;
     }
-    .button {
+    button.button {
         display: none;
         position: absolute;
         width: 164px;
@@ -106,138 +108,26 @@
 <body>
 
 <table>
+{% for i in range(3) %}
     <tr>
+    {% for j in range(3) %}
         <td>
-            <div id = "plot_0_0" class = "container">
-                <div id = "alfalfa00" class = "container2 a" onclick = "plant(0, 0, 'a')"></div>
-                <div id = "broccoli00" class = "container2 b" onclick = "plant(0, 0, 'b')"></div>
-                <div id = "cabbage00" class = "container2 c" onclick = "plant(0, 0, 'c')"></div>
-                <div id = "growing00" class = "container3 a"></div>
-                <img id = "soil00" src = "static/soil.jpg" class = "soil">
-                <div id = "progressBar00" class = "progressBar">
-                    <div id = "filler00" class = "filler"></div>
-                    <div id = "time00" class = "time"></div>
+            <div id = "plot{{ i }}{{ j }}" class = "plotBox">
+                <div id = "alfalfa{{ i }}{{ j }}" class = "sowPlantButton sowPlantButtonA" onclick = "sow({{ i }}, {{ j }}, 'a')"></div>
+                <div id = "broccoli{{ i }}{{ j }}" class = "sowPlantButton sowPlantButtonB" onclick = "sow({{ i }}, {{ j }}, 'b')"></div>
+                <div id = "cabbage{{ i }}{{ j }}" class = "sowPlantButton sowPlantButtonC" onclick = "sow({{ i }}, {{ j }}, 'c')"></div>
+                <div id = "growing{{ i }}{{ j }}" class = "invisPlantContainer"></div>
+                <img id = "soil{{ i }}{{ j }}" src = "static/soil.jpg" class = "soil">
+                <div id = "progressBar{{ i }}{{ j }}" class = "progressBar">
+                    <div id = "filler{{ i }}{{ j }}" class = "filler"></div>
+                    <div id = "time{{ i }}{{ j }}" class = "time"></div>
                 </div>
-                <button id = "button00" class="button" onclick = "harvest(0, 0)">Harvest</button>
+                <button id = "button{{ i }}{{ j }}" class="button" onclick = "harvest({{ i }}, {{ j }})">Harvest</button>
             </div>
         </td>
-        <td>
-            <div id = "plot_0_1" class = "container">
-                <div id = "alfalfa01" class = "container2 a" onclick = "plant(0, 1, 'a')"></div>
-                <div id = "broccoli01" class = "container2 b" onclick = "plant(0, 1, 'b')"></div>
-                <div id = "cabbage01" class = "container2 c" onclick = "plant(0, 1, 'c')"></div>
-                <div id = "growing01" class = "container3 a"></div>
-                <img id = "soil01" src = "static/soil.jpg" class = "soil">
-                <div id = "progressBar01" class = "progressBar">
-                    <div id = "filler01" class = "filler"></div>
-                    <div id = "time01" class = "time"></div>
-                </div>
-                <button id = "button01" class="button" onclick = "harvest(0, 1)">Harvest</button>
-            </div>
-        </td>
-        <td>
-            <div id = "plot_0_2" class = "container">
-                <div id = "alfalfa02" class = "container2 a" onclick = "plant(0, 2, 'a')"></div>
-                <div id = "broccoli02" class = "container2 b" onclick = "plant(0, 2, 'b')"></div>
-                <div id = "cabbage02" class = "container2 c" onclick = "plant(0, 2, 'c')"></div>
-                <div id = "growing02" class = "container3 a"></div>
-                <img id = "soil02" src = "static/soil.jpg" class = "soil">
-                <div id = "progressBar02" class = "progressBar">
-                    <div id = "filler02" class = "filler"></div>
-                    <div id = "time02" class = "time"></div>
-                </div>
-                <button id = "button02" class="button" onclick = "harvest(0, 2)">Harvest</button>
-            </div>
-        </td>
+    {% endfor %}
     </tr>
-    <tr>
-        <td>
-            <div id = "plot_1_0" class = "container">
-                <div id = "alfalfa10" class = "container2 a" onclick = "plant(1, 0, 'a')"></div>
-                <div id = "broccoli10" class = "container2 b" onclick = "plant(1, 0, 'b')"></div>
-                <div id = "cabbage10" class = "container2 c" onclick = "plant(1, 0, 'c')"></div>
-                <div id = "growing10" class = "container3 a"></div>
-                <img id = "soil10" src = "static/soil.jpg" class = "soil">
-                <div id = "progressBar10" class = "progressBar">
-                    <div id = "filler10" class = "filler"></div>
-                    <div id = "time10" class = "time"></div>
-                </div>
-                <button id = "button10" class="button" onclick = "harvest(1, 0)">Harvest</button>
-            </div>
-        </td>
-        <td>
-            <div id = "plot_1_1" class = "container">
-                <div id = "alfalfa11" class = "container2 a" onclick = "plant(1, 1, 'a')"></div>
-                <div id = "broccoli11" class = "container2 b" onclick = "plant(1, 1, 'b')"></div>
-                <div id = "cabbage11" class = "container2 c" onclick = "plant(1, 1, 'c')"></div>
-                <div id = "growing11" class = "container3 a"></div>
-                <img id = "soil11" src = "static/soil.jpg" class = "soil">
-                <div id = "progressBar11" class = "progressBar">
-                    <div id = "filler11" class = "filler"></div>
-                    <div id = "time11" class = "time"></div>
-                </div>
-                <button id = "button11" class="button" onclick = "harvest(1, 1)">Harvest</button>
-            </div>
-        </td>
-        <td>
-            <div id = "plot_1_2" class = "container">
-                <div id = "alfalfa12" class = "container2 a" onclick = "plant(1, 2, 'a')"></div>
-                <div id = "broccoli12" class = "container2 b" onclick = "plant(1, 2, 'b')"></div>
-                <div id = "cabbage12" class = "container2 c" onclick = "plant(1, 2, 'c')"></div>
-                <div id = "growing12" class = "container3 a"></div>
-                <img id = "soil12" src = "static/soil.jpg" class = "soil">
-                <div id = "progressBar12" class = "progressBar">
-                    <div id = "filler12" class = "filler"></div>
-                    <div id = "time12" class = "time"></div>
-                </div>
-                <button id = "button12" class="button" onclick = "harvest(1, 2)">Harvest</button>
-            </div>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <div id = "plot_2_0" class = "container">
-                <div id = "alfalfa20" class = "container2 a" onclick = "plant(2, 0, 'a')"></div>
-                <div id = "broccoli20" class = "container2 b" onclick = "plant(2, 0, 'b')"></div>
-                <div id = "cabbage20" class = "container2 c" onclick = "plant(2, 0, 'c')"></div>
-                <div id = "growing20" class = "container3 a"></div>
-                <img id = "soil20" src = "static/soil.jpg" class = "soil">
-                <div id = "progressBar20" class = "progressBar">
-                    <div id = "filler20" class = "filler"></div>
-                    <div id = "time20" class = "time"></div>
-                </div>
-                <button id = "button20" class="button" onclick = "harvest(2, 0)">Harvest</button>
-            </div>
-        </td>
-        <td>
-            <div id = "plot_2_1" class = "container">
-                <div id = "alfalfa21" class = "container2 a" onclick = "plant(2, 1, 'a')"></div>
-                <div id = "broccoli21" class = "container2 b" onclick = "plant(2, 1, 'b')"></div>
-                <div id = "cabbage21" class = "container2 c" onclick = "plant(2, 1, 'c')"></div>
-                <div id = "growing21" class = "container3 a"></div>
-                <img id = "soil21" src = "static/soil.jpg" class = "soil">
-                <div id = "progressBar21" class = "progressBar">
-                    <div id = "filler21" class = "filler"></div>
-                    <div id = "time21" class = "time"></div>
-                </div>
-                <button id = "button21" class="button" onclick = "harvest(2, 1)">Harvest</button>
-            </div>
-        </td>
-        <td>
-            <div id = "plot_2_2" class = "container">
-                <div id = "alfalfa22" class = "container2 a" onclick = "plant(2,2,'a')"></div>
-                <div id = "broccoli22" class = "container2 b" onclick = "plant(2,2,'b')"></div>
-                <div id = "cabbage22" class = "container2 c" onclick = "plant(2,2,'c')"></div>
-                <div id = "growing22" class = "container3 a"></div>
-                <img id = "soil22" src = "static/soil.jpg" class = "soil">
-                <div id = "progressBar22" class = "progressBar">
-                    <div id = "filler22" class = "filler"></div>
-                    <div id = "time22" class = "time"></div>
-                </div>
-                <button id = "button22" class="button" onclick = "harvest(2, 2)">Harvest</button>
-            </div>
-        </td>
-    </tr>
+{% endfor %}
 </table>
 
 <table id = "t02">
@@ -355,49 +245,13 @@ var state = {
     cash: GAME_CONFIG.startingCash,
     a: 0,
     b: 0,
-    c: 0,
-//    for(i = 0, i < 2, i++) {
-//      for(j = 0, j < 2, j++) {
-//        state.append("plot" + i + j);
-//            state["plot" + i + j].append(seedType: 0, timeLeft: 0);
-//        }
-//    }
-    plot00: {
-        seedType: 0,
-        timeLeft: 0
-    },
-    plot01: {
-        seedType: 0,
-        timeLeft: 0
-    },
-    plot02: {
-        seedType: 0,
-        timeLeft: 0
-    },
-    plot10: {
-        seedType: 0,
-        timeLeft: 0
-    },
-    plot11: {
-        seedType: 0,
-        timeLeft: 0
-    },
-    plot12: {
-        seedType: 0,
-        timeLeft: 0
-    },
-    plot20: {
-        seedType: 0,
-        timeLeft: 0
-    },
-    plot21: {
-        seedType: 0,
-        timeLeft: 0
-    },
-    plot22: {
-        seedType: 0,
-        timeLeft: 0
-    }
+    c: 0
+};
+for(i = 0; i <= 2; i++) {
+      for(j = 0; j <= 2; j++) {
+          state[("plot" + i + j)] = {seedType: 0, timeLeft: 0};
+
+        }
 };
 
 buy = function(seed) {
@@ -422,12 +276,12 @@ sell = function(seed) {
     }
 };
 
-plant = function(x, y, seed) {
+sow = function(x, y, seed) {
     if (state[seed] > 0) {
         state[seed] --;
         document.getElementById("owned" + seed).innerHTML = state[seed];
-        var bigBox = document.getElementById("plot_" + x + "_" + y);
-        var medBoxes = bigBox.getElementsByClassName("container2");
+        var bigBox = document.getElementById("plot" + x + y);
+        var medBoxes = bigBox.getElementsByClassName("sowPlantButton");
         for(i = 0; i < medBoxes.length; i++) {
             medBoxes[i].style.display = "none";
         }
@@ -450,8 +304,8 @@ harvest = function(x, y) {
     var seed = state["plot" + x + y].seedType;
     state[seed] += GAME_CONFIG.seeds[seed].harvestYield;
     document.getElementById("owned" + seed).innerHTML = state[seed];
-    var bigBox = document.getElementById("plot_" + x + "_" + y);
-    var medBoxes = bigBox.getElementsByClassName("container2");
+    var bigBox = document.getElementById("plot" + x + y);
+    var medBoxes = bigBox.getElementsByClassName("sowPlantButton");
     for(i = 0; i < medBoxes.length; i++) {
         medBoxes[i].style.display = "block";
     }

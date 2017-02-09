@@ -1,0 +1,43 @@
+{
+    "a": 0, 
+    "plot20": {
+        "sowTime": 0, 
+        "seedType": 0
+    }, 
+    "c": 0, 
+    "b": 18, 
+    "plot02": {
+        "sowTime": 1486659124657, 
+        "seedType": 0
+    }, 
+    "plot01": {
+        "sowTime": 0, 
+        "seedType": 0
+    }, 
+    "plot00": {
+        "sowTime": 0, 
+        "seedType": 0
+    }, 
+    "plot10": {
+        "sowTime": 1486659183205, 
+        "seedType": 0
+    }, 
+    "cash": 1, 
+    "plot12": {
+        "sowTime": 0, 
+        "seedType": 0
+    }, 
+    "plot11": {
+        "sowTime": 1486659125439, 
+        "seedType": 0
+    }, 
+    "plot22": {
+        "sowTime": 1486659182160, 
+        "seedType": 0
+    }, 
+    "slug": "brian", 
+    "plot21": {
+        "sowTime": 1486659126676, 
+        "seedType": 0
+    }
+}

@@ -1,8 +1,4 @@
-
-
 var GAME_CONFIG = null;
-
-// var GAME_CONFIG_JSON = JSON.stringify(GAME_CONFIG);
 
 var state = null;
 
@@ -37,7 +33,6 @@ var sendToServer = function(endpoint, data, callback) {
     };
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = handleResponse;
-    //xhr.open('POST', '/save/' + game_name, true);
     xhr.open('POST', endpoint, true);
     xhr.setRequestHeader('Content-type', 'application/json');
     xhr.send(JSON.stringify(data));
@@ -48,7 +43,6 @@ var loadGameState = function() {
         state = gameState;
         reset();
     }
-    console.log(window.location.hash);
     getFromServer("/game-state/" + window.location.hash.substring(1), gameStateLoaded);
 }
 
@@ -57,7 +51,6 @@ var saveGameState = function() {
     }
     sendToServer("/save/" + state.slug, state, gameStateSaved);
 }
-
 
 var loadGameConfig = function() {
     var gameConfigLoaded = function(gameConfig) {
@@ -116,11 +109,16 @@ var buy = function(seed) {
         window.alert("Not enough cash.");
         return;
     };
-    state[seed] ++;
-    document.getElementById("owned" + seed).innerHTML = state[seed];
-    state.cash -= GAME_CONFIG.seeds[seed].buyCost;
-    document.getElementById("cash").innerHTML = "CASH: $" + state.cash;
-    saveGameState();
+    var callback = function(newState) {
+        state = newState;
+        document.getElementById("owned" + seed).innerHTML = state[seed];
+        document.getElementById("cash").innerHTML = "CASH: $" + state.cash;
+    };
+    var data = {
+        slug: state.slug,
+        seed: seed
+    };
+    sendToServer('/action/buy', data, callback);
 };
 
 var sell = function(seed) {
@@ -128,11 +126,16 @@ var sell = function(seed) {
         window.alert("No " + GAME_CONFIG.seeds[seed].name + " seeds to sell.");
         return;
     };
-    state[seed] --;
-    document.getElementById("owned" + seed).innerHTML = state[seed];
-    state.cash += GAME_CONFIG.seeds[seed].sellCost;
-    document.getElementById("cash").innerHTML = "CASH: $" + state.cash;
-    saveGameState();
+    var callback = function(newState) {
+        state = newState;
+        document.getElementById("owned" + seed).innerHTML = state[seed];
+        document.getElementById("cash").innerHTML = "CASH: $" + state.cash;
+    };
+    var data = {
+        slug: state.slug,
+        seed: seed
+    };
+    sendToServer('/action/sell', data, callback);
 };
 
 var sow = function(x, y, seed) {
@@ -140,44 +143,58 @@ var sow = function(x, y, seed) {
         window.alert("No " + GAME_CONFIG.seeds[seed].name + " seeds to plant.");
         return;
     };
-    state[seed] --;
-    document.getElementById("owned" + seed).innerHTML = state[seed];
-    var plotBox = document.getElementById("plot" + x + y);
-    var sowButtons = plotBox.getElementsByClassName("sowPlantButton");
-    for(var i = 0; i < sowButtons.length; i++) {
-        sowButtons[i].style.display = "none";
+    var callback = function(newState) {
+        state = newState;
+        document.getElementById("owned" + seed).innerHTML = state[seed];
+        var plotBox = document.getElementById("plot" + x + y);
+        var sowButtons = plotBox.getElementsByClassName("sowPlantButton");
+        for(var i = 0; i < sowButtons.length; i++) {
+            sowButtons[i].style.display = "none";
+        }
+        var growingImage = document.getElementById("growing" + x + y);
+        growingImage.style.display = "block";
+        growingImage.style.backgroundImage = "url(" + GAME_CONFIG.seeds[seed].imageLarge + ")";
+        var soil = document.getElementById("soil" + x + y);
+        soil.style.display = "none";
+
+        tick();
+        var progressBar = document.getElementById("progressBar" + x + y);
+        progressBar.style.display = "block";
+
+    };
+    var data = {
+        slug: state.slug,
+        seed: seed,
+        x: x,
+        y: y
     }
-    var growingImage = document.getElementById("growing" + x + y);
-    growingImage.style.display = "block";
-    growingImage.style.backgroundImage = "url(" + GAME_CONFIG.seeds[seed].imageLarge + ")";
-    var soil = document.getElementById("soil" + x + y);
-    soil.style.display = "none";
-    state["plot" + x + y].seedType = seed;
-    state["plot" + x + y].sowTime = new Date().getTime();
-    tick();
-    var progressBar = document.getElementById("progressBar" + x + y);
-    progressBar.style.display = "block";
-    saveGameState();
+    sendToServer('/action/sow', data, callback);
 };
 
 var harvest = function(x, y) {
-    var seed = state["plot" + x + y].seedType;
-    state[seed] += GAME_CONFIG.seeds[seed].harvestYield;
-    document.getElementById("owned" + seed).innerHTML = state[seed];
-    var plotBox = document.getElementById("plot" + x + y);
-    var sowButtons = plotBox.getElementsByClassName("sowPlantButton");
-    for(var i = 0; i < sowButtons.length; i++) {
-        sowButtons[i].style.display = "block";
+    var callback = function(newState) {
+        var seed = state["plot" + x + y].seedType;
+        state = newState;
+        document.getElementById("owned" + seed).innerHTML = state[seed];
+        var plotBox = document.getElementById("plot" + x + y);
+        var sowButtons = plotBox.getElementsByClassName("sowPlantButton");
+        for(var i = 0; i < sowButtons.length; i++) {
+            sowButtons[i].style.display = "block";
+        };
+        var growingImage = document.getElementById("growing" + x + y);
+        growingImage.style.display = "none";
+        growingImage.style.backgroundImage = "url(" + GAME_CONFIG.seeds[seed].imageLarge + ")";
+        var soil = document.getElementById("soil" + x + y);
+        soil.style.display = "block";
+        var button = document.getElementById("button" + x + y);
+        button.style.display = "none";
     };
-    var growingImage = document.getElementById("growing" + x + y);
-    growingImage.style.display = "none";
-    growingImage.style.backgroundImage = "url(" + GAME_CONFIG.seeds[seed].imageLarge + ")";
-    var soil = document.getElementById("soil" + x + y);
-    soil.style.display = "block";
-    var button = document.getElementById("button" + x + y);
-    button.style.display = "none";
-    state["plot" + x + y].seedType = 0;
-    saveGameState();
+    var data = {
+        slug: state.slug,
+        x: x,
+        y: y
+    }
+    sendToServer('/action/harvest', data, callback);
 };
 
 var tick = function() {
@@ -204,8 +221,6 @@ var tick = function() {
                     document.getElementById("progressBar" + i + j).style.display = "none";
                     document.getElementById("button" + i + j).style.display = "block";
                 }
-
-
             };
         };
     };

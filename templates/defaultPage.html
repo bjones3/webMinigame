@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+<script>
+    var startGame = function() {
+        if (document.getElementById('gameName').value == '') {
+            alert('Enter a game name');
+            return;
+        }
+        window.location.href = '/game/#' + document.getElementById('gameName').value;
+    };
+</script>
+</head>
+<body>
+
+<input type="text" id="gameName">
+
+<button onclick="startGame()" id="startButton">Start game!</button>
+
+</body>
+</html>

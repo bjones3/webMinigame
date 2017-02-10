@@ -27,17 +27,17 @@
         background-size: contain;
     }
         div.sowPlantButtonA {
-            background-image: url("/static/alfalfa.jpg");
+            background-image: url("/static/alfalfa_m.jpg");
             background-repeat: no-repeat;
             background-size: contain;
         }
         div.sowPlantButtonB {
-            background-image: url("/static/broccoli.jpg");
+            background-image: url("/static/broccoli_m.jpg");
             background-repeat: no-repeat;
             background-size: contain;
         }
         div.sowPlantButtonC {
-            background-image: url("/static/cabbage.jpg");
+            background-image: url("/static/cabbage_m.jpg");
             background-repeat: no-repeat;
             background-size: contain;
         }

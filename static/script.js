@@ -46,12 +46,6 @@ var loadGameState = function() {
     getFromServer("/game-state/" + window.location.hash.substring(1), gameStateLoaded);
 }
 
-var saveGameState = function() {
-    var gameStateSaved = function() {
-    }
-    sendToServer("/save/" + state.slug, state, gameStateSaved);
-}
-
 var loadGameConfig = function() {
     var gameConfigLoaded = function(gameConfig) {
         GAME_CONFIG = gameConfig;
@@ -68,18 +62,20 @@ var reset = function() {
     for (var i = 0; i <= 2; i++) {
         for (var j = 0; j <= 2; j++) {
             if(state["plot" + i + j].seedType != 0) {
-                idDisplay("alfalfa" + i + j, "none");
-                idDisplay("broccoli" + i + j, "none");
-                idDisplay("cabbage" + i + j, "none");
+                for (var seed in GAME_CONFIG.seeds) {
+                    idDisplay("sow" + seed + i + j, "none");
+                }
                 var growingImage = document.getElementById("growing" + i + j);
                 growingImage.style.display = "block";
                 growingImage.style.backgroundImage = "url(" + GAME_CONFIG.seeds[state["plot" + i + j].seedType].imageLarge + ")";
                 idDisplay("soil" + i + j, "none");
                 idDisplay("progressBar" + i + j, "block");
             } else {
-                idDisplay("alfalfa" + i + j, "block");
-                idDisplay("broccoli" + i + j, "block");
-                idDisplay("cabbage" + i + j, "block");
+                for (var seed in GAME_CONFIG.seeds) {
+                    if (state[seed] > 0) {
+                        idDisplay("sow" + seed + i + j, "block");
+                    }
+                }
                 idDisplay("growing" + i + j, "none");
                 idDisplay("soil" + i + j, "block");
                 idDisplay("progressBar" + i + j, "none");
@@ -87,21 +83,20 @@ var reset = function() {
         }
     }
     document.getElementById("cash").innerHTML = "CASH: $" + state.cash;
-    document.getElementById("owneda").innerHTML = state.a;
-    document.getElementById("ownedb").innerHTML = state.b;
-    document.getElementById("ownedc").innerHTML = state.c;
-    document.getElementById("buyA").innerHTML = "$" + GAME_CONFIG.seeds.a.buyCost;
-    document.getElementById("buyB").innerHTML = "$" + GAME_CONFIG.seeds.b.buyCost;
-    document.getElementById("buyC").innerHTML = "$" + GAME_CONFIG.seeds.c.buyCost;
-    document.getElementById("sellA").innerHTML = "$" + GAME_CONFIG.seeds.a.sellCost;
-    document.getElementById("sellB").innerHTML = "$" + GAME_CONFIG.seeds.b.sellCost;
-    document.getElementById("sellC").innerHTML = "$" + GAME_CONFIG.seeds.c.sellCost;
+    for (var seed in GAME_CONFIG.seeds) {
+        if (GAME_CONFIG.seeds.hasOwnProperty(seed)) {
+            var seedConfig = GAME_CONFIG.seeds[seed];
+        }
+        document.getElementById("owned" + seed).innerHTML = state[seed];
+        document.getElementById("buy" + seed).innerHTML = "$" + seedConfig.buyCost;
+        document.getElementById("sell" + seed).innerHTML = "$" + seedConfig.sellCost;
+    };
 };
 
 document.onreadystatechange = function() {
-  if (document.readyState === 'complete') {
-    loadGameConfig();
-  }
+    if (document.readyState === 'complete') {
+        loadGameConfig();
+    }
 };
 
 var buy = function(seed) {
@@ -113,6 +108,13 @@ var buy = function(seed) {
         state = newState;
         document.getElementById("owned" + seed).innerHTML = state[seed];
         document.getElementById("cash").innerHTML = "CASH: $" + state.cash;
+        for (var i = 0; i <= 2; i++) {
+            for (var j = 0; j <= 2; j++) {
+                if(state["plot" + i + j].seedType == 0) {
+                    document.getElementById("sow" + seed + i + j).style.display = "block"
+                }
+            };
+        };
     };
     var data = {
         slug: state.slug,
@@ -130,6 +132,13 @@ var sell = function(seed) {
         state = newState;
         document.getElementById("owned" + seed).innerHTML = state[seed];
         document.getElementById("cash").innerHTML = "CASH: $" + state.cash;
+        for (var i = 0; i <= 2; i++) {
+            for (var j = 0; j <= 2; j++) {
+                if(state[seed] == 0) {
+                    document.getElementById("sow" + seed + i + j).style.display = "none"
+                }
+            };
+        };
     };
     var data = {
         slug: state.slug,
@@ -150,6 +159,13 @@ var sow = function(x, y, seed) {
         var sowButtons = plotBox.getElementsByClassName("sowPlantButton");
         for(var i = 0; i < sowButtons.length; i++) {
             sowButtons[i].style.display = "none";
+        }
+        if (state[seed] == 0) {
+            for (var i = 0; i <= 2; i++) {
+                for (var j = 0; j <= 2; j++) {
+                    document.getElementById("sow" + seed + i + j).style.display = "none";
+                }
+            }
         }
         var growingImage = document.getElementById("growing" + x + y);
         growingImage.style.display = "block";
@@ -176,10 +192,17 @@ var harvest = function(x, y) {
         var seed = state["plot" + x + y].seedType;
         state = newState;
         document.getElementById("owned" + seed).innerHTML = state[seed];
-        var plotBox = document.getElementById("plot" + x + y);
-        var sowButtons = plotBox.getElementsByClassName("sowPlantButton");
-        for(var i = 0; i < sowButtons.length; i++) {
-            sowButtons[i].style.display = "block";
+        for (var s in GAME_CONFIG.seeds) {
+            if (state[s] > 0) {
+                document.getElementById("sow" + s + x + y).style.display = "block";
+            }
+        };
+        for (var i = 0; i <= 2; i++) {
+            for (var j = 0; j <= 2; j++) {
+                if(state["plot" + i + j].seedType == 0 && state[seed] > 0) {
+                    document.getElementById("sow" + seed + i + j).style.display = "block"
+                }
+            };
         };
         var growingImage = document.getElementById("growing" + x + y);
         growingImage.style.display = "none";

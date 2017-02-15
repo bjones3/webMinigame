@@ -13,9 +13,9 @@
     {% for j in range(3) %}
         <td>
             <div id = "plot{{ i }}{{ j }}" class = "plotBox">
-                <div id = "alfalfa{{ i }}{{ j }}" class = "sowPlantButton sowPlantButtonA" onclick = "sow({{ i }}, {{ j }}, 'a')"></div>
-                <div id = "broccoli{{ i }}{{ j }}" class = "sowPlantButton sowPlantButtonB" onclick = "sow({{ i }}, {{ j }}, 'b')"></div>
-                <div id = "cabbage{{ i }}{{ j }}" class = "sowPlantButton sowPlantButtonC" onclick = "sow({{ i }}, {{ j }}, 'c')"></div>
+                {% for seed_letter, seed_data in seeds.items() %}
+                    <div id = "sow{{seed_letter}}{{ i }}{{ j }}" class = "sowPlantButton" style = "background-image: url({{seed_data['imageMedium']}});" onclick = "sow({{ i }}, {{ j }}, '{{seed_letter}}')"></div>
+                {% endfor %}
                 <div id = "growing{{ i }}{{ j }}" class = "invisPlantContainer"></div>
                 <img id = "soil{{ i }}{{ j }}" src = "/static/soil.jpg" class = "soil">
                 <div id = "progressBar{{ i }}{{ j }}" class = "progressBar">
@@ -47,57 +47,25 @@
             <div>Buy</div>
         </td>
     </tr>
-    <tr>
-        <td>
-            <img src = "/static/alfalfa_s.jpg" style = "width: 20px;">
-        </td>
-        <td>
-            <div style = "text-align: left;">Alfalfa Sprouts</div>
-        </td>
-        <td>
-            <div id = "sellA" class = "border" onclick = "sell('a')"></div>
-        </td>
-        <td>
-            <div id = "owneda"></div>
-        </td>
-        <td>
-            <div id = "buyA" class = "border" onclick = "buy('a')"></div>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <img src = "/static/broccoli_s.jpg" style = "width: 20px;">
-        </td>
-        <td>
-            <div style = "text-align: left;">Broccoli</div>
-        </td>
-        <td>
-            <div id = "sellB" class = "border" onclick = "sell('b')"></div>
-        </td>
-        <td>
-            <div id = "ownedb"></div>
-        </td>
-        <td>
-            <div id = "buyB" class = "border" onclick = "buy('b')"></div>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <img src = "/static/cabbage_s.jpg" style = "width: 20px;">
-        </td>
-        <td>
-            <div style = "text-align: left;">Cabbage</div>
-        </td>
-        <td>
-            <div  id = "sellC" class = "border" onclick = "sell('c')"></div>
-        </td>
-        <td>
-            <div id = "ownedc"></div>
-        </td>
-        <td>
-            <div id = "buyC" class = "border" onclick = "buy('c')"></div>
-        </td>
-    </tr>
+    {% for seed_letter, seed_data in seeds.items() %}
+        <tr>
+            <td>
+                <img src = "{{seed_data['imageSmall']}}" style = "height: 20px;">
+            </td>
+            <td>
+                <div style = "text-align: left;">{{seed_data['name']}}</div>
+            </td>
+            <td>
+                <div id = "sell{{seed_letter}}" class = "border" onclick = "sell('{{seed_letter}}')"></div>
+            </td>
+            <td>
+                <div id = "owned{{seed_letter}}"></div>
+            </td>
+            <td>
+                <div id = "buy{{seed_letter}}" class = "border" onclick = "buy('{{seed_letter}}')"></div>
+            </td>
+        </tr>
+    {% endfor %}
 </table>
 <div id = "cash"></div>
 

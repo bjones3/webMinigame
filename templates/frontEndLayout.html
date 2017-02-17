@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Garden Sim 2K17</title>
 <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
@@ -17,7 +17,7 @@
                     <div id = "sow{{seed_letter}}{{ i }}{{ j }}" class = "sowPlantButton" style = "background-image: url({{seed_data['imageMedium']}});" onclick = "sow({{ i }}, {{ j }}, '{{seed_letter}}')"></div>
                 {% endfor %}
                 <div id = "growing{{ i }}{{ j }}" class = "invisPlantContainer"></div>
-                <img id = "soil{{ i }}{{ j }}" src = "/static/soil.jpg" class = "soil">
+                <img id = "soil{{ i }}{{ j }}" src = "/static/soil.png" class = "soil">
                 <div id = "progressBar{{ i }}{{ j }}" class = "progressBar">
                     <div id = "filler{{ i }}{{ j }}" class = "filler"></div>
                     <div id = "time{{ i }}{{ j }}" class = "time"></div>
@@ -47,7 +47,7 @@
             <div>Buy</div>
         </td>
     </tr>
-    {% for seed_letter, seed_data in seeds.items() %}
+    {% for seed_letter, seed_data in seeds|dictsort %}
         <tr>
             <td>
                 <img src = "{{seed_data['imageSmall']}}" style = "height: 20px;">
@@ -69,7 +69,8 @@
 </table>
 <div id = "cash"></div>
 
-<script type = "text/javascript" src = "/static/script.js"></script>
+<script type = "text/javascript" src = "/static/server.js"></script>
+<script type = "text/javascript" src = "/static/frontEndLayout.js"></script>
 
 </body>
 </html>

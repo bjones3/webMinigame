@@ -2,22 +2,53 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title></title>
-<script>
-    var startGame = function() {
-        if (document.getElementById('gameName').value == '') {
-            alert('Enter a game name');
-            return;
-        }
-        window.location.href = '/game/#' + document.getElementById('gameName').value;
-    };
-</script>
+    <title>Garden Sim 2K17</title>
+<style>
+    h1 {
+        font-size:80px;
+        color:green;
+        text-align:center;
+        text-shadow: 3px 3px greenYellow;
+    }
+    button {
+        border: 3px solid green;
+        background-color: white;
+        color: black;
+        text-align: center;
+        width: 150px;
+        height: 60px;
+        display: block;
+        font-size: 16px;
+        margin: auto;
+        margin-top: 10px;
+        box-shadow: 3px 3px 3px greenYellow;
+        -webkit-transition-duration: 0.4s; /* Safari */
+        transition-duration: 0.4s;
+        cursor: pointer;
+    }
+    button:hover {
+        background-color: #4CAF50;
+        color: white;
+    }
+</style>
+<script type = "text/javascript" src = "/static/server.js"></script>
+<script type = "text/javascript" src = "/static/defaultPage.js"></script>
+
 </head>
 <body>
 
-<input type="text" id="gameName">
+<h1>Gardening Simulator 2K17</h1>
 
-<button onclick="startGame()" id="startButton">Start game!</button>
+<button onclick="newOrLoadGame()" id="newGameButton">New Game</button>
+<button onclick="newOrLoadGame()" id="loadGameButton">Load Game</button>
+
+<p style = "text-align:center; display:none" id = "enterName">Name:</p>
+<input style = "margin:auto; display:none" type="text" id="gameNameInput">
+<p style = "text-align:center; display:none" id = "enterPassword">Password:</p>
+<input style = "margin:auto; display:none" type="text" id="gamePasswordInput">
+
+<button style = "display:none" onclick="startGame()" id="startButton">Start game!</button>
+<button style = "display:none" onclick="mainMenu()" id="mainMenuButton">Main Menu</button>
 
 </body>
 </html>

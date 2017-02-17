@@ -8,41 +8,41 @@ app = Flask(__name__)
 GAME_CONFIG = {
     'startingCash': 10,
     'seeds': {
-        'a': {
-            'name': "Alfalfa Sprouts",
-            'imageSmall': "/static/alfalfa_s.jpg",
-            'imageMedium': "/static/alfalfa_m.jpg",
-            'imageLarge': "/static/alfalfa_l.jpg",
+        'chili': {
+            'name': "Chili Pepper",
+            'imageSmall': "/static/chilipepper_s.png",
+            'imageMedium': "/static/chilipepper_m.png",
+            'imageLarge': "/static/chilipepper_l.png",
             'buyCost': 3,
             'sellCost': 1,
             'harvestYield': 2,
             'harvestTimeSeconds': 40
         },
-        'b': {
+        'broc': {
             'name': "Broccoli",
-            'imageSmall': "/static/broccoli_s.jpg",
-            'imageMedium': "/static/broccoli_m.jpg",
-            'imageLarge': "/static/broccoli_l.jpg",
+            'imageSmall': "/static/broccoli_s.png",
+            'imageMedium': "/static/broccoli_m.png",
+            'imageLarge': "/static/broccoli_l.png",
             'buyCost': 5,
             'sellCost': 1,
             'harvestYield': 3,
             'harvestTimeSeconds': 60
         },
-        'c': {
-            'name': "Cabbage",
-            'imageSmall': "/static/cabbage_s.jpg",
-            'imageMedium': "/static/cabbage_m.jpg",
-            'imageLarge': "/static/cabbage_l.jpg",
+        'cauli': {
+            'name': "Cauliflower",
+            'imageSmall': "/static/cauliflower_s.png",
+            'imageMedium': "/static/cauliflower_m.png",
+            'imageLarge': "/static/cauliflower_l.png",
             'buyCost': 8,
             'sellCost': 2,
             'harvestYield': 3,
             'harvestTimeSeconds': 90
         },
-        'd': {
-            'name': "Daikon",
-            'imageSmall': "/static/daikon_s.jpg",
-            'imageMedium': "/static/daikon_m.jpg",
-            'imageLarge': "/static/daikon_l.jpg",
+        'beet': {
+            'name': "Beet",
+            'imageSmall': "/static/beet_s.png",
+            'imageMedium': "/static/beet_m.png",
+            'imageLarge': "/static/beet_l.png",
             'buyCost': 13,
             'sellCost': 3,
             'harvestYield': 3,
@@ -50,92 +50,92 @@ GAME_CONFIG = {
         },
         'e': {
             'name': "Eggplant",
-            'imageSmall': "/static/eggplant_s.jpg",
-            'imageMedium': "/static/eggplant_m.jpg",
-            'imageLarge': "/static/eggplant_l.jpg",
+            'imageSmall': "/static/eggplant_s.png",
+            'imageMedium': "/static/eggplant_m.png",
+            'imageLarge': "/static/eggplant_l.png",
             'buyCost': 21,
             'sellCost': 5,
             'harvestYield': 4,
             'harvestTimeSeconds': 180
         },
-        'f': {
-            'name': "Fennel",
-            'imageSmall': "/static/fennel_s.jpg",
-            'imageMedium': "/static/fennel_m.jpg",
-            'imageLarge': "/static/fennel_l.jpg",
+        'p': {
+            'name': "Potato",
+            'imageSmall': "/static/potato_s.png",
+            'imageMedium': "/static/potato_m.png",
+            'imageLarge': "/static/potato_l.png",
             'buyCost': 34,
             'sellCost': 8,
             'harvestYield': 3,
             'harvestTimeSeconds': 300
         },
-        'g': {
+        'garlic': {
             'name': "Garlic",
-            'imageSmall': "/static/garlic_s.jpg",
-            'imageMedium': "/static/garlic_m.jpg",
-            'imageLarge': "/static/garlic_l.jpg",
+            'imageSmall': "/static/garlic_s.png",
+            'imageMedium': "/static/garlic_m.png",
+            'imageLarge': "/static/garlic_l.png",
             'buyCost': 55,
             'sellCost': 13,
             'harvestYield': 4,
             'harvestTimeSeconds': 450
         },
-        'h': {
-            'name': "Horseradish",
-            'imageSmall': "/static/horseraddish_s.jpg",
-            'imageMedium': "/static/horseraddish_m.jpg",
-            'imageLarge': "/static/horseradish_l.jpg",
+        'bell': {
+            'name': "Bell Pepper",
+            'imageSmall': "/static/bellpepper_s.png",
+            'imageMedium': "/static/bellpepper_m.png",
+            'imageLarge': "/static/bellpepper_l.png",
             'buyCost': 89,
             'sellCost': 21,
             'harvestYield': 4,
             'harvestTimeSeconds': 900
         },
-        'i': {
-            'name': "Iceberg Lettuce",
-            'imageSmall': "/static/iceberglettuce_s.jpg",
-            'imageMedium': "/static/iceberglettuce_m.jpg",
-            'imageLarge': "/static/iceberglettuce_l.jpg",
+        'carrot': {
+            'name': "Carrot",
+            'imageSmall': "/static/carrot_s.png",
+            'imageMedium': "/static/carrot_m.png",
+            'imageLarge': "/static/carrot_l.png",
             'buyCost': 144,
             'sellCost': 34,
             'harvestYield': 4,
             'harvestTimeSeconds': 1800
         },
-        'j': {
-            'name': "Jicama",
-            'imageSmall': "/static/jicama_s.jpg",
-            'imageMedium': "/static/jicama_m.jpg",
-            'imageLarge': "/static/jicama_l.jpg",
+        'beans': {
+            'name': "Beans",
+            'imageSmall': "/static/beans_s.png",
+            'imageMedium': "/static/beans_m.png",
+            'imageLarge': "/static/beans_l.png",
             'buyCost': 233,
             'sellCost': 55,
             'harvestYield': 4,
             'harvestTimeSeconds': 7200
         },
-        'k': {
-            'name': "Kale",
-            'imageSmall': "/static/kale_s.jpg",
-            'imageMedium': "/static/kale_m.jpg",
-            'imageLarge': "/static/kale_l.jpg",
+        'turnip': {
+            'name': "Turnip",
+            'imageSmall': "/static/turnip_s.png",
+            'imageMedium': "/static/turnip_m.png",
+            'imageLarge': "/static/turnip_l.png",
             'buyCost': 377,
             'sellCost': 89,
             'harvestYield': 3,
             'harvestTimeSeconds': 28800
         },
-        'l': {
-            'name': "Lemongrass",
-            'imageSmall': "/static/lemongrass_s.jpg",
-            'imageMedium': "/static/lemongrass_m.jpg",
-            'imageLarge': "/static/lemongrass_l.jpg",
+        'leek': {
+            'name': "Leek",
+            'imageSmall': "/static/leek_s.png",
+            'imageMedium': "/static/leek_m.png",
+            'imageLarge': "/static/leek_l.png",
             'buyCost': 610,
             'sellCost': 144,
-            'harvestYield': 2,
+            'harvestYield': 1,
             'harvestTimeSeconds': 86400
         },
-        'm': {
-            'name': "Mustard Greens",
-            'imageSmall': "/static/mustardgreens_s.jpg",
-            'imageMedium': "/static/mustardgreens_m.jpg",
-            'imageLarge': "/static/mustardgreens_l.jpg",
+        'tomato': {
+            'name': "Tomato",
+            'imageSmall': "/static/tomato_s.png",
+            'imageMedium': "/static/tomato_m.png",
+            'imageLarge': "/static/tomato_l.png",
             'buyCost': 987,
             'sellCost': 233,
-            'harvestYield': 2,
+            'harvestYield': 0,
             'harvestTimeSeconds': 259200
         }
     }
@@ -171,40 +171,48 @@ def game_config():
     return jsonify(GAME_CONFIG)
 
 
-@app.route('/game-state/<slug>')
+@app.route('/game-state/<slug>', methods = ['GET', 'POST'])
 def state(slug):
     regex = re.compile("^[a-z]+$")
     x = regex.match(slug)
     if x is False:
         raise Exception("Invalid characters")
-
+    body = request.json
+    password = body['password']
     if os.path.exists('saves/' + slug + '.json'):
         data = load_state(slug)
-        return jsonify(data)
+        if password == data['password']:
+            return jsonify(data)
+        else:
+            return("Invalid password", 401)
     else:
         game_state = {
             'cash': 10,
-            'slug' : slug,
-            'a': 0,
-            'b': 0,
-            'c': 0,
-            'd': 0,
+            'slug': slug,
+            'password': password,
+            'chili': 0,
+            'broc': 0,
+            'cauli': 0,
+            'beet': 0,
             'e': 0,
-            'f': 0,
-            'g': 0,
-            'h': 0,
-            'i': 0,
-            'j': 0,
-            'k': 0,
-            'l': 0,
-            'm': 0
+            'p': 0,
+            'garlic': 0,
+            'bell': 0,
+            'carrot': 0,
+            'beans': 0,
+            'turnip': 0,
+            'leek': 0,
+            'tomato': 0
         }
         for i in range(3):
             for j in range(3):
                 game_state[("plot" + str(i) + str(j))] = {'seedType': 0, 'sowTime': 0}
 
-    save_state(slug, game_state)
-    return jsonify(game_state)
+        save_state(slug, game_state)
+        if password == game_state['password']:
+            return jsonify(game_state)
+        else:
+            raise Exception("Invalid password")
 
 
 @app.route('/action/buy', methods = ['GET', 'POST'])
@@ -214,6 +222,9 @@ def buy():
 
     # loading game_state
     game_state = load_state(buy_data['slug'])
+
+    if buy_data['password'] != game_state['password']:
+        raise Exception("Invalid password")
 
     # safety check
     if game_state['cash'] < GAME_CONFIG['seeds'][buy_data['seed']]['buyCost']:
@@ -237,6 +248,9 @@ def sell():
     # loading game_state
     game_state = load_state(data['slug'])
 
+    if data['password'] != game_state['password']:
+        raise Exception("Invalid password")
+
     # safety check
     if game_state[data['seed']] <= 0:
         raise Exception("No " + GAME_CONFIG['seeds'][data['seed']]['name'] + " seeds to sell.")
@@ -258,6 +272,9 @@ def sow():
 
     # loading game_state
     game_state = load_state(data['slug'])
+
+    if data['password'] != game_state['password']:
+        raise Exception("Invalid password")
 
     # safety check
     if game_state[data['seed']] <= 0:
@@ -282,6 +299,9 @@ def harvest():
 
     # loading game_state
     game_state = load_state(data['slug'])
+
+    if data['password'] != game_state['password']:
+        raise Exception("Invalid password")
 
     # making changes to game_state
     plot = get_plot(game_state, data['x'], data['y'])

@@ -320,4 +320,4 @@ def styles():
     return render_template('styles.css');
 
 if __name__ == "__main__":
-    app.run(debug=True, port=int(os.environ['PORT']))
+    app.run(debug=False, port=int(os.environ['PORT']))

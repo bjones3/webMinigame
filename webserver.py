@@ -2,6 +2,9 @@
 
 from flask import Flask, render_template, request, jsonify
 import json, os, re, time
+import psycopg2
+import urlparse
+
 
 app = Flask(__name__)
 
@@ -142,14 +145,34 @@ GAME_CONFIG = {
 }
 
 
-def load_state(slug):
-    with open('saves/' + slug + '.json', 'r') as file:
-        return json.load(file)
+urlparse.uses_netloc.append("postgres")
+db_url = os.environ['DATABASE_URL']
+url = urlparse.urlparse(db_url)
+conn = psycopg2.connect(
+    database=url.path[1:],
+    user=url.username,
+    password=url.password,
+    host=url.hostname,
+    port=url.port
+)
 
+def load_state(slug):
+    with conn:
+        with conn.cursor() as cursor:
+            cursor.execute("SELECT game_state FROM game_states WHERE slug = %s;",
+                           [slug])
+            row = cursor.fetchone()
+            if not row:
+                return None
+            return row[0]
 
 def save_state(slug, game_state):
-    with open('saves/' + slug + '.json', 'w') as file:
-        json.dump(game_state, file, indent=4)
+    json_game_state = json.dumps(game_state, indent=4)
+    with conn:
+        with conn.cursor() as cursor:
+            cursor.execute("INSERT INTO game_states (slug, game_state) VALUES (%s, %s) ON CONFLICT (slug) DO UPDATE SET game_state=%s;",
+                           [slug, json_game_state, json_game_state])
+
 
 
 def get_plot(game_state, x, y):
@@ -179,8 +202,8 @@ def state(slug):
         raise Exception("Invalid characters")
     body = request.json
     password = body['password']
-    if os.path.exists('saves/' + slug + '.json'):
-        data = load_state(slug)
+    data = load_state(slug)
+    if data:
         if password == data['password']:
             return jsonify(data)
         else:
@@ -320,4 +343,4 @@ def styles():
     return render_template('styles.css');
 
 if __name__ == "__main__":
-    app.run(debug=True,port=8000)
+    app.run(debug=False, port=int(os.environ['PORT']), host='0.0.0.0')

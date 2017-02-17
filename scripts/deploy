@@ -1,0 +1,5 @@
+#! /bin/bash
+
+git commit -a -m "deploy `date`"
+git push heroku master
+heroku logs

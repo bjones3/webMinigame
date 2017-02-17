@@ -1,0 +1,5 @@
+#! /bin/bash
+
+export PORT=8000
+export DATABASE_URL=postgres://localhost:5432/Joan
+python webserver.py

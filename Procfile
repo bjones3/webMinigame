@@ -1,1 +1,1 @@
-web: python webserver.py $PORT
+web: python webserver.py

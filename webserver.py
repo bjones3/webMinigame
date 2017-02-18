@@ -9,79 +9,79 @@ import urlparse
 app = Flask(__name__)
 
 GAME_CONFIG = {
-    'startingCash': 10,
+    'startingCash': 10000000,
     'seeds': {
-        'chili': {
+        'j': {
             'name': "Chili Pepper",
             'imageSmall': "/static/chilipepper_s.png",
             'imageMedium': "/static/chilipepper_m.png",
             'imageLarge': "/static/chilipepper_l.png",
-            'buyCost': 3,
-            'sellCost': 1,
-            'harvestYield': 2,
-            'harvestTimeSeconds': 40
+            'buyCost': 233,
+            'sellCost': 55,
+            'harvestYield': 4,
+            'harvestTimeSeconds': 7200
         },
-        'broc': {
+        'e': {
             'name': "Broccoli",
             'imageSmall': "/static/broccoli_s.png",
             'imageMedium': "/static/broccoli_m.png",
             'imageLarge': "/static/broccoli_l.png",
-            'buyCost': 5,
-            'sellCost': 1,
-            'harvestYield': 3,
-            'harvestTimeSeconds': 60
-        },
-        'cauli': {
-            'name': "Cauliflower",
-            'imageSmall': "/static/cauliflower_s.png",
-            'imageMedium': "/static/cauliflower_m.png",
-            'imageLarge': "/static/cauliflower_l.png",
-            'buyCost': 8,
-            'sellCost': 2,
-            'harvestYield': 3,
-            'harvestTimeSeconds': 90
-        },
-        'beet': {
-            'name': "Beet",
-            'imageSmall': "/static/beet_s.png",
-            'imageMedium': "/static/beet_m.png",
-            'imageLarge': "/static/beet_l.png",
-            'buyCost': 13,
-            'sellCost': 3,
-            'harvestYield': 3,
-            'harvestTimeSeconds': 120
-        },
-        'e': {
-            'name': "Eggplant",
-            'imageSmall': "/static/eggplant_s.png",
-            'imageMedium': "/static/eggplant_m.png",
-            'imageLarge': "/static/eggplant_l.png",
             'buyCost': 21,
             'sellCost': 5,
             'harvestYield': 4,
             'harvestTimeSeconds': 180
         },
-        'p': {
-            'name': "Potato",
-            'imageSmall': "/static/potato_s.png",
-            'imageMedium': "/static/potato_m.png",
-            'imageLarge': "/static/potato_l.png",
-            'buyCost': 34,
-            'sellCost': 8,
+        'b': {
+            'name': "Cauliflower",
+            'imageSmall': "/static/cauliflower_s.png",
+            'imageMedium': "/static/cauliflower_m.png",
+            'imageLarge': "/static/cauliflower_l.png",
+            'buyCost': 5,
+            'sellCost': 1,
             'harvestYield': 3,
-            'harvestTimeSeconds': 300
+            'harvestTimeSeconds': 60
         },
-        'garlic': {
-            'name': "Garlic",
-            'imageSmall': "/static/garlic_s.png",
-            'imageMedium': "/static/garlic_m.png",
-            'imageLarge': "/static/garlic_l.png",
+        'g': {
+            'name': "Beet",
+            'imageSmall': "/static/beet_s.png",
+            'imageMedium': "/static/beet_m.png",
+            'imageLarge': "/static/beet_l.png",
             'buyCost': 55,
             'sellCost': 13,
             'harvestYield': 4,
             'harvestTimeSeconds': 450
         },
-        'bell': {
+        'i': {
+            'name': "Eggplant",
+            'imageSmall': "/static/eggplant_s.png",
+            'imageMedium': "/static/eggplant_m.png",
+            'imageLarge': "/static/eggplant_l.png",
+            'buyCost': 144,
+            'sellCost': 34,
+            'harvestYield': 4,
+            'harvestTimeSeconds': 1800
+        },
+        'a': {
+            'name': "Potato",
+            'imageSmall': "/static/potato_s.png",
+            'imageMedium': "/static/potato_m.png",
+            'imageLarge': "/static/potato_l.png",
+            'buyCost': 3,
+            'sellCost': 1,
+            'harvestYield': 2,
+            'harvestTimeSeconds': 40
+        },
+        'm': {
+            'name': "Garlic",
+            'imageSmall': "/static/garlic_s.png",
+            'imageMedium': "/static/garlic_m.png",
+            'imageLarge': "/static/garlic_l.png",
+            'buyCost': 987,
+            'sellCost': 233,
+            'harvestYield': 0,
+            'harvestTimeSeconds': 259200
+        },
+        'h': {
             'name': "Bell Pepper",
             'imageSmall': "/static/bellpepper_s.png",
             'imageMedium': "/static/bellpepper_m.png",
@@ -91,55 +91,55 @@ GAME_CONFIG = {
             'harvestYield': 4,
             'harvestTimeSeconds': 900
         },
-        'carrot': {
+        'c': {
             'name': "Carrot",
             'imageSmall': "/static/carrot_s.png",
             'imageMedium': "/static/carrot_m.png",
             'imageLarge': "/static/carrot_l.png",
-            'buyCost': 144,
-            'sellCost': 34,
-            'harvestYield': 4,
-            'harvestTimeSeconds': 1800
+            'buyCost': 8,
+            'sellCost': 2,
+            'harvestYield': 3,
+            'harvestTimeSeconds': 90
         },
-        'beans': {
+        'l': {
             'name': "Beans",
             'imageSmall': "/static/beans_s.png",
             'imageMedium': "/static/beans_m.png",
             'imageLarge': "/static/beans_l.png",
-            'buyCost': 233,
-            'sellCost': 55,
-            'harvestYield': 4,
-            'harvestTimeSeconds': 7200
-        },
-        'turnip': {
-            'name': "Turnip",
-            'imageSmall': "/static/turnip_s.png",
-            'imageMedium': "/static/turnip_m.png",
-            'imageLarge': "/static/turnip_l.png",
-            'buyCost': 377,
-            'sellCost': 89,
-            'harvestYield': 3,
-            'harvestTimeSeconds': 28800
-        },
-        'leek': {
-            'name': "Leek",
-            'imageSmall': "/static/leek_s.png",
-            'imageMedium': "/static/leek_m.png",
-            'imageLarge': "/static/leek_l.png",
             'buyCost': 610,
             'sellCost': 144,
             'harvestYield': 1,
             'harvestTimeSeconds': 86400
         },
-        'tomato': {
+        'f': {
+            'name': "Turnip",
+            'imageSmall': "/static/turnip_s.png",
+            'imageMedium': "/static/turnip_m.png",
+            'imageLarge': "/static/turnip_l.png",
+            'buyCost': 34,
+            'sellCost': 8,
+            'harvestYield': 3,
+            'harvestTimeSeconds': 300
+        },
+        'd': {
+            'name': "Leek",
+            'imageSmall': "/static/leek_s.png",
+            'imageMedium': "/static/leek_m.png",
+            'imageLarge': "/static/leek_l.png",
+            'buyCost': 13,
+            'sellCost': 3,
+            'harvestYield': 3,
+            'harvestTimeSeconds': 120
+        },
+        'k': {
             'name': "Tomato",
             'imageSmall': "/static/tomato_s.png",
             'imageMedium': "/static/tomato_m.png",
             'imageLarge': "/static/tomato_l.png",
-            'buyCost': 987,
-            'sellCost': 233,
-            'harvestYield': 0,
-            'harvestTimeSeconds': 259200
+            'buyCost': 377,
+            'sellCost': 89,
+            'harvestYield': 3,
+            'harvestTimeSeconds': 28800
         }
     }
 }
@@ -210,22 +210,22 @@ def state(slug):
             return("Invalid password", 401)
     else:
         game_state = {
-            'cash': 10,
+            'cash': 1000000,
             'slug': slug,
             'password': password,
-            'chili': 0,
-            'broc': 0,
-            'cauli': 0,
-            'beet': 0,
+            'a': 0,
+            'b': 0,
+            'c': 0,
+            'd': 0,
             'e': 0,
-            'p': 0,
-            'garlic': 0,
-            'bell': 0,
-            'carrot': 0,
-            'beans': 0,
-            'turnip': 0,
-            'leek': 0,
-            'tomato': 0
+            'f': 0,
+            'g': 0,
+            'h': 0,
+            'i': 0,
+            'j': 0,
+            'k': 0,
+            'l': 0,
+            'm': 0
         }
         for i in range(3):
             for j in range(3):
@@ -343,4 +343,8 @@ def styles():
     return render_template('styles.css');
 
 if __name__ == "__main__":
-    app.run(debug=False, port=int(os.environ['PORT']), host='0.0.0.0')
+    if os.environ.get('DEBUG_MODE') == '1':
+        debug = True
+    else:
+        debug = False
+    app.run(debug=debug, port=int(os.environ['PORT']), host='0.0.0.0')

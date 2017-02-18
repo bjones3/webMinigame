@@ -224,10 +224,17 @@ var tick = function() {
                 var countdown = harvestTime - timePassed;
                 var percentTimeLeft = countdown / harvestTime;
                 document.getElementById("filler" + i + j).style.width = percentTimeLeft * 100 + "%";
-                var clockDisplay = '0' + Math.floor(countdown / 60) + ":" + countdown % 60;
-                if (countdown % 60 < 10) {
-                    clockDisplay = '0' + Math.floor(countdown / 60) + ":0" + countdown % 60;
+                var toHHMMSS = function(sec_num) {
+                    var hours   = Math.floor(sec_num / 3600);
+                    var minutes = Math.floor((sec_num % 3600) / 60);
+                    var seconds = Math.floor(sec_num % 60);
+
+                    if (hours   < 10) {hours   = "0" + hours;}
+                    if (minutes < 10) {minutes = "0" + minutes;}
+                    if (seconds < 10) {seconds = "0" + seconds;}
+                    return hours + ':' + minutes + ':' + seconds;
                 }
+                var clockDisplay = toHHMMSS(countdown);
                 document.getElementById("time" + i + j).innerHTML = clockDisplay;
                 if (countdown <= 0) {
                     document.getElementById("progressBar" + i + j).style.display = "none";

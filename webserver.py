@@ -173,6 +173,19 @@ def save_state(slug, game_state):
             cursor.execute("INSERT INTO game_states (slug, game_state) VALUES (%s, %s) ON CONFLICT (slug) DO UPDATE SET game_state=%s;",
                            [slug, json_game_state, json_game_state])
 
+            
+def get_leaderboard_data():
+    """ Fetch leaderboard data directly from live game states.
+
+    This is an inefficient way to do it, as we look at every single game to
+    find the top ones every time we want to display the data.  It's good
+    enoughf for now, but will need to be rewritten if we have more than a
+    handful of games """
+
+    with conn:
+        with conn.cursor() as cursor:
+            cursor.execute("SELECT slug, game_state->'cash' AS cash FROM game_states ORDER BY 2 DESC LIMIT 10;")
+            return cursor.fetchall()
 
 
 def get_plot(game_state, x, y):

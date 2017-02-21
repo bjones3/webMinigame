@@ -23,42 +23,29 @@ var startGame = function() {
     sendToServer('game-state/' + slug, data, callback);
 };
 
-var newGame = function() {
+var newOrLoadGame = function(newLoad) {
     document.getElementById("newGameButton").style.display = "none"
     document.getElementById("loadGameButton").style.display = "none"
     document.getElementById("leaderboardsButton").style.display = "none"
+    document.getElementById("mainMenuButton").style.display = "block"
     document.getElementById("enterName").style.display = "block"
     document.getElementById("enterPassword").style.display = "block"
     document.getElementById("gameNameInput").style.display = "block"
     document.getElementById("gamePasswordInput").style.display = "block"
     document.getElementById("startButton").style.display = "block"
-    document.getElementById("mainMenuButton").style.display = "block"
-    newOrLoad = "new"
-};
-
-var loadGame = function() {
-    document.getElementById("newGameButton").style.display = "none"
-    document.getElementById("loadGameButton").style.display = "none"
-    document.getElementById("leaderboardsButton").style.display = "none"
-    document.getElementById("enterName").style.display = "block"
-    document.getElementById("enterPassword").style.display = "block"
-    document.getElementById("gameNameInput").style.display = "block"
-    document.getElementById("gamePasswordInput").style.display = "block"
-    document.getElementById("startButton").style.display = "block"
-    document.getElementById("mainMenuButton").style.display = "block"
-    newOrLoad = "load"
+    newOrLoad = newLoad
 };
 
 var mainMenu = function() {
     document.getElementById("newGameButton").style.display = "block"
     document.getElementById("loadGameButton").style.display = "block"
     document.getElementById("leaderboardsButton").style.display = "block"
+    document.getElementById("mainMenuButton").style.display = "none"
     document.getElementById("enterName").style.display = "none"
     document.getElementById("enterPassword").style.display = "none"
     document.getElementById("gameNameInput").style.display = "none"
     document.getElementById("gamePasswordInput").style.display = "none"
     document.getElementById("startButton").style.display = "none"
-    document.getElementById("mainMenuButton").style.display = "none"
     document.getElementById("leaderboardsTable").style.display = "none"
 };
 

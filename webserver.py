@@ -9,7 +9,7 @@ import urlparse
 app = Flask(__name__)
 
 GAME_CONFIG = {
-    'startingCash': 100000,
+    'startingCash': 10,
     'seeds': {
         'a': {
             'name': "Potato",
@@ -225,7 +225,7 @@ def state(slug):
             return "Invalid password", 401
     else:
         game_state = {
-            'cash': 100000,
+            'cash': 10,
             'slug': slug,
             'password': password,
             'a': 0,

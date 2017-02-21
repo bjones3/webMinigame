@@ -1,48 +1,59 @@
+var newOrLoad;
+
 var startGame = function() {
-    slug = document.getElementById('gameNameInput').value
-    gamePassword = document.getElementById('gamePasswordInput').value
-    localStorage.setItem('pwd_' + slug, gamePassword)
-    localStorage.setItem('slug', slug)
+    var slug = document.getElementById('gameNameInput').value
+    var gamePassword = document.getElementById('gamePasswordInput').value
     if (slug == '') {
         alert('Enter a game name');
         return;
     }
-    callback = function(pass) {
+    if (gamePassword == '') {
+        alert('Enter a password');
+        return;
+    }
+    localStorage.setItem('pwd_' + slug, gamePassword)
+    localStorage.setItem('slug', slug)
+    var callback = function(pass) {
         window.location.href = '/game/#' + slug;
     };
     var data = {
         password: gamePassword,
+        newOrLoad: newOrLoad
     };
     sendToServer('game-state/' + slug, data, callback);
 };
 
-var toggleIDDisplay = function(idName) {
-    if (document.getElementById(idName).style.display == "none") {
-        document.getElementById(idName).style.display = "block";
-    }
-    if (document.getElementById(idName).style.display == "block") {
-        document.getElementById(idName).style.display = "none";
-    }
-};
-
-
-var newOrLoadGame = function() {
+var newOrLoadGame = function(newLoad) {
     document.getElementById("newGameButton").style.display = "none"
     document.getElementById("loadGameButton").style.display = "none"
+    document.getElementById("leaderboardsButton").style.display = "none"
+    document.getElementById("mainMenuButton").style.display = "block"
     document.getElementById("enterName").style.display = "block"
     document.getElementById("enterPassword").style.display = "block"
     document.getElementById("gameNameInput").style.display = "block"
     document.getElementById("gamePasswordInput").style.display = "block"
     document.getElementById("startButton").style.display = "block"
-    document.getElementById("mainMenuButton").style.display = "block"
+    newOrLoad = newLoad
 };
+
 var mainMenu = function() {
     document.getElementById("newGameButton").style.display = "block"
     document.getElementById("loadGameButton").style.display = "block"
+    document.getElementById("leaderboardsButton").style.display = "block"
+    document.getElementById("mainMenuButton").style.display = "none"
     document.getElementById("enterName").style.display = "none"
     document.getElementById("enterPassword").style.display = "none"
     document.getElementById("gameNameInput").style.display = "none"
     document.getElementById("gamePasswordInput").style.display = "none"
     document.getElementById("startButton").style.display = "none"
-    document.getElementById("mainMenuButton").style.display = "none"
+    document.getElementById("leaderboardsTable").style.display = "none"
 };
+
+var leaderboards = function() {
+    document.getElementById("newGameButton").style.display = "none"
+    document.getElementById("loadGameButton").style.display = "none"
+    document.getElementById("leaderboardsButton").style.display = "none"
+    document.getElementById("mainMenuButton").style.display = "block"
+    document.getElementById("leaderboardsTable").style.display = "block"
+};
+

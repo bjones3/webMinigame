@@ -30,6 +30,9 @@
         background-color: #4CAF50;
         color: white;
     }
+    table, th, td {
+        border: 1px solid black;
+    }
 </style>
 <script type = "text/javascript" src = "/static/server.js"></script>
 <script type = "text/javascript" src = "/static/defaultPage.js"></script>
@@ -39,16 +42,38 @@
 
 <h1>Gardening Simulator 2K17</h1>
 
-<button onclick="newOrLoadGame()" id="newGameButton">New Game</button>
-<button onclick="newOrLoadGame()" id="loadGameButton">Load Game</button>
+<button onclick="newOrLoadGame('new')" id="newGameButton">New Game</button>
+<button onclick="newOrLoadGame('load')" id="loadGameButton">Load Game</button>
+<button onclick="leaderboards()" id="leaderboardsButton">Leaderboards</button>
 
 <p style = "text-align:center; display:none" id = "enterName">Name:</p>
 <input style = "margin:auto; display:none" type="text" id="gameNameInput">
 <p style = "text-align:center; display:none" id = "enterPassword">Password:</p>
-<input style = "margin:auto; display:none" type="text" id="gamePasswordInput">
+<input style = "margin:auto; display:none" type="password" id="gamePasswordInput">
 
 <button style = "display:none" onclick="startGame()" id="startButton">Start game!</button>
 <button style = "display:none" onclick="mainMenu()" id="mainMenuButton">Main Menu</button>
+
+<table style = "width:40%; margin:auto; margin-top: 10px; display:none" id = "leaderboardsTable">
+    <tr>
+        <th style = "width:10%" colspan="4">Leaderboards</th>
+    </tr>
+    <tr>
+        <th></th>
+        <th>Name</th>
+        <th>Cash</th>
+        <th># Garlic Seeds</th>
+
+    </tr>
+    {% for leaderboard_name, leaderboard_cash, leaderboard_garlic in leaderboard %}
+        <tr>
+            <td>{{loop.index}}</td>
+            <td>{{leaderboard_name}}</td>
+            <td>{{leaderboard_cash}}</td>
+            <td>{{leaderboard_garlic}}</td>
+        </tr>
+    {% endfor %}
+</table>
 
 </body>
 </html>

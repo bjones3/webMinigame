@@ -13,7 +13,7 @@
     {% for j in range(3) %}
         <td>
             <div id = "plot{{ i }}{{ j }}" class = "plotBox">
-                {% for seed_letter, seed_data in seeds.items() %}
+                {% for seed_letter, seed_data in seeds|dictsort %}
                     <div id = "sow{{seed_letter}}{{ i }}{{ j }}" class = "sowPlantButton" style = "background-image: url({{seed_data['imageMedium']}});" onclick = "sow({{ i }}, {{ j }}, '{{seed_letter}}')"></div>
                 {% endfor %}
                 <div id = "growing{{ i }}{{ j }}" class = "invisPlantContainer"></div>

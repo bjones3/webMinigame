@@ -47,6 +47,8 @@
         height: 16px;
         width: 35px;
         box-shadow: 3px 3px 3px green;
+        cursor: pointer;
+        user-select: none;
     }
     div.progressBar {
         display: none;

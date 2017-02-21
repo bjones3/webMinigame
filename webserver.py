@@ -9,17 +9,47 @@ import urlparse
 app = Flask(__name__)
 
 GAME_CONFIG = {
-    'startingCash': 10,
+    'startingCash': 100000,
     'seeds': {
-        'j': {
-            'name': "Chili Pepper",
-            'imageSmall': "/static/chilipepper_s.png",
-            'imageMedium': "/static/chilipepper_m.png",
-            'imageLarge': "/static/chilipepper_l.png",
-            'buyCost': 233,
-            'sellCost': 55,
-            'harvestYield': 4,
-            'harvestTimeSeconds': 7200
+        'a': {
+            'name': "Potato",
+            'imageSmall': "/static/potato_s.png",
+            'imageMedium': "/static/potato_m.png",
+            'imageLarge': "/static/potato_l.png",
+            'buyCost': 3,
+            'sellCost': 1,
+            'harvestYield': 2,
+            'harvestTimeSeconds': 40
+        },
+        'b': {
+            'name': "Cauliflower",
+            'imageSmall': "/static/cauliflower_s.png",
+            'imageMedium': "/static/cauliflower_m.png",
+            'imageLarge': "/static/cauliflower_l.png",
+            'buyCost': 5,
+            'sellCost': 1,
+            'harvestYield': 3,
+            'harvestTimeSeconds': 60
+        },
+        'c': {
+            'name': "Carrot",
+            'imageSmall': "/static/carrot_s.png",
+            'imageMedium': "/static/carrot_m.png",
+            'imageLarge': "/static/carrot_l.png",
+            'buyCost': 8,
+            'sellCost': 2,
+            'harvestYield': 3,
+            'harvestTimeSeconds': 90
+        },
+        'd': {
+            'name': "Leek",
+            'imageSmall': "/static/leek_s.png",
+            'imageMedium': "/static/leek_m.png",
+            'imageLarge': "/static/leek_l.png",
+            'buyCost': 13,
+            'sellCost': 3,
+            'harvestYield': 3,
+            'harvestTimeSeconds': 120
         },
         'e': {
             'name': "Broccoli",
@@ -31,15 +61,15 @@ GAME_CONFIG = {
             'harvestYield': 4,
             'harvestTimeSeconds': 180
         },
-        'b': {
-            'name': "Cauliflower",
-            'imageSmall': "/static/cauliflower_s.png",
-            'imageMedium': "/static/cauliflower_m.png",
-            'imageLarge': "/static/cauliflower_l.png",
-            'buyCost': 5,
-            'sellCost': 1,
-            'harvestYield': 3,
-            'harvestTimeSeconds': 60
+        'j': {
+            'name': "Chili Pepper",
+            'imageSmall': "/static/chilipepper_s.png",
+            'imageMedium': "/static/chilipepper_m.png",
+            'imageLarge': "/static/chilipepper_l.png",
+            'buyCost': 233,
+            'sellCost': 55,
+            'harvestYield': 4,
+            'harvestTimeSeconds': 7200
         },
         'g': {
             'name': "Beet",
@@ -61,16 +91,6 @@ GAME_CONFIG = {
             'harvestYield': 4,
             'harvestTimeSeconds': 1800
         },
-        'a': {
-            'name': "Potato",
-            'imageSmall': "/static/potato_s.png",
-            'imageMedium': "/static/potato_m.png",
-            'imageLarge': "/static/potato_l.png",
-            'buyCost': 3,
-            'sellCost': 1,
-            'harvestYield': 2,
-            'harvestTimeSeconds': 40
-        },
         'm': {
             'name': "Garlic",
             'imageSmall': "/static/garlic_s.png",
@@ -91,16 +111,6 @@ GAME_CONFIG = {
             'harvestYield': 4,
             'harvestTimeSeconds': 900
         },
-        'c': {
-            'name': "Carrot",
-            'imageSmall': "/static/carrot_s.png",
-            'imageMedium': "/static/carrot_m.png",
-            'imageLarge': "/static/carrot_l.png",
-            'buyCost': 8,
-            'sellCost': 2,
-            'harvestYield': 3,
-            'harvestTimeSeconds': 90
-        },
         'l': {
             'name': "Beans",
             'imageSmall': "/static/beans_s.png",
@@ -120,16 +130,6 @@ GAME_CONFIG = {
             'sellCost': 8,
             'harvestYield': 3,
             'harvestTimeSeconds': 300
-        },
-        'd': {
-            'name': "Leek",
-            'imageSmall': "/static/leek_s.png",
-            'imageMedium': "/static/leek_m.png",
-            'imageLarge': "/static/leek_l.png",
-            'buyCost': 13,
-            'sellCost': 3,
-            'harvestYield': 3,
-            'harvestTimeSeconds': 120
         },
         'k': {
             'name': "Tomato",
@@ -184,7 +184,7 @@ def get_leaderboard_data():
 
     with conn:
         with conn.cursor() as cursor:
-            cursor.execute("SELECT slug, game_state->'cash' AS cash FROM game_states ORDER BY 2 DESC LIMIT 10;")
+            cursor.execute("SELECT slug, game_state->'cash' AS cash, game_state->'m' AS m FROM game_states ORDER BY 2 DESC LIMIT 10;")
             return cursor.fetchall()
 
 
@@ -194,7 +194,7 @@ def get_plot(game_state, x, y):
 
 @app.route('/')
 def default():
-    return render_template('defaultPage.html')
+    return render_template('defaultPage.html', leaderboard=get_leaderboard_data())
 
 
 @app.route('/game/')
@@ -217,13 +217,15 @@ def state(slug):
     password = body['password']
     data = load_state(slug)
     if data:
+        if body['newOrLoad'] == "new":
+            return "Username already taken", 403
         if password == data['password']:
             return jsonify(data)
         else:
-            return("Invalid password", 401)
+            return "Invalid password", 401
     else:
         game_state = {
-            'cash': 10,
+            'cash': 100000,
             'slug': slug,
             'password': password,
             'a': 0,

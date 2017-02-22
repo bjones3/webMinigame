@@ -144,21 +144,29 @@ GAME_CONFIG = {
     }
 }
 
+conn = None
 
-urlparse.uses_netloc.append("postgres")
-db_url = os.environ['DATABASE_URL']
-url = urlparse.urlparse(db_url)
-conn = psycopg2.connect(
-    database=url.path[1:],
-    user=url.username,
-    password=url.password,
-    host=url.hostname,
-    port=url.port
-)
+
+def get_conn():
+    global conn
+    if conn is None:
+        urlparse.uses_netloc.append("postgres")
+        db_url = os.environ['DATABASE_URL']
+        url = urlparse.urlparse(db_url)
+        conn = psycopg2.connect(
+            database=url.path[1:],
+            user=url.username,
+            password=url.password,
+            host=url.hostname,
+            port=url.port
+        )
+    return conn
+
 
 def load_state(slug):
-    with conn:
-        with conn.cursor() as cursor:
+    my_conn = get_conn()
+    with my_conn:
+        with my_conn.cursor() as cursor:
             cursor.execute("SELECT game_state FROM game_states WHERE slug = %s;",
                            [slug])
             row = cursor.fetchone()
@@ -166,24 +174,20 @@ def load_state(slug):
                 return None
             return row[0]
 
+
 def save_state(slug, game_state):
+    my_conn = get_conn()
     json_game_state = json.dumps(game_state, indent=4)
-    with conn:
-        with conn.cursor() as cursor:
+    with my_conn:
+        with my_conn.cursor() as cursor:
             cursor.execute("INSERT INTO game_states (slug, game_state) VALUES (%s, %s) ON CONFLICT (slug) DO UPDATE SET game_state=%s;",
                            [slug, json_game_state, json_game_state])
 
             
 def get_leaderboard_data():
-    """ Fetch leaderboard data directly from live game states.
-
-    This is an inefficient way to do it, as we look at every single game to
-    find the top ones every time we want to display the data.  It's good
-    enoughf for now, but will need to be rewritten if we have more than a
-    handful of games """
-
-    with conn:
-        with conn.cursor() as cursor:
+    my_conn = get_conn()
+    with my_conn:
+        with my_conn.cursor() as cursor:
             cursor.execute("SELECT slug, game_state->'cash' AS cash, game_state->'m' AS m FROM game_states ORDER BY 2 DESC LIMIT 10;")
             return cursor.fetchall()
 

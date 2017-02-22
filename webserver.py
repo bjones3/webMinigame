@@ -348,6 +348,10 @@ def harvest():
     # making changes to game_state
     plot = get_plot(game_state, data['x'], data['y'])
     seedType = plot['seedType']
+
+    if GAME_CONFIG['seeds'][seedType]['harvestTimeSeconds'] - int(round(time.time() - data['time'] / 1000)) > 0:
+        raise Exception("no cheats >:(")
+
     game_state[seedType] += GAME_CONFIG['seeds'][seedType]['harvestYield']
     plot['seedType'] = 0
 

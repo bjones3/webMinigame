@@ -188,8 +188,7 @@ var harvest = function(x, y) {
         slug: state.slug,
         x: x,
         y: y,
-        password: localStorage.getItem('pwd_' + state.slug),
-        time: state["plot" + x + y].sowTime
+        password: localStorage.getItem('pwd_' + state.slug)
     }
     sendToServer('/action/harvest', data, callback);
 };

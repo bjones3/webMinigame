@@ -10,21 +10,117 @@ import game_config
 app = Flask(__name__)
 
 GAME_CONFIG = game_config.get_config()
+=======
+GAME_CONFIG = {
+    'startingCash': 10,
+    'seeds': {
+        'a': {
+            'name': "Potato",
+            'imageSmall': "/static/potato_s.png",
+            'imageMedium': "/static/potato_m.png",
+            'imageLarge': "/static/potato_l.png",
+            'buyCost': 3,
+            'sellCost': 1,
+            'harvestYield': 2,
+            'harvestTimeSeconds': 40
+        },
+        'b': {
+            'name': "Cauliflower",
+            'imageSmall': "/static/cauliflower_s.png",
+            'imageMedium': "/static/cauliflower_m.png",
+            'imageLarge': "/static/cauliflower_l.png",
+            'buyCost': 5,
+            'sellCost': 1,
+            'harvestYield': 3,
+            'harvestTimeSeconds': 60
+        },
+        'c': {
+            'name': "Carrot",
+            'imageSmall': "/static/carrot_s.png",
+            'imageMedium': "/static/carrot_m.png",
+            'imageLarge': "/static/carrot_l.png",
+            'buyCost': 8,
+            'sellCost': 2,
+            'harvestYield': 3,
+            'harvestTimeSeconds': 90
+        },
+        'd': {
+            'name': "Leek",
+            'imageSmall': "/static/leek_s.png",
+            'imageMedium': "/static/leek_m.png",
+            'imageLarge': "/static/leek_l.png",
+            'buyCost': 13,
+            'sellCost': 3,
+            'harvestYield': 3,
+            'harvestTimeSeconds': 120
+        },
+        'e': {
+            'name': "Broccoli",
+            'imageSmall': "/static/broccoli_s.png",
+            'imageMedium': "/static/broccoli_m.png",
+            'imageLarge': "/static/broccoli_l.png",
+            'buyCost': 21,
+            'sellCost': 5,
+            'harvestYield': 4,
+            'harvestTimeSeconds': 180
+        },
+        'j': {
+            'name': "Chili Pepper",
+            'imageSmall': "/static/chilipepper_s.png",
+            'imageMedium': "/static/chilipepper_m.png",
+            'imageLarge': "/static/chilipepper_l.png",
+            'buyCost': 233,
+            'sellCost': 55,
+            'harvestYield': 4,
+            'harvestTimeSeconds': 7200
+        },
+        'g': {
+            'name': "Beet",
+            'imageSmall': "/static/beet_s.png",
+            'imageMedium': "/static/beet_m.png",
+            'imageLarge': "/static/beet_l.png",
+            'buyCost': 55,
+            'sellCost': 13,
+            'harvestYield': 4,
+            'harvestTimeSeconds': 450
+        },
+        'i': {
+            'name': "Eggplant",
+            'imageSmall': "/static/eggplant_s.png",
+            'imageMedium': "/static/eggplant_m.png",
+            'imageLarge': "/static/eggplant_l.png",
+            'buyCost': 144,
+            'sellCost': 34,
+            'harvestYield': 4,
+            'harvestTimeSeconds': 1800
+        },
+        'm': {
+            'name': "Garlic",
 
-urlparse.uses_netloc.append("postgres")
-db_url = os.environ['DATABASE_URL']
-url = urlparse.urlparse(db_url)
-conn = psycopg2.connect(
-    database=url.path[1:],
-    user=url.username,
-    password=url.password,
-    host=url.hostname,
-    port=url.port
-)
+          
+conn = None
+
+
+def get_conn():
+    global conn
+    if conn is None:
+        urlparse.uses_netloc.append("postgres")
+        db_url = os.environ['DATABASE_URL']
+        url = urlparse.urlparse(db_url)
+        conn = psycopg2.connect(
+            database=url.path[1:],
+            user=url.username,
+            password=url.password,
+            host=url.hostname,
+            port=url.port
+        )
+    return conn
+
 
 def load_state(slug):
-    with conn:
-        with conn.cursor() as cursor:
+    my_conn = get_conn()
+    with my_conn:
+        with my_conn.cursor() as cursor:
             cursor.execute("SELECT game_state FROM game_states WHERE slug = %s;",
                            [slug])
             row = cursor.fetchone()
@@ -32,13 +128,22 @@ def load_state(slug):
                 return None
             return row[0]
 
+
 def save_state(slug, game_state):
+    my_conn = get_conn()
     json_game_state = json.dumps(game_state, indent=4)
-    with conn:
-        with conn.cursor() as cursor:
+    with my_conn:
+        with my_conn.cursor() as cursor:
             cursor.execute("INSERT INTO game_states (slug, game_state) VALUES (%s, %s) ON CONFLICT (slug) DO UPDATE SET game_state=%s;",
                            [slug, json_game_state, json_game_state])
 
+            
+def get_leaderboard_data():
+    my_conn = get_conn()
+    with my_conn:
+        with my_conn.cursor() as cursor:
+            cursor.execute("SELECT slug, game_state->'cash' AS cash, game_state->'m' AS m FROM game_states ORDER BY 2 DESC LIMIT 10;")
+            return cursor.fetchall()
 
 
 def get_plot(game_state, x, y):
@@ -47,7 +152,7 @@ def get_plot(game_state, x, y):
 
 @app.route('/')
 def default():
-    return render_template('defaultPage.html')
+    return render_template('defaultPage.html', leaderboard=get_leaderboard_data())
 
 
 @app.route('/game/')
@@ -70,10 +175,12 @@ def state(slug):
     password = body['password']
     data = load_state(slug)
     if data:
+        if body['newOrLoad'] == "new":
+            return "Username already taken", 403
         if password == data['password']:
             return jsonify(data)
         else:
-            return("Invalid password", 401)
+            return "Invalid password", 401
     else:
         game_state = {
             'cash': GAME_CONFIG['starting_cash'],
@@ -195,6 +302,11 @@ def harvest():
     # making changes to game_state
     plot = get_plot(game_state, data['x'], data['y'])
     seedType = plot['seedType']
+
+    growing_time = int(round(time.time() -  plot['sowTime'] / 1000))
+    if GAME_CONFIG['seeds'][seedType]['harvestTimeSeconds'] > growing_time:
+        raise Exception("no cheats >:(")
+
     game_state[seedType] += GAME_CONFIG['seeds'][seedType]['harvestYield']
     plot['seedType'] = 0
 

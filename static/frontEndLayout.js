@@ -2,27 +2,11 @@ var GAME_CONFIG = null;
 
 var state = null;
 
-var getFromServer = function(endpoint, callback) {
-    var handleResponse = function(event) {
-	    var xhr = event.target;
-        if (xhr.readyState == 4) {
-           if (xhr.status == 200) {
-			    callback(JSON.parse(xhr.responseText));
-           } else if (xhr.status == 400) {
-                alert('Action not allowed.');
-           }
-        }
-    };
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = handleResponse;
-    xhr.open('GET', endpoint, true);
-    xhr.send();
-};
-
 var loadGameState = function() {
     slug = localStorage.getItem('slug')
     var data = {
-        password: localStorage.getItem('pwd_' + slug)
+        password: localStorage.getItem('pwd_' + slug),
+        newOrLoad: "load"
     };
     var gameStateLoaded = function(gameState) {
         state = gameState;
@@ -204,7 +188,7 @@ var harvest = function(x, y) {
         slug: state.slug,
         x: x,
         y: y,
-        password: localStorage.getItem('pwd_' + slug)
+        password: localStorage.getItem('pwd_' + state.slug)
     }
     sendToServer('/action/harvest', data, callback);
 };
@@ -232,6 +216,8 @@ var tick = function() {
                     if (hours   < 10) {hours   = "0" + hours;}
                     if (minutes < 10) {minutes = "0" + minutes;}
                     if (seconds < 10) {seconds = "0" + seconds;}
+
+                    if (hours   <= 0) {return minutes + ':' + seconds;}
                     return hours + ':' + minutes + ':' + seconds;
                 }
                 var clockDisplay = toHHMMSS(countdown);

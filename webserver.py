@@ -141,7 +141,9 @@ GAME_CONFIG = {
             'harvestYield': 3,
             'harvestTimeSeconds': 28800
         }
-    }
+    },
+    'plotPrice': 50,
+    'plotMultiplier': 3
 }
 
 conn = None
@@ -232,6 +234,7 @@ def state(slug):
             'cash': 10,
             'slug': slug,
             'password': password,
+            'unlockCount': 0,
             'a': 0,
             'b': 0,
             'c': 0,
@@ -248,7 +251,10 @@ def state(slug):
         }
         for i in range(3):
             for j in range(3):
-                game_state[("plot" + str(i) + str(j))] = {'seedType': 0, 'sowTime': 0}
+                game_state[("plot" + str(i) + str(j))] = {'seedType': 0, 'sowTime': 0, 'locked': 1}
+        for i in range(2):
+            for j in range(2):
+                game_state[("plot" + str(i) + str(j))]['locked'] = 0
 
         save_state(slug, game_state)
         if password == game_state['password']:
@@ -361,6 +367,31 @@ def harvest():
 
     return jsonify(game_state)
 
+
+@app.route('/action/unlock', methods = ['GET', 'POST'])
+def unlock():
+    # requesting unlock action data from script (x, y)
+    data = request.json
+
+    # loading game_state
+    game_state = load_state(data['slug'])
+
+    # safety check
+    if data['password'] != game_state['password']:
+        raise Exception("Invalid password")
+    if game_state['cash'] < GAME_CONFIG['plotPrice'] * GAME_CONFIG['plotMultiplier'] ** game_state['unlockCount']:
+        raise Exception("Not enough cash.")
+
+    # making changes to game_state
+    plot = get_plot(game_state, data['x'], data['y'])
+    plot['locked'] = 0
+    game_state['cash'] -= GAME_CONFIG['plotPrice'] * GAME_CONFIG['plotMultiplier'] ** game_state['unlockCount']
+    game_state['unlockCount'] += 1
+
+    # saving new game_state
+    save_state(data['slug'], game_state)
+
+    return jsonify(game_state)
 
 @app.route('/styles.css')
 def styles():

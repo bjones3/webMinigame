@@ -30,7 +30,7 @@ var reset = function() {
     };
     for (var i = 0; i <= 2; i++) {
         for (var j = 0; j <= 2; j++) {
-            if(state["plot" + i + j].seedType != 0) {
+            if (state["plot" + i + j].seedType != 0 && state["plot" + i + j].locked == 0) {
                 for (var seed in GAME_CONFIG.seeds) {
                     idDisplay("sow" + seed + i + j, "none");
                 }
@@ -39,14 +39,18 @@ var reset = function() {
                 growingImage.style.backgroundImage = "url(" + GAME_CONFIG.seeds[state["plot" + i + j].seedType].imageLarge + ")";
                 idDisplay("soil" + i + j, "none");
                 idDisplay("progressBar" + i + j, "block");
+                idDisplay("lock" + i + j, "none");
             } else {
                 for (var seed in GAME_CONFIG.seeds) {
-                    if (state[seed] > 0) {
+                    if (state[seed] > 0 && state["plot" + i + j].locked == 0) {
                         idDisplay("sow" + seed + i + j, "block");
                     }
                 }
                 idDisplay("growing" + i + j, "none");
-                idDisplay("soil" + i + j, "block");
+                if (state["plot" + i + j].locked == 0) {
+                    idDisplay("soil" + i + j, "block");
+                    idDisplay("lock" + i + j, "none");
+                }
                 idDisplay("progressBar" + i + j, "none");
             }
         }
@@ -79,7 +83,7 @@ var buy = function(seed) {
         document.getElementById("cash").innerHTML = "CASH: $" + state.cash;
         for (var i = 0; i <= 2; i++) {
             for (var j = 0; j <= 2; j++) {
-                if(state["plot" + i + j].seedType == 0) {
+                if(state["plot" + i + j].seedType == 0 && state["plot" + i + j].locked == 0) {
                     document.getElementById("sow" + seed + i + j).style.display = "block"
                 }
             };
@@ -171,7 +175,7 @@ var harvest = function(x, y) {
         };
         for (var i = 0; i <= 2; i++) {
             for (var j = 0; j <= 2; j++) {
-                if(state["plot" + i + j].seedType == 0 && state[seed] > 0) {
+                if(state["plot" + i + j].seedType == 0 && state[seed] > 0 && state["plot" + i + j].locked == 0) {
                     document.getElementById("sow" + seed + i + j).style.display = "block"
                 }
             };
@@ -191,6 +195,39 @@ var harvest = function(x, y) {
         password: localStorage.getItem('pwd_' + state.slug)
     }
     sendToServer('/action/harvest', data, callback);
+};
+
+var unlock = function(x, y) {
+    var callback = function(newState) {
+        state = newState;
+        state["plot" + x + y].locked = 0;
+        document.getElementById("cash").innerHTML = "CASH: $" + state.cash;
+        document.getElementById("lock" + x + y).style.display = "none";
+        document.getElementById("soil" + x + y).style.display = "block";
+        for (var s in GAME_CONFIG.seeds) {
+            if (state[s] > 0) {
+                document.getElementById("sow" + s + x + y).style.display = "block";
+            }
+        }
+    };
+    var data = {
+        slug: state.slug,
+        x: x,
+        y: y,
+        password: localStorage.getItem('pwd_' + state.slug)
+    }
+    sendToServer('/action/unlock', data, callback);
+};
+
+var buyPlot = function() {
+    for (var i = 0; i <= 2; i++) {
+        for (var j = 0; j <= 2; j++) {
+            if (state["plot" + i + j].locked == 1) {
+                unlock(i, j);
+                return;
+            }
+        }
+    }
 };
 
 var tick = function() {

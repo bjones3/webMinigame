@@ -10,92 +10,6 @@ import game_config
 app = Flask(__name__)
 
 GAME_CONFIG = game_config.get_config()
-=======
-GAME_CONFIG = {
-    'startingCash': 10,
-    'seeds': {
-        'a': {
-            'name': "Potato",
-            'imageSmall': "/static/potato_s.png",
-            'imageMedium': "/static/potato_m.png",
-            'imageLarge': "/static/potato_l.png",
-            'buyCost': 3,
-            'sellCost': 1,
-            'harvestYield': 2,
-            'harvestTimeSeconds': 40
-        },
-        'b': {
-            'name': "Cauliflower",
-            'imageSmall': "/static/cauliflower_s.png",
-            'imageMedium': "/static/cauliflower_m.png",
-            'imageLarge': "/static/cauliflower_l.png",
-            'buyCost': 5,
-            'sellCost': 1,
-            'harvestYield': 3,
-            'harvestTimeSeconds': 60
-        },
-        'c': {
-            'name': "Carrot",
-            'imageSmall': "/static/carrot_s.png",
-            'imageMedium': "/static/carrot_m.png",
-            'imageLarge': "/static/carrot_l.png",
-            'buyCost': 8,
-            'sellCost': 2,
-            'harvestYield': 3,
-            'harvestTimeSeconds': 90
-        },
-        'd': {
-            'name': "Leek",
-            'imageSmall': "/static/leek_s.png",
-            'imageMedium': "/static/leek_m.png",
-            'imageLarge': "/static/leek_l.png",
-            'buyCost': 13,
-            'sellCost': 3,
-            'harvestYield': 3,
-            'harvestTimeSeconds': 120
-        },
-        'e': {
-            'name': "Broccoli",
-            'imageSmall': "/static/broccoli_s.png",
-            'imageMedium': "/static/broccoli_m.png",
-            'imageLarge': "/static/broccoli_l.png",
-            'buyCost': 21,
-            'sellCost': 5,
-            'harvestYield': 4,
-            'harvestTimeSeconds': 180
-        },
-        'j': {
-            'name': "Chili Pepper",
-            'imageSmall': "/static/chilipepper_s.png",
-            'imageMedium': "/static/chilipepper_m.png",
-            'imageLarge': "/static/chilipepper_l.png",
-            'buyCost': 233,
-            'sellCost': 55,
-            'harvestYield': 4,
-            'harvestTimeSeconds': 7200
-        },
-        'g': {
-            'name': "Beet",
-            'imageSmall': "/static/beet_s.png",
-            'imageMedium': "/static/beet_m.png",
-            'imageLarge': "/static/beet_l.png",
-            'buyCost': 55,
-            'sellCost': 13,
-            'harvestYield': 4,
-            'harvestTimeSeconds': 450
-        },
-        'i': {
-            'name': "Eggplant",
-            'imageSmall': "/static/eggplant_s.png",
-            'imageMedium': "/static/eggplant_m.png",
-            'imageLarge': "/static/eggplant_l.png",
-            'buyCost': 144,
-            'sellCost': 34,
-            'harvestYield': 4,
-            'harvestTimeSeconds': 1800
-        },
-        'm': {
-            'name': "Garlic",
 
           
 conn = None
@@ -186,6 +100,7 @@ def state(slug):
             'cash': GAME_CONFIG['starting_cash'],
             'slug': slug,
             'password': password,
+            'unlockCount': 0,
             'a': 0,
             'b': 0,
             'c': 0,
@@ -202,7 +117,10 @@ def state(slug):
         }
         for i in range(3):
             for j in range(3):
-                game_state[("plot" + str(i) + str(j))] = {'seedType': 0, 'sowTime': 0}
+                game_state[("plot" + str(i) + str(j))] = {'seedType': 0, 'sowTime': 0, 'locked': 1}
+        for i in range(2):
+            for j in range(2):
+                game_state[("plot" + str(i) + str(j))]['locked'] = 0
 
         save_state(slug, game_state)
         if password == game_state['password']:
@@ -315,6 +233,31 @@ def harvest():
 
     return jsonify(game_state)
 
+
+@app.route('/action/unlock', methods = ['GET', 'POST'])
+def unlock():
+    # requesting unlock action data from script (x, y)
+    data = request.json
+
+    # loading game_state
+    game_state = load_state(data['slug'])
+
+    # safety check
+    if data['password'] != game_state['password']:
+        raise Exception("Invalid password")
+    if game_state['cash'] < GAME_CONFIG['plotPrice'] * GAME_CONFIG['plotMultiplier'] ** game_state['unlockCount']:
+        raise Exception("Not enough cash.")
+
+    # making changes to game_state
+    plot = get_plot(game_state, data['x'], data['y'])
+    plot['locked'] = 0
+    game_state['cash'] -= GAME_CONFIG['plotPrice'] * GAME_CONFIG['plotMultiplier'] ** game_state['unlockCount']
+    game_state['unlockCount'] += 1
+
+    # saving new game_state
+    save_state(data['slug'], game_state)
+
+    return jsonify(game_state)
 
 @app.route('/styles.css')
 def styles():

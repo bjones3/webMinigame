@@ -9,5 +9,5 @@ class TestConfig(unittest.TestCase):
         for seed in webserver.GAME_CONFIG['seeds']:
             for data in seed_data:
                 self.assertTrue(data in webserver.GAME_CONFIG['seeds'][seed])
-        self.assertTrue('startingCash' in webserver.GAME_CONFIG)
+        self.assertTrue('starting_cash' in webserver.GAME_CONFIG)
         self.assertTrue('seeds' in webserver.GAME_CONFIG)

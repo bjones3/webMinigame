@@ -5,147 +5,13 @@ import json, os, re, time
 import psycopg2
 import urlparse
 
+import game_config
 
 app = Flask(__name__)
 
-GAME_CONFIG = {
-    'startingCash': 10,
-    'seeds': {
-        'a': {
-            'name': "Potato",
-            'imageSmall': "/static/potato_s.png",
-            'imageMedium': "/static/potato_m.png",
-            'imageLarge': "/static/potato_l.png",
-            'buyCost': 3,
-            'sellCost': 1,
-            'harvestYield': 2,
-            'harvestTimeSeconds': 40
-        },
-        'b': {
-            'name': "Cauliflower",
-            'imageSmall': "/static/cauliflower_s.png",
-            'imageMedium': "/static/cauliflower_m.png",
-            'imageLarge': "/static/cauliflower_l.png",
-            'buyCost': 5,
-            'sellCost': 1,
-            'harvestYield': 3,
-            'harvestTimeSeconds': 60
-        },
-        'c': {
-            'name': "Carrot",
-            'imageSmall': "/static/carrot_s.png",
-            'imageMedium': "/static/carrot_m.png",
-            'imageLarge': "/static/carrot_l.png",
-            'buyCost': 8,
-            'sellCost': 2,
-            'harvestYield': 3,
-            'harvestTimeSeconds': 90
-        },
-        'd': {
-            'name': "Leek",
-            'imageSmall': "/static/leek_s.png",
-            'imageMedium': "/static/leek_m.png",
-            'imageLarge': "/static/leek_l.png",
-            'buyCost': 13,
-            'sellCost': 3,
-            'harvestYield': 3,
-            'harvestTimeSeconds': 120
-        },
-        'e': {
-            'name': "Broccoli",
-            'imageSmall': "/static/broccoli_s.png",
-            'imageMedium': "/static/broccoli_m.png",
-            'imageLarge': "/static/broccoli_l.png",
-            'buyCost': 21,
-            'sellCost': 5,
-            'harvestYield': 4,
-            'harvestTimeSeconds': 180
-        },
-        'j': {
-            'name': "Chili Pepper",
-            'imageSmall': "/static/chilipepper_s.png",
-            'imageMedium': "/static/chilipepper_m.png",
-            'imageLarge': "/static/chilipepper_l.png",
-            'buyCost': 233,
-            'sellCost': 55,
-            'harvestYield': 4,
-            'harvestTimeSeconds': 7200
-        },
-        'g': {
-            'name': "Beet",
-            'imageSmall': "/static/beet_s.png",
-            'imageMedium': "/static/beet_m.png",
-            'imageLarge': "/static/beet_l.png",
-            'buyCost': 55,
-            'sellCost': 13,
-            'harvestYield': 4,
-            'harvestTimeSeconds': 450
-        },
-        'i': {
-            'name': "Eggplant",
-            'imageSmall': "/static/eggplant_s.png",
-            'imageMedium': "/static/eggplant_m.png",
-            'imageLarge': "/static/eggplant_l.png",
-            'buyCost': 144,
-            'sellCost': 34,
-            'harvestYield': 4,
-            'harvestTimeSeconds': 1800
-        },
-        'm': {
-            'name': "Garlic",
-            'imageSmall': "/static/garlic_s.png",
-            'imageMedium': "/static/garlic_m.png",
-            'imageLarge': "/static/garlic_l.png",
-            'buyCost': 987,
-            'sellCost': 233,
-            'harvestYield': 0,
-            'harvestTimeSeconds': 259200
-        },
-        'h': {
-            'name': "Bell Pepper",
-            'imageSmall': "/static/bellpepper_s.png",
-            'imageMedium': "/static/bellpepper_m.png",
-            'imageLarge': "/static/bellpepper_l.png",
-            'buyCost': 89,
-            'sellCost': 21,
-            'harvestYield': 4,
-            'harvestTimeSeconds': 900
-        },
-        'l': {
-            'name': "Beans",
-            'imageSmall': "/static/beans_s.png",
-            'imageMedium': "/static/beans_m.png",
-            'imageLarge': "/static/beans_l.png",
-            'buyCost': 610,
-            'sellCost': 144,
-            'harvestYield': 1,
-            'harvestTimeSeconds': 86400
-        },
-        'f': {
-            'name': "Turnip",
-            'imageSmall': "/static/turnip_s.png",
-            'imageMedium': "/static/turnip_m.png",
-            'imageLarge': "/static/turnip_l.png",
-            'buyCost': 34,
-            'sellCost': 8,
-            'harvestYield': 3,
-            'harvestTimeSeconds': 300
-        },
-        'k': {
-            'name': "Tomato",
-            'imageSmall': "/static/tomato_s.png",
-            'imageMedium': "/static/tomato_m.png",
-            'imageLarge': "/static/tomato_l.png",
-            'buyCost': 377,
-            'sellCost': 89,
-            'harvestYield': 3,
-            'harvestTimeSeconds': 28800
-        }
-    },
-    'plotPrice': 50,
-    'plotMultiplier': 3
-}
+GAME_CONFIG = game_config.get_config()
 
+          
 conn = None
 
 
@@ -231,7 +97,7 @@ def state(slug):
             return "Invalid password", 401
     else:
         game_state = {
-            'cash': 10,
+            'cash': GAME_CONFIG['starting_cash'],
             'slug': slug,
             'password': password,
             'unlockCount': 0,

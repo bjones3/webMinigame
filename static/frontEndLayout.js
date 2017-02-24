@@ -3,7 +3,7 @@ var GAME_CONFIG = null;
 var state = null;
 
 var loadGameState = function() {
-    slug = localStorage.getItem('slug')
+    slug = localStorage.getItem('slug');
     var data = {
         password: localStorage.getItem('pwd_' + slug),
         newOrLoad: "load"
@@ -11,47 +11,57 @@ var loadGameState = function() {
     var gameStateLoaded = function(gameState) {
         state = gameState;
         reset();
-    }
+    };
     sendToServer("/game-state/" + window.location.hash.substring(1), data, gameStateLoaded);
-}
+};
 
 var loadGameConfig = function() {
     var gameConfigLoaded = function(gameConfig) {
         GAME_CONFIG = gameConfig;
         loadGameState();
-    }
+    };
     getFromServer("/game-config", gameConfigLoaded);
+};
+
+var setElementDisplay = function(name, i, j, display) {
+    var id = name + i + ',' + j;
+    var element = document.getElementById(id);
+    element.style.display = display;
+    return element;
 }
 
+var hideElement = function(name, i, j) {
+    return setElementDisplay(name, i, j, "none");
+};
+
+var showElement = function(name, i, j) {
+    return setElementDisplay(name, i, j, "block");
+};
+
 var reset = function() {
-    idDisplay = function(idName, displayType) {
-        var x = document.getElementById(idName);
-        x.style.display = (displayType);
-    };
     for (var i = 0; i < GAME_CONFIG.field_width; i++) {
         for (var j = 0; j < GAME_CONFIG.field_height; j++) {
             if (state["plot" + i + "," + j].seedType != 0 && state["plot" + i + "," + j].locked == 0) {
                 for (var seed in GAME_CONFIG.seeds) {
-                    idDisplay("sow" + seed + i + "," + j, "none");
+                    hideElement("sow" + seed);
                 }
-                var growingImage = document.getElementById("growing" + i + "," + j);
-                growingImage.style.display = "block";
+                var growingImage = showElement("growing", i, j);
                 growingImage.style.backgroundImage = "url(" + GAME_CONFIG.seeds[state["plot" + i + "," + j].seedType].imageLarge + ")";
-                idDisplay("soil" + i + "," + j, "none");
-                idDisplay("progressBar" + i + "," + j, "block");
-                idDisplay("lock" + i + "," + j, "none");
+                hideElement("soil", i, j);
+                showElement("progressBar", i, j);
+                hideElement("lock", i, j);
             } else {
                 for (var seed in GAME_CONFIG.seeds) {
                     if (state[seed] > 0 && state["plot" + i + "," + j].locked == 0) {
-                        idDisplay("sow" + seed + i + "," + j, "block");
+                        showElement("sow" + seed, i, j);
                     }
                 }
-                idDisplay("growing" + i + "," + j, "none");
+                hideElement("growing", i, j);
                 if (state["plot" + i + "," + j].locked == 0) {
-                    idDisplay("soil" + i + "," + j, "block");
-                    idDisplay("lock" + i + "," + j, "none");
+                    showElement("soil", i, j);
+                    hideElement("lock", i, j);
                 }
-                idDisplay("progressBar" + i + "," + j, "none");
+                hideElement("progressBar", i, j);
             }
         }
     }
@@ -85,7 +95,7 @@ var buy = function(seed) {
         for (var i = 0; i < GAME_CONFIG.field_width; i++) {
             for (var j = 0; j < GAME_CONFIG.field_height; j++) {
                 if(state["plot" + i + "," + j].seedType == 0 && state["plot" + i + "," + j].locked == 0) {
-                    document.getElementById("sow" + seed + i + "," + j).style.display = "block"
+                    showElement("sow" + seed, i, j);
                 }
             };
         };
@@ -110,7 +120,7 @@ var sell = function(seed) {
         for (var i = 0; i < GAME_CONFIG.field_width; i++) {
             for (var j = 0; j < GAME_CONFIG.field_height; j++) {
                 if(state[seed] == 0) {
-                    document.getElementById("sow" + seed + i + "," + j).style.display = "none"
+                    hideElement("sow" + seed, i, j);
                 }
             };
         };
@@ -139,19 +149,16 @@ var sow = function(x, y, seed) {
         if (state[seed] == 0) {
             for (var i = 0; i < GAME_CONFIG.field_width; i++) {
                 for (var j = 0; j < GAME_CONFIG.field_height; j++) {
-                    document.getElementById("sow" + seed + i + "," + j).style.display = "none";
+                    hideElement("sow" + seed, i, j);
                 }
             }
         }
-        var growingImage = document.getElementById("growing" + x + "," + y);
-        growingImage.style.display = "block";
+        var growingImage = showElement("growing", x, y);
         growingImage.style.backgroundImage = "url(" + GAME_CONFIG.seeds[seed].imageLarge + ")";
-        var soil = document.getElementById("soil" + x + "," + y);
-        soil.style.display = "none";
+        hideElement("soil", x, y);
 
         tick();
-        var progressBar = document.getElementById("progressBar" + x + "," + y);
-        progressBar.style.display = "block";
+        showElement("progressBar", x, y);
 
     };
     var data = {
@@ -171,30 +178,27 @@ var harvest = function(x, y) {
         document.getElementById("owned" + seed).innerHTML = state[seed];
         for (var s in GAME_CONFIG.seeds) {
             if (state[s] > 0) {
-                document.getElementById("sow" + s + x + "," + y).style.display = "block";
+                showElement("sow" + s, x, y);
             }
         };
         for (var i = 0; i < GAME_CONFIG.field_width; i++) {
             for (var j = 0; j < GAME_CONFIG.field_height; j++) {
                 if(state["plot" + i + "," + j].seedType == 0 && state[seed] > 0 && state["plot" + i + "," + j].locked == 0) {
-                    document.getElementById("sow" + seed + i + "," + j).style.display = "block"
+                    showElement("sow" + seed, i , j);
                 }
             };
         };
-        var growingImage = document.getElementById("growing" + x + "," + y);
-        growingImage.style.display = "none";
+        var growingImage = hideElement("growing", x, y);
         growingImage.style.backgroundImage = "url(" + GAME_CONFIG.seeds[seed].imageLarge + ")";
-        var soil = document.getElementById("soil" + x + "," + y);
-        soil.style.display = "block";
-        var button = document.getElementById("button" + x + "," + y);
-        button.style.display = "none";
+        showElement("soil", x, y);
+        hideElement("button", x, y);
     };
     var data = {
         slug: state.slug,
         x: x,
         y: y,
         password: localStorage.getItem('pwd_' + state.slug)
-    }
+    };
     sendToServer('/action/harvest', data, callback);
 };
 
@@ -208,11 +212,11 @@ var unlock = function(x, y) {
         state["plot" + x + "," + y].locked = 0;
         document.getElementById("cash").innerHTML = "CASH: $" + state.cash;
         document.getElementById("buyPlot").innerHTML = "Buy Plot - $" + GAME_CONFIG['plotPrice'] * Math.pow(GAME_CONFIG['plotMultiplier'],state.unlockCount);
-        document.getElementById("lock" + x + "," + y).style.display = "none";
-        document.getElementById("soil" + x + "," + y).style.display = "block";
+        hideElement("lock", x, y);
+        showElement("soil", x, y);
         for (var s in GAME_CONFIG.seeds) {
             if (state[s] > 0) {
-                document.getElementById("sow" + s + x + "," + y).style.display = "block";
+                showElement("sow" + s, x, y);
             }
         }
     };
@@ -221,7 +225,7 @@ var unlock = function(x, y) {
         x: x,
         y: y,
         password: localStorage.getItem('pwd_' + state.slug)
-    }
+    };
     sendToServer('/action/unlock', data, callback);
 };
 
@@ -262,12 +266,12 @@ var tick = function() {
 
                     if (hours   <= 0) {return minutes + ':' + seconds;}
                     return hours + ':' + minutes + ':' + seconds;
-                }
+                };
                 var clockDisplay = toHHMMSS(countdown);
                 document.getElementById("time" + i + "," + j).innerHTML = clockDisplay;
                 if (countdown <= 0) {
-                    document.getElementById("progressBar" + i + "," + j).style.display = "none";
-                    document.getElementById("button" + i + "," + j).style.display = "block";
+                    hideElement("progressBar", i, j);
+                    showElement("button", i, j);
                 }
             };
         };

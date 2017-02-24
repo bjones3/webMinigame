@@ -10,7 +10,6 @@ import game_config
 app = Flask(__name__)
 
 GAME_CONFIG = game_config.get_config()
-
           
 conn = None
 
@@ -61,7 +60,7 @@ def get_leaderboard_data():
 
 
 def get_plot(game_state, x, y):
-    return game_state["plot" + str(x) + str(y)]
+    return game_state["plot" + str(x) + "," + str(y)]
 
 
 @app.route('/')
@@ -71,7 +70,8 @@ def default():
 
 @app.route('/game/')
 def game():
-    return render_template('frontEndLayout.html', seeds = GAME_CONFIG['seeds'])
+    return render_template('frontEndLayout.html', seeds = GAME_CONFIG['seeds'], field_width = GAME_CONFIG['field_width'],
+                           field_height = GAME_CONFIG['field_height'])
 
 
 @app.route('/game-config')
@@ -115,12 +115,12 @@ def state(slug):
             'l': 0,
             'm': 0
         }
-        for i in range(3):
-            for j in range(3):
-                game_state[("plot" + str(i) + str(j))] = {'seedType': 0, 'sowTime': 0, 'locked': 1}
+        for i in range(GAME_CONFIG['field_width']):
+            for j in range(GAME_CONFIG['field_height']):
+                game_state[("plot" + str(i) + "," + str(j))] = {'seedType': 0, 'sowTime': 0, 'locked': 1}
         for i in range(2):
             for j in range(2):
-                game_state[("plot" + str(i) + str(j))]['locked'] = 0
+                game_state[("plot" + str(i) + "," + str(j))]['locked'] = 0
 
         save_state(slug, game_state)
         if password == game_state['password']:

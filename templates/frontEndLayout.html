@@ -7,31 +7,33 @@
 </head>
 <body>
 
+<div style="width:625px; height:625px; overflow:scroll; float:left;">
 <table>
-{% for i in range(3) %}
+{% for i in range(field_width) %}
     <tr>
-    {% for j in range(3) %}
+    {% for j in range(field_height) %}
         <td>
-            <div id = "plot{{ i }}{{ j }}" class = "plotBox">
+            <div id = "plot{{ i }},{{ j }}" class = "plotBox">
                 {% for seed_letter, seed_data in seeds|dictsort %}
-                    <div id = "sow{{seed_letter}}{{ i }}{{ j }}" class = "sowPlantButton" style = "background-image: url({{seed_data['imageMedium']}});" onclick = "sow({{ i }}, {{ j }}, '{{seed_letter}}')"></div>
+                    <div id = "sow{{seed_letter}}{{ i }},{{ j }}" class = "sowPlantButton" style = "background-image: url({{seed_data['imageMedium']}});" onclick = "sow({{ i }}, {{ j }}, '{{seed_letter}}')"></div>
                 {% endfor %}
-                <div id = "growing{{ i }}{{ j }}" class = "invisPlantContainer"></div>
-                <img id = "soil{{ i }}{{ j }}" src = "/static/soil.png" class = "soil">
-                <img id = "lock{{ i }}{{ j }}" src = "/static/lock.png" class = "lock">
-                <div id = "progressBar{{ i }}{{ j }}" class = "progressBar">
-                    <div id = "filler{{ i }}{{ j }}" class = "filler"></div>
-                    <div id = "time{{ i }}{{ j }}" class = "time"></div>
+                <div id = "growing{{ i }},{{ j }}" class = "invisPlantContainer"></div>
+                <img id = "soil{{ i }},{{ j }}" src = "/static/soil.png" class = "soil">
+                <img id = "lock{{ i }},{{ j }}" src = "/static/lock.png" class = "lock">
+                <div id = "progressBar{{ i }},{{ j }}" class = "progressBar">
+                    <div id = "filler{{ i }},{{ j }}" class = "filler"></div>
+                    <div id = "time{{ i }},{{ j }}" class = "time"></div>
                 </div>
-                <button id = "button{{ i }}{{ j }}" class="button" onclick = "harvest({{ i }}, {{ j }})">Harvest</button>
+                <button id = "button{{ i }},{{ j }}" class="button" onclick = "harvest({{ i }}, {{ j }})">Harvest</button>
             </div>
         </td>
     {% endfor %}
     </tr>
 {% endfor %}
 </table>
+</div>
 
-<table id = "seedCosts">
+<table id = "seedCosts" style = "text-align: center;">
     <tr>
         <td>
         </td>
@@ -74,7 +76,7 @@
 <div class="dropdown">
     <button class="dropbtn">Shop</button>
     <div class="dropdown-content">
-        <button onclick = "buyPlot()">Buy Plot</button>
+        <button id="buyPlot" onclick = "buyPlot()">Buy Plot</button>
         <button>...</button>
         <button>...</button>
     </div>

@@ -3,9 +3,10 @@ import csv
 def get_config():
     config = {}
     config['starting_cash'] = 10
-    config['field_size'] = (3, 3)
-    config['plotPrice'] = 50
+    config['plotPrice'] = 20
     config['plotMultiplier'] = 3
+    config['field_height'] = 15
+    config['field_width'] = 15
 
     config['seeds'] = {}
     with open('seed_data.csv') as csvfile:

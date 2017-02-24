@@ -43,7 +43,7 @@ var reset = function() {
         for (var j = 0; j < GAME_CONFIG.field_height; j++) {
             if (state["plot" + i + "," + j].seedType != 0 && state["plot" + i + "," + j].locked == 0) {
                 for (var seed in GAME_CONFIG.seeds) {
-                    hideElement("sow" + seed);
+                    hideElement("sow" + seed, i, j);
                 }
                 var growingImage = showElement("growing", i, j);
                 growingImage.style.backgroundImage = "url(" + GAME_CONFIG.seeds[state["plot" + i + "," + j].seedType].imageLarge + ")";

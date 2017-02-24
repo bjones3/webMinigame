@@ -2,12 +2,54 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Garden Sim 2K17</title>
-<link rel="stylesheet" href="/static/styles.css">
+    <title>Garden Sim 2K17: experimental</title>
+<link rel="stylesheet" href="/static/game.css">
 </head>
 <body>
 
-<div style="width:625px; height:625px; overflow:scroll; float:left;">
+<div class="menuPanel">
+    <table id = "seedCosts" style = "text-align: center;">
+        <tr>
+            {% for heading in ('', 'Seed', 'Sell', 'Owned', 'Buy') %}
+            <td>
+                {{ heading }}
+            </td>
+            {% endfor %}
+        </tr>
+        {% for seed_letter, seed_data in seeds|dictsort %}
+            <tr>
+                <td>
+                    <img src = "{{seed_data['imageSmall']}}" style = "height: 20px;">
+                </td>
+                <td>
+                    <div style = "text-align: left;">{{seed_data['name']}}</div>
+                </td>
+                <td>
+                    <div id = "sell{{seed_letter}}" class = "border" onclick = "sell('{{seed_letter}}')"></div>
+                </td>
+                <td>
+                    <div id = "owned{{seed_letter}}"></div>
+                </td>
+                <td>
+                    <div id = "buy{{seed_letter}}" class = "border" onclick = "buy('{{seed_letter}}')"></div>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <div id = "cash"></div>
+
+    <div class="dropdown">
+        <button class="dropbtn">Shop</button>
+        <div class="dropdown-content">
+            <button id="buyPlot" onclick = "buyPlot()">Buy Plot</button>
+            <button>...</button>
+            <button>...</button>
+        </div>
+    </div>
+</div>
+
+<div class="gamePanel">
 <table>
 {% for i in range(field_width) %}
     <tr>
@@ -19,7 +61,7 @@
                 {% endfor %}
                 <div id = "growing{{ i }},{{ j }}" class = "invisPlantContainer"></div>
                 <img id = "soil{{ i }},{{ j }}" src = "/static/soil.png" class = "soil">
-                <img id = "lock{{ i }},{{ j }}" src = "/static/lock.png" class = "lock">
+                <img id = "lock{{ i }},{{ j }}" src = "/static/lock.png" class = "lock" onclick="unlock({{ i }}, {{ j }});">
                 <div id = "progressBar{{ i }},{{ j }}" class = "progressBar">
                     <div id = "filler{{ i }},{{ j }}" class = "filler"></div>
                     <div id = "time{{ i }},{{ j }}" class = "time"></div>
@@ -33,54 +75,8 @@
 </table>
 </div>
 
-<table id = "seedCosts" style = "text-align: center;">
-    <tr>
-        <td>
-        </td>
-        <td>
-            <div>Seed</div>
-        </td>
-        <td>
-            <div>Sell</div>
-        </td>
-        <td>
-            <div>Owned</div>
-        </td>
-        <td>
-            <div>Buy</div>
-        </td>
-    </tr>
-    {% for seed_letter, seed_data in seeds|dictsort %}
-        <tr>
-            <td>
-                <img src = "{{seed_data['imageSmall']}}" style = "height: 20px;">
-            </td>
-            <td>
-                <div style = "text-align: left;">{{seed_data['name']}}</div>
-            </td>
-            <td>
-                <div id = "sell{{seed_letter}}" class = "border" onclick = "sell('{{seed_letter}}')"></div>
-            </td>
-            <td>
-                <div id = "owned{{seed_letter}}"></div>
-            </td>
-            <td>
-                <div id = "buy{{seed_letter}}" class = "border" onclick = "buy('{{seed_letter}}')"></div>
-            </td>
-        </tr>
-    {% endfor %}
-</table>
 
-<div id = "cash"></div>
 
-<div class="dropdown">
-    <button class="dropbtn">Shop</button>
-    <div class="dropdown-content">
-        <button id="buyPlot" onclick = "buyPlot()">Buy Plot</button>
-        <button>...</button>
-        <button>...</button>
-    </div>
-</div>
 
 <script type = "text/javascript" src = "/static/server.js"></script>
 <script type = "text/javascript" src = "/static/frontEndLayout.js"></script>

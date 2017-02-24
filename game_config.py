@@ -1,6 +1,8 @@
 import csv
+import math
 
-def get_config():
+
+def get_config(debug_mode=False):
     config = {}
     config['starting_cash'] = 10
     config['plotPrice'] = 20
@@ -15,7 +17,10 @@ def get_config():
             seed['buyCost'] = int(seed['buyCost'])
             seed['sellCost'] = int(seed['sellCost'])
             seed['harvestYield'] = int(seed['harvestYield'])
-            seed['harvestTimeSeconds'] = int(seed['harvestTimeSeconds'])
+            if debug_mode:
+                seed['harvestTimeSeconds'] = math.ceil(int(seed['harvestTimeSeconds']) / 10.0)
+            else:
+                seed['harvestTimeSeconds'] = int(seed['harvestTimeSeconds'])
             seed_id = seed.pop('id')
             config['seeds'][seed_id] = seed
     return config

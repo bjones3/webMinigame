@@ -9,7 +9,12 @@ import game_config
 
 app = Flask(__name__)
 
-GAME_CONFIG = game_config.get_config()
+if os.environ.get('DEBUG_MODE') == '1':
+    DEBUG_MODE = True
+else:
+    DEBUG_MODE = False
+
+GAME_CONFIG = game_config.get_config(DEBUG_MODE)
           
 conn = None
 
@@ -265,8 +270,4 @@ def styles():
     return render_template('styles.css');
 
 if __name__ == "__main__":
-    if os.environ.get('DEBUG_MODE') == '1':
-        debug = True
-    else:
-        debug = False
-    app.run(debug=debug, port=int(os.environ['PORT']), host='0.0.0.0')
+    app.run(debug=DEBUG_MODE, port=int(os.environ['PORT']), host='0.0.0.0')

@@ -1,3 +1,20 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+}
+
+div.menuPanel {
+    width: 380px;
+    float: right;
+}
+
+div.gamePanel {
+    margin-right: 390px;
+    overflow: scroll;
+    height: 100%;
+}
+
 div.plotBox {
     position: relative;
     width: 185px;

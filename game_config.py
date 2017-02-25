@@ -3,14 +3,20 @@ import math
 
 
 def get_config(debug_mode=False):
-    config = {}
-    config['starting_cash'] = 10
-    config['plotPrice'] = 20
-    config['plotMultiplier'] = 3
-    config['field_height'] = 15
-    config['field_width'] = 15
+    config = {
+        'plotPrice': 20,
+        'plotMultiplier': 3 ,
+        'field_height': 15,
+        'field_width': 15,
+        'starting_resources': {
+            'cash': 10
+        },
+        'seeds': {}
+    }
+    
+    if debug_mode:
+        config['starting_resources']['cash'] *= 100
 
-    config['seeds'] = {}
     with open('seed_data.csv') as csvfile:
         reader = csv.DictReader(csvfile)
         for seed in reader:

@@ -2,7 +2,31 @@ var GAME_CONFIG = null;
 
 var state = null;
 
-var server = new Server(console.log, console.log);
+var hideFlash = function() {
+  var element = document.getElementById('flash');
+  flash.classList.remove('in');
+  flash.classList.add('out');
+
+};
+
+var showFlash = function(message) {
+  var element = document.getElementById('flash');
+  element.innerHTML = message;
+  flash.classList.remove('out');
+  flash.classList.add('in');
+  setTimeout(hideFlash, 1500);
+};
+
+var logElement = function(msg) {
+    var div = document.createElement("DIV");
+    var txt = document.createTextNode(msg);
+    div.appendChild(txt);
+    var container = document.getElementById("notificationPanel");
+    container.appendChild(div);
+    container.scrollTop = div.offsetTop;
+};
+
+var server = new Server(showFlash, logElement);
 
 var loadGameState = function() {
     slug = localStorage.getItem('slug');
@@ -286,27 +310,3 @@ var tick = function() {
 };
 
 setInterval(tick, 100);
-
-var hideFlash = function() {
-  var element = document.getElementById('flash');
-  flash.classList.remove('in');
-  flash.classList.add('out');
-
-};
-
-var showFlash = function(message) {
-  var element = document.getElementById('flash');
-  element.innerHTML = message;
-  flash.classList.remove('out');
-  flash.classList.add('in');
-  setTimeout(hideFlash, 1500);
-};
-
-function logElement(msg) {
-    var div = document.createElement("DIV");
-    var txt = document.createTextNode(msg);
-    div.appendChild(txt);
-    var container = document.getElementById("notificationPanel");
-    container.appendChild(div);
-    container.scrollTop = div.offsetTop;
-}

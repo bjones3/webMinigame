@@ -1,39 +1,47 @@
-var sendToServer = function(endpoint, data, callback) {
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-        if (this.readyState == 4) {
-            if (this.status == 200) {
-			    callback(JSON.parse(this.responseText));
-            } else if (this.status == 400) {
-                console.log(this.responseText);
-                alert('Action not allowed.');
-            } else if (this.status == 401) {
-                console.log(this.responseText);
-                alert('Invalid Password.');
-                window.location.href = '/';
-            } else if (this.status == 403) {
-                console.log(this.responseText);
-                alert('Username already taken.');
-                window.location.href = '/';
+
+var Server = function(alertCallback, infoCallback) {
+    this.sendToServer = function(endpoint, data, callback) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4) {
+                if (this.status == 200) {
+                    response = JSON.parse(this.responseText);
+                    if (response.message) {
+                        infoCallback(response.message);
+                    }
+                    if (response.state) {
+                        callback(response.state);
+                    }
+                } else if (this.status == 400) {
+                    alertCallback(this.responseText);
+                } else if (this.status == 401) {
+                    alertCallback(this.responseText);
+                    setTimeout(function () {
+                        window.location.href = '/';
+                    }, 2500);
+                } else if (this.status == 403) {
+                    alertCallback(this.responseText);
+                }
             }
-        }
+        };
+        xhttp.open('POST', endpoint, true);
+        xhttp.setRequestHeader('Content-type', 'application/json');
+        xhttp.send(JSON.stringify(data));
     };
-    xhttp.open('POST', endpoint, true);
-    xhttp.setRequestHeader('Content-type', 'application/json');
-    xhttp.send(JSON.stringify(data));
+
+    this.getFromServer = function(endpoint, callback) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4) {
+               if (this.status == 200) {
+                    callback(JSON.parse(this.responseText));
+               } else if (this.status == 400) {
+                    alertCallback('Action not allowed.');
+               }
+            }
+        };
+        xhttp.open('GET', endpoint, true);
+        xhttp.send();
+    };
 };
 
-var getFromServer = function(endpoint, callback) {
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-        if (this.readyState == 4) {
-           if (this.status == 200) {
-			    callback(JSON.parse(this.responseText));
-           } else if (this.status == 400) {
-                alert('Action not allowed.');
-           }
-        }
-    };
-    xhttp.open('GET', endpoint, true);
-    xhttp.send();
-};

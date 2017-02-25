@@ -2,6 +2,8 @@ var GAME_CONFIG = null;
 
 var state = null;
 
+var server = new Server(console.log, console.log);
+
 var loadGameState = function() {
     slug = localStorage.getItem('slug');
     var data = {
@@ -12,7 +14,7 @@ var loadGameState = function() {
         state = gameState;
         reset();
     };
-    sendToServer("/game-state/" + window.location.hash.substring(1), data, gameStateLoaded);
+    server.sendToServer("/game-state/" + window.location.hash.substring(1), data, gameStateLoaded);
 };
 
 var loadGameConfig = function() {
@@ -20,7 +22,7 @@ var loadGameConfig = function() {
         GAME_CONFIG = gameConfig;
         loadGameState();
     };
-    getFromServer("/game-config", gameConfigLoaded);
+    server.getFromServer("/game-config", gameConfigLoaded);
 };
 
 var setElementDisplay = function(name, i, j, display) {
@@ -28,7 +30,7 @@ var setElementDisplay = function(name, i, j, display) {
     var element = document.getElementById(id);
     element.style.display = display;
     return element;
-}
+};
 
 var hideElement = function(name, i, j) {
     return setElementDisplay(name, i, j, "none");
@@ -105,7 +107,7 @@ var buy = function(seed) {
         seed: seed,
         password: localStorage.getItem('pwd_' + state.slug)
     };
-    sendToServer('/action/buy', data, callback);
+    server.sendToServer('/action/buy', data, callback);
 };
 
 var sell = function(seed) {
@@ -130,7 +132,7 @@ var sell = function(seed) {
         seed: seed,
         password: localStorage.getItem('pwd_' + state.slug)
     };
-    sendToServer('/action/sell', data, callback);
+    server.sendToServer('/action/sell', data, callback);
 };
 
 var sow = function(x, y, seed) {
@@ -168,7 +170,7 @@ var sow = function(x, y, seed) {
         y: y,
         password: localStorage.getItem('pwd_' + state.slug)
     }
-    sendToServer('/action/sow', data, callback);
+    server.sendToServer('/action/sow', data, callback);
 };
 
 var harvest = function(x, y) {
@@ -199,7 +201,7 @@ var harvest = function(x, y) {
         y: y,
         password: localStorage.getItem('pwd_' + state.slug)
     };
-    sendToServer('/action/harvest', data, callback);
+    server.sendToServer('/action/harvest', data, callback);
 };
 
 var unlock = function(x, y) {
@@ -226,7 +228,7 @@ var unlock = function(x, y) {
         y: y,
         password: localStorage.getItem('pwd_' + state.slug)
     };
-    sendToServer('/action/unlock', data, callback);
+    server.sendToServer('/action/unlock', data, callback);
 };
 
 var buyPlot = function() {

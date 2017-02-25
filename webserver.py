@@ -44,7 +44,8 @@ def load_state(slug):
             row = cursor.fetchone()
             if not row:
                 return None
-            return row[0]
+            game_state = row[0]
+            return initialize_state(game_state)
 
 
 def initialize_state(game_state):
@@ -62,6 +63,7 @@ def initialize_state(game_state):
     for i in range(2):
         for j in range(2):
             game_state[("plot" + str(i) + "," + str(j))]['locked'] = 0
+    return game_state
 
 
 def save_state(slug, game_state):
@@ -83,6 +85,15 @@ def get_leaderboard_data():
 
 def get_plot(game_state, x, y):
     return game_state["plot" + str(x) + "," + str(y)]
+
+
+def make_response(state, message=None):
+    response = {
+        'state': state
+    }
+    if message is not None:
+        response['message'] = message
+    return jsonify(response)
 
 
 @app.route('/')
@@ -114,8 +125,7 @@ def state(slug):
         if body['newOrLoad'] == "new":
             return "Username already taken", 403
         if password == data['password']:
-            initialize_state(data)
-            return jsonify(data)
+            return make_response(data)
         else:
             return "Invalid password", 401
     else:
@@ -127,12 +137,9 @@ def state(slug):
             'seedCounts': {}
         }
 
-        initialize_state(game_state)
+        game_state = initialize_state(game_state)
         save_state(slug, game_state)
-        if password == game_state['password']:
-            return jsonify(game_state)
-        else:
-            raise Exception("Invalid password")
+        return make_response(game_state)
 
 
 @app.route('/action/buy', methods = ['GET', 'POST'])
@@ -144,11 +151,12 @@ def buy():
     game_state = load_state(buy_data['slug'])
 
     if buy_data['password'] != game_state['password']:
-        raise Exception("Invalid password")
+        return "Invalid password", 401
 
     # safety check
     if game_state['resources']['cash'] < GAME_CONFIG['seeds'][buy_data['seed']]['buyCost']:
-        raise Exception("Not enough cash.")
+        message = "Not enough cash to buy a %s seed." % GAME_CONFIG['seeds'][buy_data['seed']]['name']
+        return make_response(game_state, message)
 
     # making changes to game_state
     game_state['seedCounts'][buy_data['seed']] += 1
@@ -157,7 +165,8 @@ def buy():
     # saving new game_state
     save_state(buy_data['slug'], game_state)
 
-    return jsonify(game_state)
+    message = "Bought a %s seed." % GAME_CONFIG['seeds'][buy_data['seed']]['name']
+    return make_response(game_state, message)
 
 
 @app.route('/action/sell', methods = ['GET', 'POST'])
@@ -169,11 +178,12 @@ def sell():
     game_state = load_state(data['slug'])
 
     if data['password'] != game_state['password']:
-        raise Exception("Invalid password")
+        return "Invalid password", 401
 
     # safety check
     if game_state['seedCounts'][data['seed']] <= 0:
-        raise Exception("No " + GAME_CONFIG['seeds'][data['seed']]['name'] + " seeds to sell.")
+        message = "No " + GAME_CONFIG['seeds'][data['seed']]['name'] + " seeds to sell."
+        return make_response(game_state, message)
 
     # making changes to game_state
     game_state['seedCounts'][data['seed']] -= 1
@@ -182,7 +192,8 @@ def sell():
     # saving new game_state
     save_state(data['slug'], game_state)
 
-    return jsonify(game_state)
+    message = "Sold a %s seed." % GAME_CONFIG['seeds'][data['seed']]['name']
+    return make_response(game_state, message)
 
 
 @app.route('/action/sow', methods = ['GET', 'POST'])
@@ -194,11 +205,12 @@ def sow():
     game_state = load_state(data['slug'])
 
     if data['password'] != game_state['password']:
-        raise Exception("Invalid password")
+        return "Invalid password", 401
 
     # safety check
     if game_state['seedCounts'][data['seed']] <= 0:
-        raise Exception("No " + GAME_CONFIG['seeds'][data['seed']]['name'] + " seeds to plant.")
+        message = "No " + GAME_CONFIG['seeds'][data['seed']]['name'] + " seeds to plant."
+        return make_response(game_state, message)
 
     # making changes to game_state
     game_state['seedCounts'][data['seed']] -= 1
@@ -209,7 +221,8 @@ def sow():
     # saving new game_state
     save_state(data['slug'], game_state)
 
-    return jsonify(game_state)
+    message = "Planted a %s seed." % (GAME_CONFIG['seeds'][data['seed']]['name'])
+    return make_response(game_state, message)
 
 
 @app.route('/action/harvest', methods = ['GET', 'POST'])
@@ -221,23 +234,27 @@ def harvest():
     game_state = load_state(data['slug'])
 
     if data['password'] != game_state['password']:
-        raise Exception("Invalid password")
+        return "Invalid password", 401
 
     # making changes to game_state
     plot = get_plot(game_state, data['x'], data['y'])
     seedType = plot['seedType']
 
     growing_time = int(round(time.time() -  plot['sowTime'] / 1000))
-    if GAME_CONFIG['seeds'][seedType]['harvestTimeSeconds'] > growing_time:
-        raise Exception("no cheats >:(")
+    seed_data = GAME_CONFIG['seeds'].get(seedType)
+    if seed_data is None:
+        return "Failed to harvest plot.", 403
+    if seed_data['harvestTimeSeconds'] > growing_time:
+        return make_response(game_state, "no cheats >:(")
 
-    game_state['seedCounts'][seedType] += GAME_CONFIG['seeds'][seedType]['harvestYield']
+    game_state['seedCounts'][seedType] += seed_data['harvestYield']
     plot['seedType'] = 0
 
     # saving new game_state
     save_state(data['slug'], game_state)
 
-    return jsonify(game_state)
+    message = "Harvested a %s." % GAME_CONFIG['seeds'][seedType]['name']
+    return make_response(game_state, message)
 
 
 @app.route('/action/unlock', methods = ['GET', 'POST'])
@@ -250,24 +267,28 @@ def unlock():
 
     # safety check
     if data['password'] != game_state['password']:
-        raise Exception("Invalid password")
-    if game_state['resources']['cash'] < GAME_CONFIG['plotPrice'] * GAME_CONFIG['plotMultiplier'] ** game_state['unlockCount']:
-        raise Exception("Not enough cash.")
+        return "Invalid password", 401
+    plot_price = GAME_CONFIG['plotPrice'] * GAME_CONFIG['plotMultiplier'] ** game_state['unlockCount']
+    if game_state['resources']['cash'] < plot_price:
+        return make_response(game_state, "Not enough cash to unlock plot.")
 
     # making changes to game_state
     plot = get_plot(game_state, data['x'], data['y'])
     plot['locked'] = 0
-    game_state['resources']['cash'] -= GAME_CONFIG['plotPrice'] * GAME_CONFIG['plotMultiplier'] ** game_state['unlockCount']
+    game_state['resources']['cash'] -= plot_price
     game_state['unlockCount'] += 1
 
     # saving new game_state
     save_state(data['slug'], game_state)
 
-    return jsonify(game_state)
+    message = "Unlocked plot for $%s." % plot_price
+    return make_response(game_state, message)
+
 
 @app.route('/styles.css')
 def styles():
-    return render_template('styles.css');
+    return render_template('styles.css')
+
 
 if __name__ == "__main__":
     app.run(debug=DEBUG_MODE, port=int(os.environ['PORT']), host='0.0.0.0')

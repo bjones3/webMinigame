@@ -1,14 +1,17 @@
 import csv
 
-def get_config():
-    config = {}
-    config['starting_cash'] = 10
-    config['plotPrice'] = 20
-    config['plotMultiplier'] = 3
-    config['field_height'] = 15
-    config['field_width'] = 15
 
-    config['seeds'] = {}
+def get_config():
+    config = {
+        'plotPrice': 20,
+        'plotMultiplier': 3 ,
+        'field_height': 5,
+        'field_width': 5,
+        'starting_resources': {
+            'cash': 10},
+        'seeds': {}
+    }
+
     with open('seed_data.csv') as csvfile:
         reader = csv.DictReader(csvfile)
         for seed in reader:

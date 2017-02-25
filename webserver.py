@@ -42,6 +42,23 @@ def load_state(slug):
             return row[0]
 
 
+def initialize_state(game_state):
+    for seed_id in GAME_CONFIG['seeds']:
+        if game_state['seedCounts'].get(seed_id) is None:
+            game_state['seedCounts'][seed_id] = 0
+    for resource in GAME_CONFIG['starting_resources']:
+        if game_state['resources'].get(resource) is None:
+            game_state['resources'][resource] = GAME_CONFIG['starting_resources'][resource]
+
+    for i in range(GAME_CONFIG['field_width']):
+        for j in range(GAME_CONFIG['field_height']):
+            if game_state.get("plot" + str(i) + "," + str(j)) is None:
+                game_state["plot" + str(i) + "," + str(j)] = {'seedType': 0, 'sowTime': 0, 'locked': 1}
+    for i in range(2):
+        for j in range(2):
+            game_state[("plot" + str(i) + "," + str(j))]['locked'] = 0
+
+
 def save_state(slug, game_state):
     my_conn = get_conn()
     json_game_state = json.dumps(game_state, indent=4)
@@ -92,36 +109,20 @@ def state(slug):
         if body['newOrLoad'] == "new":
             return "Username already taken", 403
         if password == data['password']:
+            initialize_state(data)
             return jsonify(data)
         else:
             return "Invalid password", 401
     else:
         game_state = {
-            'cash': GAME_CONFIG['starting_cash'],
+            'resources': {},
             'slug': slug,
             'password': password,
             'unlockCount': 0,
-            'a': 0,
-            'b': 0,
-            'c': 0,
-            'd': 0,
-            'e': 0,
-            'f': 0,
-            'g': 0,
-            'h': 0,
-            'i': 0,
-            'j': 0,
-            'k': 0,
-            'l': 0,
-            'm': 0
+            'seedCounts': {}
         }
-        for i in range(GAME_CONFIG['field_width']):
-            for j in range(GAME_CONFIG['field_height']):
-                game_state[("plot" + str(i) + "," + str(j))] = {'seedType': 0, 'sowTime': 0, 'locked': 1}
-        for i in range(2):
-            for j in range(2):
-                game_state[("plot" + str(i) + "," + str(j))]['locked'] = 0
 
+        initialize_state(game_state)
         save_state(slug, game_state)
         if password == game_state['password']:
             return jsonify(game_state)
@@ -141,12 +142,12 @@ def buy():
         raise Exception("Invalid password")
 
     # safety check
-    if game_state['cash'] < GAME_CONFIG['seeds'][buy_data['seed']]['buyCost']:
+    if game_state['resources']['cash'] < GAME_CONFIG['seeds'][buy_data['seed']]['buyCost']:
         raise Exception("Not enough cash.")
 
     # making changes to game_state
-    game_state[buy_data['seed']] += 1
-    game_state['cash'] -= GAME_CONFIG['seeds'][buy_data['seed']]['buyCost']
+    game_state['seedCounts'][buy_data['seed']] += 1
+    game_state['resources']['cash'] -= GAME_CONFIG['seeds'][buy_data['seed']]['buyCost']
 
     # saving new game_state
     save_state(buy_data['slug'], game_state)
@@ -166,12 +167,12 @@ def sell():
         raise Exception("Invalid password")
 
     # safety check
-    if game_state[data['seed']] <= 0:
+    if game_state['seedCounts'][data['seed']] <= 0:
         raise Exception("No " + GAME_CONFIG['seeds'][data['seed']]['name'] + " seeds to sell.")
 
     # making changes to game_state
-    game_state[data['seed']] -= 1
-    game_state['cash'] += GAME_CONFIG['seeds'][data['seed']]['sellCost']
+    game_state['seedCounts'][data['seed']] -= 1
+    game_state['resources']['cash'] += GAME_CONFIG['seeds'][data['seed']]['sellCost']
 
     # saving new game_state
     save_state(data['slug'], game_state)
@@ -191,11 +192,11 @@ def sow():
         raise Exception("Invalid password")
 
     # safety check
-    if game_state[data['seed']] <= 0:
+    if game_state['seedCounts'][data['seed']] <= 0:
         raise Exception("No " + GAME_CONFIG['seeds'][data['seed']]['name'] + " seeds to plant.")
 
     # making changes to game_state
-    game_state[data['seed']] -= 1
+    game_state['seedCounts'][data['seed']] -= 1
     plot = get_plot(game_state, data['x'], data['y'])
     plot['seedType'] = data['seed']
     plot['sowTime'] = int(round(time.time() * 1000))
@@ -225,7 +226,7 @@ def harvest():
     if GAME_CONFIG['seeds'][seedType]['harvestTimeSeconds'] > growing_time:
         raise Exception("no cheats >:(")
 
-    game_state[seedType] += GAME_CONFIG['seeds'][seedType]['harvestYield']
+    game_state['seedCounts'][seedType] += GAME_CONFIG['seeds'][seedType]['harvestYield']
     plot['seedType'] = 0
 
     # saving new game_state
@@ -245,13 +246,13 @@ def unlock():
     # safety check
     if data['password'] != game_state['password']:
         raise Exception("Invalid password")
-    if game_state['cash'] < GAME_CONFIG['plotPrice'] * GAME_CONFIG['plotMultiplier'] ** game_state['unlockCount']:
+    if game_state['resources']['cash'] < GAME_CONFIG['plotPrice'] * GAME_CONFIG['plotMultiplier'] ** game_state['unlockCount']:
         raise Exception("Not enough cash.")
 
     # making changes to game_state
     plot = get_plot(game_state, data['x'], data['y'])
     plot['locked'] = 0
-    game_state['cash'] -= GAME_CONFIG['plotPrice'] * GAME_CONFIG['plotMultiplier'] ** game_state['unlockCount']
+    game_state['resources']['cash'] -= GAME_CONFIG['plotPrice'] * GAME_CONFIG['plotMultiplier'] ** game_state['unlockCount']
     game_state['unlockCount'] += 1
 
     # saving new game_state

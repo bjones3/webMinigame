@@ -81,6 +81,17 @@ def get_leaderboard_data():
             return cursor.fetchall()
 
 
+def get_admin_data():
+    data = {}
+    my_conn = get_conn()
+    with my_conn:
+        with my_conn.cursor() as cursor:
+            cursor.execute("SELECT COUNT(*) FROM game_states;")
+            result = cursor.fetchone()
+            data['game_count'] = result[0]
+    return data
+
+
 def get_plot(game_state, x, y):
     return game_state["plot" + str(x) + "," + str(y)]
 
@@ -94,6 +105,18 @@ def default():
 def game():
     return render_template('frontEndLayout.html', seeds = GAME_CONFIG['seeds'], field_width = GAME_CONFIG['field_width'],
                            field_height = GAME_CONFIG['field_height'])
+
+
+@app.route('/admin/', methods=['GET'])
+def admin_get():
+    return render_template('admin_login.html')
+
+
+@app.route('/admin/', methods=['POST'])
+def admin_post():
+    if request.form['password'] != 'puppies':  #woefully insecure!!!
+        return "Wrong password", 401
+    return render_template('admin.html', data=get_admin_data())
 
 
 @app.route('/game-config')

@@ -107,7 +107,7 @@ div#cash {
 .dropdown {
     position: fixed;
     right: 0;
-    top: 10%;
+    top: 62%;
     display: inline-block;
     float: right;
 }
@@ -143,4 +143,52 @@ div#cash {
 
 .dropdown:hover .dropdown-content {
     display: block;
+}
+
+div.flash {
+  position: absolute;
+  width: 40%;
+  left: 30%;
+  background-color: #3080F0;
+  color: white;
+  font-family: sans-serif;
+  font-size: 12pt;
+  padding: 6px;
+  border-radius: 12px;
+  border-style: inset inset inset inset;
+  border-color: blue;
+  border-width: 4px;
+  text-align: center;
+  vertical-align: bottom;
+  maxHeight: 200px;
+}
+
+div.flash.in {
+  -webkit-transition: 1s;
+  -moz-transition: 1s;
+  -ms-transition: 1s;
+  -o-transition: 1s;
+  transition: 1s;
+  top: 50px !important;
+}
+
+div.flash.out {
+  -webkit-transition: 2s;
+  -moz-transition: 2s;
+  -ms-transition: 2s;
+  -o-transition: 2s;
+  transition: 2s;
+  top: -250px !important;
+}
+
+div#notificationPanel {
+    position: fixed;
+    bottom: 0px;
+    left: 2%;
+    width: 20%;
+    max-height: 10%;
+    border: 3px solid black;
+    border-bottom: none;
+    background: white;
+    overflow: scroll;
 }

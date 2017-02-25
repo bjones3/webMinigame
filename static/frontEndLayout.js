@@ -85,11 +85,12 @@ document.onreadystatechange = function() {
 
 var buy = function(seed) {
     if (state.resources.cash < GAME_CONFIG.seeds[seed].buyCost) {
-        window.alert("Not enough cash.");
+        showFlash("Not enough cash.");
         return;
     };
     var callback = function(newState) {
         state = newState;
+        logElement("Bought 1 " + GAME_CONFIG.seeds[seed].name + " seed.")
         document.getElementById("owned" + seed).innerHTML = state.seedCounts[seed];
         document.getElementById("cash").innerHTML = "CASH: $" + state.resources.cash;
         for (var i = 0; i < GAME_CONFIG.field_width; i++) {
@@ -110,11 +111,12 @@ var buy = function(seed) {
 
 var sell = function(seed) {
     if (state.seedCounts[seed] <= 0) {
-        window.alert("No " + GAME_CONFIG.seeds[seed].name + " seeds to sell.");
+        showFlash("No " + GAME_CONFIG.seeds[seed].name + " seeds to sell.");
         return;
     };
     var callback = function(newState) {
         state = newState;
+        logElement("Sold 1 " + GAME_CONFIG.seeds[seed].name + " seed.")
         document.getElementById("owned" + seed).innerHTML = state.seedCounts[seed];
         document.getElementById("cash").innerHTML = "CASH: $" + state.resources.cash;
         for (var i = 0; i < GAME_CONFIG.field_width; i++) {
@@ -135,11 +137,12 @@ var sell = function(seed) {
 
 var sow = function(x, y, seed) {
     if (state.seedCounts[seed] <= 0) {
-        window.alert("No " + GAME_CONFIG.seeds[seed].name + " seeds to plant.");
+        showFlash("No " + GAME_CONFIG.seeds[seed].name + " seeds to plant.");
         return;
     };
     var callback = function(newState) {
         state = newState;
+        logElement("Planted 1 " + GAME_CONFIG.seeds[seed].name + " seed.")
         document.getElementById("owned" + seed).innerHTML = state.seedCounts[seed];
         var plotBox = document.getElementById("plot" + x + "," + y);
         var sowButtons = plotBox.getElementsByClassName("sowPlantButton");
@@ -175,6 +178,7 @@ var harvest = function(x, y) {
     var callback = function(newState) {
         var seed = state["plot" + x + "," + y].seedType;
         state = newState;
+        logElement("Harvested 1 " + GAME_CONFIG.seeds[seed].name + " seed.")
         document.getElementById("owned" + seed).innerHTML = state.seedCounts[seed];
         for (var s in GAME_CONFIG.seeds) {
             if (state.seedCounts[s] > 0) {
@@ -204,11 +208,12 @@ var harvest = function(x, y) {
 
 var unlock = function(x, y) {
     if (state.resources.cash < GAME_CONFIG.plotPrice * Math.pow(GAME_CONFIG.plotMultiplier,state.unlockCount)) {
-            window.alert("Not enough cash.");
+            showFlash("Not enough cash.");
             return;
     }
     var callback = function(newState) {
         state = newState;
+        logElement("Unlocked a new plot!")
         state["plot" + x + "," + y].locked = 0;
         document.getElementById("cash").innerHTML = "CASH: $" + state.resources.cash;
         document.getElementById("buyPlot").innerHTML = "Buy Plot - $" + GAME_CONFIG['plotPrice'] * Math.pow(GAME_CONFIG['plotMultiplier'],state.unlockCount);
@@ -279,3 +284,27 @@ var tick = function() {
 };
 
 setInterval(tick, 100);
+
+var hideFlash = function() {
+  var element = document.getElementById('flash');
+  flash.classList.remove('in');
+  flash.classList.add('out');
+
+};
+
+var showFlash = function(message) {
+  var element = document.getElementById('flash');
+  element.innerHTML = message;
+  flash.classList.remove('out');
+  flash.classList.add('in');
+  setTimeout(hideFlash, 1500);
+};
+
+function logElement(msg) {
+    var div = document.createElement("DIV");
+    var txt = document.createTextNode(msg);
+    div.appendChild(txt);
+    var container = document.getElementById("notificationPanel");
+    container.appendChild(div);
+    container.scrollTop = div.offsetTop;
+}

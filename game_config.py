@@ -22,7 +22,8 @@ def get_config(debug_mode=False):
         for seed in reader:
             seed['buyCost'] = int(seed['buyCost'])
             seed['sellCost'] = int(seed['sellCost'])
-            seed['harvestYield'] = int(seed['harvestYield'])
+            seed['seedYield'] = int(seed['seedYield'])
+            seed['cashYield'] = int(seed['cashYield'])
             if debug_mode:
                 seed['harvestTimeSeconds'] = math.ceil(int(seed['harvestTimeSeconds']) / 10.0)
             else:

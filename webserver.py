@@ -282,7 +282,8 @@ def harvest():
     if seed_data['harvestTimeSeconds'] > growing_time:
         return make_response(game_state, "no cheats >:(")
 
-    game_state['seedCounts'][seedType] += seed_data['harvestYield']
+    game_state['seedCounts'][seedType] += seed_data['seedYield']
+    game_state['resources']['cash'] += seed_data['cashYield']
     plot['seedType'] = 0
 
     # saving new game_state

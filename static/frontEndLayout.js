@@ -206,6 +206,7 @@ var harvest = function(x, y) {
         state = newState;
         logElement("Harvested 1 " + GAME_CONFIG.seeds[seed].name + " seed.")
         document.getElementById("owned" + seed).innerHTML = state.seedCounts[seed];
+        document.getElementById("cash").innerHTML = "CASH: $" + state.resources.cash;
         for (var s in GAME_CONFIG.seeds) {
             if (state.seedCounts[s] > 0) {
                 showElement("sow" + s, x, y);

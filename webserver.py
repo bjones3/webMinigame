@@ -63,6 +63,17 @@ def initialize_state(game_state):
     for i in range(2):
         for j in range(2):
             game_state[("plot" + str(i) + "," + str(j))]['locked'] = 0
+
+    total_seed_count = 0
+    total_crops_planted = 0
+    for seed in GAME_CONFIG['seeds']:
+            total_seed_count += game_state['seedCounts'][seed]
+    for i in range(GAME_CONFIG['field_width']):
+        for j in range(GAME_CONFIG['field_height']):
+            if game_state["plot" + str(i) + "," + str(j)]['seedType'] != 0:
+               total_crops_planted += 1
+    if total_seed_count == 0 and total_crops_planted == 0 and game_state['resources']['cash'] < GAME_CONFIG['starting_resources'][resource]:
+        game_state['resources']['cash'] = GAME_CONFIG['starting_resources']['cash']
     return game_state
 
 
@@ -211,6 +222,7 @@ def sell():
     # making changes to game_state
     game_state['seedCounts'][data['seed']] -= 1
     game_state['resources']['cash'] += GAME_CONFIG['seeds'][data['seed']]['sellCost']
+    initialize_state(game_state)
 
     # saving new game_state
     save_state(data['slug'], game_state)
@@ -300,6 +312,7 @@ def unlock():
     plot['locked'] = 0
     game_state['resources']['cash'] -= plot_price
     game_state['unlockCount'] += 1
+    initialize_state(game_state)
 
     # saving new game_state
     save_state(data['slug'], game_state)

@@ -15,6 +15,7 @@ var startGame = function() {
     }
     localStorage.setItem('pwd_' + slug, gamePassword);
     localStorage.setItem('slug', slug);
+    localStorage.setItem('newOrLoad', newOrLoad)
     var callback = function(pass) {
         window.location.href = '/game/#' + slug;
     };

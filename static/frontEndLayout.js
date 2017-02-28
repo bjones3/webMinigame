@@ -6,9 +6,7 @@ var hideFlash = function() {
   var element = document.getElementById('flash');
   flash.classList.remove('in');
   flash.classList.add('out');
-
 };
-
 var showFlash = function(message) {
   var element = document.getElementById('flash');
   element.innerHTML = message;
@@ -16,6 +14,66 @@ var showFlash = function(message) {
   flash.classList.add('in');
   setTimeout(hideFlash, 1500);
 };
+
+var setElementDisplay = function(name, i, j, display) {
+    var id = name + i + ',' + j;
+    var element = document.getElementById(id);
+    element.style.display = display;
+    return element;
+};
+var hideElement = function(name, i, j) {
+    return setElementDisplay(name, i, j, "none");
+};
+var showElement = function(name, i, j) {
+    return setElementDisplay(name, i, j, "block");
+};
+
+var toolTip = function(msg, id) {
+    var span = document.createElement("SPAN");
+    span.classList.add("tooltiptext");
+    var txt = document.createTextNode(msg);
+    span.appendChild(txt);
+    var container = document.getElementById(id);
+    container.classList.add("tooltip");
+    container.appendChild(span);
+};
+var buyBtn = document.getElementById("buya");
+var sowBtn = document.getElementsByClassName("sowPlantButton");
+var gettingStarted = function() {
+    toolTip("Buy a potato seed", "buya");
+    buyBtn.style.animationName = 'borderChange';
+    buyBtn.style.animationDuration = '2s';
+    buyBtn.style.animationIterationCount = 'infinite';
+    buyBtn.addEventListener('click', afterBuy);
+}
+var afterBuy = function() {
+    var t = document.getElementsByClassName("tooltiptext");
+    for(var i = 0; i < t.length; i++) {
+        t[i].style.display = "none";
+    }
+    toolTip("Plant seed", "sowa0,0");
+    buyBtn.style.animationIterationCount = '0';
+    for (var i = 0; i < sowBtn.length; i++) {
+        sowBtn[i].style.animationName = 'borderChange';
+        sowBtn[i].style.animationDuration = '2s';
+        sowBtn[i].style.animationIterationCount = 'infinite';
+        sowBtn[i].addEventListener('click', afterSow);
+    }
+}
+var afterSow = function() {
+    var t = document.getElementsByClassName("tooltiptext");
+    for(var i = 0; i < t.length; i++) {
+        t[i].style.display = "none";
+    }
+    for (var i = 0; i < sowBtn.length; i++) {
+        sowBtn[i].style.animationIterationCount = '0';
+    }
+    localStorage.setItem("newOrLoad", "load");
+}
+var newOrLoad = localStorage.getItem('newOrLoad');
+if (newOrLoad == "new") {
+    gettingStarted();
+}
 
 var logElement = function(msg) {
     var div = document.createElement("DIV");
@@ -47,21 +105,6 @@ var loadGameConfig = function() {
         loadGameState();
     };
     server.getFromServer("/game-config", gameConfigLoaded);
-};
-
-var setElementDisplay = function(name, i, j, display) {
-    var id = name + i + ',' + j;
-    var element = document.getElementById(id);
-    element.style.display = display;
-    return element;
-};
-
-var hideElement = function(name, i, j) {
-    return setElementDisplay(name, i, j, "none");
-};
-
-var showElement = function(name, i, j) {
-    return setElementDisplay(name, i, j, "block");
 };
 
 var reset = function() {
@@ -98,7 +141,7 @@ var reset = function() {
             var seedConfig = GAME_CONFIG.seeds[seed];
         }
         document.getElementById("owned" + seed).innerHTML = state.seedCounts[seed];
-        document.getElementById("buy" + seed).innerHTML = "$" + seedConfig.buyCost;
+        document.getElementById("buy" + seed + "_label").innerHTML = "$" + seedConfig.buyCost;
         document.getElementById("sell" + seed).innerHTML = "$" + seedConfig.sellCost;
     };
 };

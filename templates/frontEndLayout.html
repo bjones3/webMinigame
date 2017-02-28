@@ -32,7 +32,9 @@
                     <div id = "owned{{seed_letter}}"></div>
                 </td>
                 <td>
-                    <div id = "buy{{seed_letter}}" class = "border" onclick = "buy('{{seed_letter}}')"></div>
+                    <div id = "buy{{seed_letter}}" class = "border" onclick = "buy('{{seed_letter}}')">
+                        <div id = "buy{{seed_letter}}_label"></div>
+                    </div>
                 </td>
             </tr>
         {% endfor %}

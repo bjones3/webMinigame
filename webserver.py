@@ -109,6 +109,10 @@ def get_admin_data():
             cursor.execute('SELECT COUNT(*) FROM game_states;')
             result = cursor.fetchone()
             data['game_count'] = result[0]
+
+            cursor.execute('SELECT password FROM admin;')
+            result = cursor.fetchone()
+            data['password'] = result[0]
         return data
 
 
@@ -139,7 +143,8 @@ def admin_get():
 
 @app.route('/admin/', methods=['POST'])
 def admin_post():
-    if request.form['password'] != 'puppies':  # woefully insecure!!!
+    data = get_admin_data()
+    if request.form['password'] != data['password']:
         return "Wrong password", 401
     return render_template('admin.html', data=get_admin_data())
 

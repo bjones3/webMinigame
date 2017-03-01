@@ -1,7 +1,7 @@
 id,name,imageSmall,imageMedium,imageLarge,buyCost,sellCost,seedYield,cashYield,harvestTimeSeconds
-a,Potato,/static/potato_s.png,/static/potato_m.png,/static/potato_l.png,5,1,2,2,18
-b,Cauliflower,/static/cauliflower_s.png,/static/cauliflower_m.png,/static/cauliflower_l.png,20,5,2,7,75
-c,Carrot,/static/carrot_s.png,/static/carrot_m.png,/static/carrot_l.png,100,12,1,15,75
+a,Potato,/static/potato_s.png,/static/potato_m.png,/static/potato_l.png,5,1,2,1,18
+b,Cauliflower,/static/cauliflower_s.png,/static/cauliflower_m.png,/static/cauliflower_l.png,20,2,2,7,75
+c,Carrot,/static/carrot_s.png,/static/carrot_m.png,/static/carrot_l.png,100,12,1,16,75
 d,Leek,/static/leek_s.png,/static/leek_m.png,/static/leek_l.png,300,20,1,24,120
 e,Broccoli,/static/broccoli_s.png,/static/broccoli_m.png,/static/broccoli_l.png,1000,30,1,35,150
 f,Turnip,/static/turnip_s.png,/static/turnip_m.png,/static/turnip_l.png,1500,25,3,30,300

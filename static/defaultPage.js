@@ -60,3 +60,15 @@ var leaderboards = function() {
     document.getElementById("leaderboardsTable").style.display = "block";
 };
 
+//startButton is clicked upon pressing 'enter' in gamePasswordInput
+document.onreadystatechange = function() {
+    if (document.readyState === 'complete') {
+        document.getElementById("gamePasswordInput")
+            .addEventListener("keyup", function(event) {
+            event.preventDefault();
+            if (event.keyCode == 13) {
+                document.getElementById("startButton").click();
+            }
+        });
+    };
+};

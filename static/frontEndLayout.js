@@ -49,7 +49,7 @@ var gettingStarted = function() {
 var afterBuy = function() {
     var tooltip = document.getElementsByClassName("tooltiptext");
     for(var i = 0; i < tooltip.length; i++) {
-        t[i].style.display = "none";
+        tooltip[i].style.display = "none";
     }
     toolTip("Plant seed", "sowa0,0");
     buyBtn.style.animationIterationCount = '0';
@@ -69,10 +69,6 @@ var afterSow = function() {
         sowBtn[i].style.animationIterationCount = '0';
     }
     localStorage.setItem("newOrLoad", "load");
-}
-var newOrLoad = localStorage.getItem('newOrLoad');
-if (newOrLoad == "new") {
-    gettingStarted();
 }
 
 var logElement = function(msg) {
@@ -102,6 +98,10 @@ var loadGameState = function() {
 var loadGameConfig = function() {
     var gameConfigLoaded = function(gameConfig) {
         GAME_CONFIG = gameConfig;
+        var newOrLoad = localStorage.getItem('newOrLoad');
+        if (newOrLoad == "new") {
+            gettingStarted();
+        }
         loadGameState();
     };
     server.getFromServer("/game-config", gameConfigLoaded);
@@ -159,7 +159,6 @@ var buy = function(seed) {
     };
     var callback = function(newState) {
         state = newState;
-        logElement("Bought 1 " + GAME_CONFIG.seeds[seed].name + " seed.")
         document.getElementById("owned" + seed).innerHTML = state.seedCounts[seed];
         document.getElementById("cash").innerHTML = "CASH: $" + state.resources.cash;
         for (var i = 0; i < GAME_CONFIG.field_width; i++) {
@@ -185,7 +184,6 @@ var sell = function(seed) {
     };
     var callback = function(newState) {
         state = newState;
-        logElement("Sold 1 " + GAME_CONFIG.seeds[seed].name + " seed.")
         document.getElementById("owned" + seed).innerHTML = state.seedCounts[seed];
         document.getElementById("cash").innerHTML = "CASH: $" + state.resources.cash;
         for (var i = 0; i < GAME_CONFIG.field_width; i++) {
@@ -209,9 +207,11 @@ var sow = function(x, y, seed) {
         showFlash("No " + GAME_CONFIG.seeds[seed].name + " seeds to plant.");
         return;
     };
+    if (state["plot" + x + "," + y].seedType != 0) {
+        showFlash("A seed is already planted here.");
+    };
     var callback = function(newState) {
         state = newState;
-        logElement("Planted 1 " + GAME_CONFIG.seeds[seed].name + " seed.")
         document.getElementById("owned" + seed).innerHTML = state.seedCounts[seed];
         var plotBox = document.getElementById("plot" + x + "," + y);
         var sowButtons = plotBox.getElementsByClassName("sowPlantButton");
@@ -247,7 +247,6 @@ var harvest = function(x, y) {
     var callback = function(newState) {
         var seed = state["plot" + x + "," + y].seedType;
         state = newState;
-        logElement("Harvested 1 " + GAME_CONFIG.seeds[seed].name + " seed.")
         document.getElementById("owned" + seed).innerHTML = state.seedCounts[seed];
         document.getElementById("cash").innerHTML = "CASH: $" + state.resources.cash;
         for (var s in GAME_CONFIG.seeds) {
@@ -283,7 +282,6 @@ var unlock = function(x, y) {
     }
     var callback = function(newState) {
         state = newState;
-        logElement("Unlocked a new plot!")
         state["plot" + x + "," + y].locked = 0;
         document.getElementById("cash").innerHTML = "CASH: $" + state.resources.cash;
         document.getElementById("buyPlot").innerHTML = "Buy Plot - $" + GAME_CONFIG['plotPrice'] * Math.pow(GAME_CONFIG['plotMultiplier'],state.unlockCount);

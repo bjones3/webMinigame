@@ -90,8 +90,9 @@ def get_leaderboard_data():
     my_conn = get_conn()
     with my_conn:
         with my_conn.cursor() as cursor:
-            cursor.execute("SELECT slug, game_state->'cash' AS cash, game_state->'m' AS m FROM game_states ORDER BY 2 DESC LIMIT 10;")
-            return cursor.fetchall()
+            cursor.execute("SELECT slug, game_state->'resources'->'cash' AS cash, game_state->'seedCounts'->'m' AS m FROM game_states ORDER BY 2 DESC LIMIT 10;")
+            result = cursor.fetchall()
+            return result
 
 
 def get_admin_data():
@@ -239,17 +240,19 @@ def sow():
     # loading game_state
     game_state = load_state(data['slug'])
 
+    # safety checks
     if data['password'] != game_state['password']:
         return "Invalid password", 401
-
-    # safety check
     if game_state['seedCounts'][data['seed']] <= 0:
         message = "No " + GAME_CONFIG['seeds'][data['seed']]['name'] + " seeds to plant."
+        return make_response(game_state, message)
+    plot = get_plot(game_state, data['x'], data['y'])
+    if plot['seedType'] != 0:
+        message = "A seed is already planted here."
         return make_response(game_state, message)
 
     # making changes to game_state
     game_state['seedCounts'][data['seed']] -= 1
-    plot = get_plot(game_state, data['x'], data['y'])
     plot['seedType'] = data['seed']
     plot['sowTime'] = int(round(time.time() * 1000))
 

@@ -96,7 +96,9 @@ def get_leaderboard_data():
     with my_conn:
         with my_conn.cursor() as cursor:
             cursor.execute("SELECT slug, game_state->'resources'->'cash' AS cash, "
-                           "game_state->'seedCounts'->'m' AS m FROM game_states ORDER BY 2 DESC LIMIT 10;")
+                           "game_state->'seedCounts'->'m' AS m FROM game_states "
+                           "WHERE game_state->'resources'->'cash' IS NOT NULL "
+                           "ORDER BY 2 DESC LIMIT 10;")
             result = cursor.fetchall()
             return result
 
@@ -242,7 +244,7 @@ def sow():
         return make_response(game_state, message)
     plot = get_plot(game_state, data['x'], data['y'])
     if plot['seedType'] != 0:
-        message = "A %s seed is already planted here." % plot['seedType']
+        message = "A %s seed is already planted here." % GAME_CONFIG['seeds'][plot['seedType']]['name']
         return make_response(game_state, message)
 
     # update game_state
@@ -252,7 +254,7 @@ def sow():
 
     save_state(data['slug'], game_state)
 
-    message = "Planted a %s seed." % (GAME_CONFIG['seeds'][data['seed']]['name'])
+    message = "Planted a %s seed." % GAME_CONFIG['seeds'][data['seed']]['name']
     return make_response(game_state, message)
 
 

@@ -38,14 +38,15 @@ def get_conn():
 # fetch game_state from postgres db
 def load_state(slug):
     my_conn = get_conn()
-    with my_conn.cursor() as cursor:
-        cursor.execute('SELECT game_state FROM game_states WHERE slug = %s;',
-            [slug])
-        row = cursor.fetchone()
-        if not row:
-            return None
-        game_state = row[0]
-        return initialize_state(game_state)
+    with my_conn:
+        with my_conn.cursor() as cursor:
+            cursor.execute('SELECT game_state FROM game_states WHERE slug = %s;',
+                [slug])
+            row = cursor.fetchone()
+            if not row:
+                return None
+            game_state = row[0]
+            return initialize_state(game_state)
 
 
 def get_plot(game_state, x, y):
@@ -74,38 +75,41 @@ def initialize_state(game_state):
     for i in range(2):
         for j in range(2):
             get_plot(game_state, i, j)['locked'] = 0
-    if total_seed_count == 0 and total_crops_planted == 0 \
-            and game_state['resources']['cash'] < GAME_CONFIG['starting_resources'][resource]:
-        game_state['resources']['cash'] = GAME_CONFIG['starting_resources']['cash']
+    if total_seed_count == 0 and total_crops_planted == 0:
+        if game_state['resources']['cash'] < GAME_CONFIG['starting_resources'][resource]:
+            game_state['resources']['cash'] = GAME_CONFIG['starting_resources']['cash']
     return game_state
 
 
 def save_state(slug, game_state):
     my_conn = get_conn()
     json_game_state = json.dumps(game_state, indent=4)
-    with my_conn.cursor() as cursor:
-        cursor.execute('INSERT INTO game_states (slug, game_state) VALUES (%s, %s) '
-                       'ON CONFLICT (slug) DO UPDATE SET game_state=%s;',
-                       [slug, json_game_state, json_game_state])
+    with my_conn:
+        with my_conn.cursor() as cursor:
+            cursor.execute('INSERT INTO game_states (slug, game_state) VALUES (%s, %s) '
+                           'ON CONFLICT (slug) DO UPDATE SET game_state=%s;',
+                           [slug, json_game_state, json_game_state])
 
             
 def get_leaderboard_data():
     my_conn = get_conn()
-    with my_conn.cursor() as cursor:
-        cursor.execute("SELECT slug, game_state->'resources'->'cash' AS cash, "
-                       "game_state->'seedCounts'->'m' AS m FROM game_states ORDER BY 2 DESC LIMIT 10;")
-        result = cursor.fetchall()
-        return result
+    with my_conn:
+        with my_conn.cursor() as cursor:
+            cursor.execute("SELECT slug, game_state->'resources'->'cash' AS cash, "
+                           "game_state->'seedCounts'->'m' AS m FROM game_states ORDER BY 2 DESC LIMIT 10;")
+            result = cursor.fetchall()
+            return result
 
 
 def get_admin_data():
     data = {}
     my_conn = get_conn()
-    with my_conn.cursor() as cursor:
-        cursor.execute('SELECT COUNT(*) FROM game_states;')
-        result = cursor.fetchone()
-        data['game_count'] = result[0]
-    return data
+    with my_conn:
+        with my_conn.cursor() as cursor:
+            cursor.execute('SELECT COUNT(*) FROM game_states;')
+            result = cursor.fetchone()
+            data['game_count'] = result[0]
+        return data
 
 
 def make_response(game_state, message=None):

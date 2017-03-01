@@ -22,7 +22,7 @@ conn = None
 def get_conn():
     global conn
     if conn is None:
-        urlparse.uses_netloc.append("postgres")
+        urlparse.uses_netloc.append('postgres')
         db_url = os.environ['DATABASE_URL']
         url = urlparse.urlparse(db_url)
         conn = psycopg2.connect(
@@ -35,44 +35,47 @@ def get_conn():
     return conn
 
 
+# fetch game_state from postgres db
 def load_state(slug):
     my_conn = get_conn()
-    with my_conn:
-        with my_conn.cursor() as cursor:
-            cursor.execute("SELECT game_state FROM game_states WHERE slug = %s;",
-                           [slug])
-            row = cursor.fetchone()
-            if not row:
-                return None
-            game_state = row[0]
-            return initialize_state(game_state)
+    with my_conn.cursor() as cursor:
+        cursor.execute('SELECT game_state FROM game_states WHERE slug = %s;',
+            [slug])
+        row = cursor.fetchone()
+        if not row:
+            return None
+        game_state = row[0]
+        return initialize_state(game_state)
 
 
+def get_plot(game_state, x, y):
+    return game_state['plot' + str(x) + "_" + str(y)]
+
+
+# add missing seeds, resources, and plots to game_state
+# unlock first four plots
+# check to never run out of money
 def initialize_state(game_state):
+    total_seed_count = 0
+    total_crops_planted = 0
     for seed_id in GAME_CONFIG['seeds']:
         if game_state['seedCounts'].get(seed_id) is None:
             game_state['seedCounts'][seed_id] = 0
+        total_seed_count += game_state['seedCounts'][seed_id]
     for resource in GAME_CONFIG['starting_resources']:
         if game_state['resources'].get(resource) is None:
             game_state['resources'][resource] = GAME_CONFIG['starting_resources'][resource]
-
     for i in range(GAME_CONFIG['field_width']):
         for j in range(GAME_CONFIG['field_height']):
-            if game_state.get("plot" + str(i) + "," + str(j)) is None:
-                game_state["plot" + str(i) + "," + str(j)] = {'seedType': 0, 'sowTime': 0, 'locked': 1}
+            if game_state.get('plot' + str(i) + '_' + str(j)) is None:
+                game_state['plot' + str(i) + '_' + str(j)] = {'seedType': 0, 'sowTime': 0, 'locked': 1}
+            if get_plot(game_state, i, j)['seedType'] != 0:
+                total_crops_planted += 1
     for i in range(2):
         for j in range(2):
-            game_state[("plot" + str(i) + "," + str(j))]['locked'] = 0
-
-    total_seed_count = 0
-    total_crops_planted = 0
-    for seed in GAME_CONFIG['seeds']:
-            total_seed_count += game_state['seedCounts'][seed]
-    for i in range(GAME_CONFIG['field_width']):
-        for j in range(GAME_CONFIG['field_height']):
-            if game_state["plot" + str(i) + "," + str(j)]['seedType'] != 0:
-               total_crops_planted += 1
-    if total_seed_count == 0 and total_crops_planted == 0 and game_state['resources']['cash'] < GAME_CONFIG['starting_resources'][resource]:
+            get_plot(game_state, i, j)['locked'] = 0
+    if total_seed_count == 0 and total_crops_planted == 0 \
+            and game_state['resources']['cash'] < GAME_CONFIG['starting_resources'][resource]:
         game_state['resources']['cash'] = GAME_CONFIG['starting_resources']['cash']
     return game_state
 
@@ -80,39 +83,34 @@ def initialize_state(game_state):
 def save_state(slug, game_state):
     my_conn = get_conn()
     json_game_state = json.dumps(game_state, indent=4)
-    with my_conn:
-        with my_conn.cursor() as cursor:
-            cursor.execute("INSERT INTO game_states (slug, game_state) VALUES (%s, %s) ON CONFLICT (slug) DO UPDATE SET game_state=%s;",
-                           [slug, json_game_state, json_game_state])
+    with my_conn.cursor() as cursor:
+        cursor.execute('INSERT INTO game_states (slug, game_state) VALUES (%s, %s) '
+                       'ON CONFLICT (slug) DO UPDATE SET game_state=%s;',
+                       [slug, json_game_state, json_game_state])
 
             
 def get_leaderboard_data():
     my_conn = get_conn()
-    with my_conn:
-        with my_conn.cursor() as cursor:
-            cursor.execute("SELECT slug, game_state->'resources'->'cash' AS cash, game_state->'seedCounts'->'m' AS m FROM game_states ORDER BY 2 DESC LIMIT 10;")
-            result = cursor.fetchall()
-            return result
+    with my_conn.cursor() as cursor:
+        cursor.execute("SELECT slug, game_state->'resources'->'cash' AS cash, "
+                       "game_state->'seedCounts'->'m' AS m FROM game_states ORDER BY 2 DESC LIMIT 10;")
+        result = cursor.fetchall()
+        return result
 
 
 def get_admin_data():
     data = {}
     my_conn = get_conn()
-    with my_conn:
-        with my_conn.cursor() as cursor:
-            cursor.execute("SELECT COUNT(*) FROM game_states;")
-            result = cursor.fetchone()
-            data['game_count'] = result[0]
+    with my_conn.cursor() as cursor:
+        cursor.execute('SELECT COUNT(*) FROM game_states;')
+        result = cursor.fetchone()
+        data['game_count'] = result[0]
     return data
 
 
-def get_plot(game_state, x, y):
-    return game_state["plot" + str(x) + "," + str(y)]
-
-
-def make_response(state, message=None):
+def make_response(game_state, message=None):
     response = {
-        'state': state
+        'state': game_state
     }
     if message is not None:
         response['message'] = message
@@ -126,8 +124,8 @@ def default():
 
 @app.route('/game/')
 def game():
-    return render_template('frontEndLayout.html', seeds = GAME_CONFIG['seeds'], field_width = GAME_CONFIG['field_width'],
-                           field_height = GAME_CONFIG['field_height'])
+    return render_template('frontEndLayout.html', seeds=GAME_CONFIG['seeds'],
+                           field_width=GAME_CONFIG['field_width'], field_height=GAME_CONFIG['field_height'])
 
 
 @app.route('/admin/', methods=['GET'])
@@ -137,7 +135,7 @@ def admin_get():
 
 @app.route('/admin/', methods=['POST'])
 def admin_post():
-    if request.form['password'] != 'puppies':  #woefully insecure!!!
+    if request.form['password'] != 'puppies':  # woefully insecure!!!
         return "Wrong password", 401
     return render_template('admin.html', data=get_admin_data())
 
@@ -147,20 +145,20 @@ def game_config():
     return jsonify(GAME_CONFIG)
 
 
-@app.route('/game-state/<slug>', methods = ['GET', 'POST'])
+@app.route('/game-state/<slug>', methods=['GET', 'POST'])
 def state(slug):
-    regex = re.compile("^[a-z]+$")
+    regex = re.compile('^[a-z]+$')
     x = regex.match(slug)
     if x is False:
         raise Exception("Invalid characters")
     body = request.json
     password = body['password']
-    data = load_state(slug)
-    if data:
-        if body['newOrLoad'] == "new":
+    game_state = load_state(slug)
+    if game_state:
+        if body['newOrLoad'] == 'new':
             return "Username already taken", 403
-        if password == data['password']:
-            return make_response(data)
+        if password == game_state['password']:
+            return make_response(game_state)
         else:
             return "Invalid password", 401
     else:
@@ -171,61 +169,51 @@ def state(slug):
             'unlockCount': 0,
             'seedCounts': {}
         }
-
         game_state = initialize_state(game_state)
         save_state(slug, game_state)
         return make_response(game_state)
 
 
-@app.route('/action/buy', methods = ['GET', 'POST'])
+@app.route('/action/buy', methods=['GET', 'POST'])
 def buy():
-    # requesting buy action data from script (seed, slug)
-    buy_data = request.json
+    data = request.json  # data={slug,seed,password}
+    game_state = load_state(data['slug'])
 
-    # loading game_state
-    game_state = load_state(buy_data['slug'])
-
-    if buy_data['password'] != game_state['password']:
+    # safety checks
+    if data['password'] != game_state['password']:
         return "Invalid password", 401
-
-    # safety check
-    if game_state['resources']['cash'] < GAME_CONFIG['seeds'][buy_data['seed']]['buyCost']:
-        message = "Not enough cash to buy a %s seed." % GAME_CONFIG['seeds'][buy_data['seed']]['name']
+    if game_state['resources']['cash'] < GAME_CONFIG['seeds'][data['seed']]['buyCost']:
+        message = "Not enough cash to buy a %s seed." % GAME_CONFIG['seeds'][data['seed']]['name']
         return make_response(game_state, message)
 
-    # making changes to game_state
-    game_state['seedCounts'][buy_data['seed']] += 1
-    game_state['resources']['cash'] -= GAME_CONFIG['seeds'][buy_data['seed']]['buyCost']
+    # update game_state
+    game_state['seedCounts'][data['seed']] += 1
+    game_state['resources']['cash'] -= GAME_CONFIG['seeds'][data['seed']]['buyCost']
 
-    # saving new game_state
-    save_state(buy_data['slug'], game_state)
+    save_state(data['slug'], game_state)
 
-    message = "Bought a %s seed." % GAME_CONFIG['seeds'][buy_data['seed']]['name']
+    message = "Bought a %s seed." % GAME_CONFIG['seeds'][data['seed']]['name']
     return make_response(game_state, message)
 
 
 @app.route('/action/sell', methods = ['GET', 'POST'])
 def sell():
-    # requesting sell action data from script (seed, slug)
-    data = request.json
-
-    # loading game_state
+    data = request.json  # data={slug,seed,password}
     game_state = load_state(data['slug'])
 
+    # safety checks
     if data['password'] != game_state['password']:
         return "Invalid password", 401
-
-    # safety check
     if game_state['seedCounts'][data['seed']] <= 0:
-        message = "No " + GAME_CONFIG['seeds'][data['seed']]['name'] + " seeds to sell."
+        message = "No %s seeds to sell." % GAME_CONFIG['seeds'][data['seed']]['name']
         return make_response(game_state, message)
 
-    # making changes to game_state
+    # update game_state
     game_state['seedCounts'][data['seed']] -= 1
     game_state['resources']['cash'] += GAME_CONFIG['seeds'][data['seed']]['sellCost']
-    initialize_state(game_state)
 
-    # saving new game_state
+    initialize_state(game_state)  # no money check
+
     save_state(data['slug'], game_state)
 
     message = "Sold a %s seed." % GAME_CONFIG['seeds'][data['seed']]['name']
@@ -234,29 +222,25 @@ def sell():
 
 @app.route('/action/sow', methods = ['GET', 'POST'])
 def sow():
-    # requesting sow action data from script (seed, x, y, slug)
-    data = request.json
-
-    # loading game_state
+    data = request.json  # data={slug,seed,x,y,password}
     game_state = load_state(data['slug'])
 
     # safety checks
     if data['password'] != game_state['password']:
         return "Invalid password", 401
     if game_state['seedCounts'][data['seed']] <= 0:
-        message = "No " + GAME_CONFIG['seeds'][data['seed']]['name'] + " seeds to plant."
+        message = "No %s seeds to plant." % GAME_CONFIG['seeds'][data['seed']]['name']
         return make_response(game_state, message)
     plot = get_plot(game_state, data['x'], data['y'])
     if plot['seedType'] != 0:
-        message = "A seed is already planted here."
+        message = "A %s seed is already planted here." % plot['seedType']
         return make_response(game_state, message)
 
-    # making changes to game_state
+    # update game_state
     game_state['seedCounts'][data['seed']] -= 1
     plot['seedType'] = data['seed']
     plot['sowTime'] = int(round(time.time() * 1000))
 
-    # saving new game_state
     save_state(data['slug'], game_state)
 
     message = "Planted a %s seed." % (GAME_CONFIG['seeds'][data['seed']]['name'])
@@ -265,46 +249,38 @@ def sow():
 
 @app.route('/action/harvest', methods = ['GET', 'POST'])
 def harvest():
-    # requesting harvest action data from script (x, y, slug)
-    data = request.json
-
-    # loading game_state
+    data = request.json  # data={slug,seed,x,y,password}
     game_state = load_state(data['slug'])
 
+    # safety checks
     if data['password'] != game_state['password']:
         return "Invalid password", 401
-
-    # making changes to game_state
     plot = get_plot(game_state, data['x'], data['y'])
-    seedType = plot['seedType']
-
-    growing_time = int(round(time.time() -  plot['sowTime'] / 1000))
-    seed_data = GAME_CONFIG['seeds'].get(seedType)
+    seed_type = plot['seedType']
+    growing_time = int(round(time.time() - plot['sowTime'] / 1000))
+    seed_data = GAME_CONFIG['seeds'].get(seed_type)
     if seed_data is None:
         return "Failed to harvest plot.", 403
     if seed_data['harvestTimeSeconds'] > growing_time:
         return make_response(game_state, "no cheats >:(")
 
-    game_state['seedCounts'][seedType] += seed_data['seedYield']
+    # update game_state
+    game_state['seedCounts'][seed_type] += seed_data['seedYield']
     game_state['resources']['cash'] += seed_data['cashYield']
     plot['seedType'] = 0
 
-    # saving new game_state
     save_state(data['slug'], game_state)
 
-    message = "Harvested a %s." % GAME_CONFIG['seeds'][seedType]['name']
+    message = "Harvested a %s." % GAME_CONFIG['seeds'][seed_type]['name']
     return make_response(game_state, message)
 
 
 @app.route('/action/unlock', methods = ['GET', 'POST'])
 def unlock():
-    # requesting unlock action data from script (x, y)
-    data = request.json
-
-    # loading game_state
+    data = request.json  # data={x,y,password}
     game_state = load_state(data['slug'])
 
-    # safety check
+    # safety checks
     if data['password'] != game_state['password']:
         return "Invalid password", 401
     plot_price = GAME_CONFIG['plotPrice'] * GAME_CONFIG['plotMultiplier'] ** game_state['unlockCount']
@@ -316,9 +292,9 @@ def unlock():
     plot['locked'] = 0
     game_state['resources']['cash'] -= plot_price
     game_state['unlockCount'] += 1
-    initialize_state(game_state)
 
-    # saving new game_state
+    initialize_state(game_state)  # no money check
+
     save_state(data['slug'], game_state)
 
     message = "Unlocked plot for $%s." % plot_price

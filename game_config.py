@@ -13,7 +13,7 @@ def get_config(debug_mode=False):
         },
         'seeds': {}
     }
-    
+
     if debug_mode:
         config['starting_resources']['cash'] *= 100
 

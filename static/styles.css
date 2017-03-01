@@ -3,18 +3,15 @@ html, body {
     margin: 0;
     overflow: hidden;
 }
-
 div.menuPanel {
     width: 380px;
     float: right;
 }
-
 div.gamePanel {
     margin-right: 390px;
     overflow: scroll;
     height: 100%;
 }
-
 div.plotBox {
     position: relative;
     width: 185px;
@@ -103,7 +100,6 @@ div#cash {
     font-size: 30px;
     font-weight: bold;
 }
-
 .dropdown {
     position: fixed;
     right: 0;
@@ -111,7 +107,6 @@ div#cash {
     display: inline-block;
     float: right;
 }
-
 .dropbtn {
     background-color: #4CAF50;
     color: white;
@@ -129,7 +124,6 @@ div#cash {
     box-shadow: 0px 8px 16px 0px green;
     z-index: 1;
 }
-
 .dropdown-content button {
     padding: 12px 16px;
     display: block;
@@ -139,48 +133,43 @@ div#cash {
     border-collapse: collapse;
     cursor: pointer;
 }
-.dropdown-content button:hover {background-color: #f1f1f1}
+.dropdown-content button:hover {background-color: #f1f1f1;}
 
-.dropdown:hover .dropdown-content {
-    display: block;
-}
+.dropdown:hover .dropdown-content {display: block;}
 
 div.flash {
-  position: absolute;
-  width: 40%;
-  left: 30%;
-  background-color: #3080F0;
-  color: white;
-  font-family: sans-serif;
-  font-size: 12pt;
-  padding: 6px;
-  border-radius: 12px;
-  border-style: inset inset inset inset;
-  border-color: blue;
-  border-width: 4px;
-  text-align: center;
-  vertical-align: bottom;
-  maxHeight: 200px;
+    position: absolute;
+    width: 40%;
+    left: 30%;
+    background-color: #3080F0;
+    color: white;
+    font-family: sans-serif;
+    font-size: 12pt;
+    padding: 6px;
+    border-radius: 12px;
+    border-style: inset inset inset inset;
+    border-color: blue;
+    border-width: 4px;
+    text-align: center;
+    vertical-align: bottom;
+    maxHeight: 200px;
 }
-
 div.flash.in {
-  -webkit-transition: 1s;
-  -moz-transition: 1s;
-  -ms-transition: 1s;
-  -o-transition: 1s;
-  transition: 1s;
-  top: 50px !important;
+    -webkit-transition: 1s;
+    -moz-transition: 1s;
+    -ms-transition: 1s;
+    -o-transition: 1s;
+    transition: 1s;
+    top: 50px !important;
 }
-
 div.flash.out {
-  -webkit-transition: 2s;
-  -moz-transition: 2s;
-  -ms-transition: 2s;
-  -o-transition: 2s;
-  transition: 2s;
-  top: -250px !important;
+    -webkit-transition: 2s;
+    -moz-transition: 2s;
+    -ms-transition: 2s;
+    -o-transition: 2s;
+    transition: 2s;
+    top: -250px !important;
 }
-
 div#notificationPanel {
     position: fixed;
     bottom: 0px;
@@ -192,18 +181,15 @@ div#notificationPanel {
     background: white;
     overflow: scroll;
 }
-
 @keyframes borderChange {
     0%   {border: 5px solid red;}
     50%  {border: 5px solid yellow;}
     100% {border: 5px solid red;}
 }
-
 .tooltip {
     position: relative;
     border-bottom: 1px dotted black;
 }
-
 .tooltip .tooltiptext {
     visibility: visible;
     width: 120px;
@@ -218,7 +204,6 @@ div#notificationPanel {
     left: 50%;
     margin-left: -60px;
 }
-
 .tooltip .tooltiptext::after {
     content: "";
     position: absolute;

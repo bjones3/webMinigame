@@ -1,4 +1,3 @@
-
 var Server = function(alertCallback, infoCallback) {
     this.sendToServer = function(endpoint, data, callback) {
         var xhttp = new XMLHttpRequest();
@@ -27,11 +26,11 @@ var Server = function(alertCallback, infoCallback) {
                     infoCallback("Unknown error: %s" % this.status);
                 }
             }
-        };
+        }
         xhttp.open('POST', endpoint, true);
         xhttp.setRequestHeader('Content-type', 'application/json');
         xhttp.send(JSON.stringify(data));
-    };
+    }
 
     this.getFromServer = function(endpoint, callback) {
         var xhttp = new XMLHttpRequest();
@@ -43,9 +42,8 @@ var Server = function(alertCallback, infoCallback) {
                     alertCallback('Action not allowed.');
                }
             }
-        };
+        }
         xhttp.open('GET', endpoint, true);
         xhttp.send();
-    };
-};
-
+    }
+}

@@ -1,6 +1,6 @@
 var newOrLoad;
 
-var server = new Server(console.log, console.log);
+var server = new Server(alert, console.log);
 
 var startGame = function() {
     var slug = document.getElementById('gameNameInput').value;
@@ -15,7 +15,7 @@ var startGame = function() {
     }
     localStorage.setItem('pwd_' + slug, gamePassword);
     localStorage.setItem('slug', slug);
-    localStorage.setItem('newOrLoad', newOrLoad)
+    localStorage.setItem('newOrLoad', newOrLoad);
     var callback = function(pass) {
         window.location.href = '/game/#' + slug;
     };

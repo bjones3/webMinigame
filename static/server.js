@@ -21,6 +21,10 @@ var Server = function(alertCallback, infoCallback) {
                     }, 2500);
                 } else if (this.status == 403) {
                     alertCallback(this.responseText);
+                } else if (this.status == 503) {
+                    alertCallback("Trouble contacting server");
+                } else {
+                    infoCallback("Unknown error: %s" % this.status);
                 }
             }
         };

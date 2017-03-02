@@ -355,6 +355,7 @@ var tick = function() {
     if (state == null) {
         return;
     }
+    var readyToHarvest = 0;
     for (var i = 0; i < GAME_CONFIG.field_width; i++) {
         for (var j = 0; j < GAME_CONFIG.field_height; j++) {
             if(state['plot' + i + "_" + j].seedType != 0) {
@@ -381,12 +382,14 @@ var tick = function() {
                 var clockDisplay = toHHMMSS(countdown);
                 document.getElementById("time" + i + "_" + j).innerHTML = clockDisplay;
                 if (countdown <= 0) {
+                    readyToHarvest += 1;
                     hideElement("progressBar", i, j);
                     showElement("button", i, j);
                 }
             }
         }
     }
+    document.getElementById("title").innerHTML = readyToHarvest + " plots ready - Garden Sim 2K17";
 }
 
 setInterval(tick, 100);

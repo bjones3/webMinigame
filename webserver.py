@@ -196,6 +196,9 @@ def buy():
     if game_state['resources']['cash'] < GAME_CONFIG['seeds'][data['seed']]['buyCost']:
         message = "Not enough cash to buy a %s seed." % GAME_CONFIG['seeds'][data['seed']]['name']
         return make_response(game_state, message)
+    if game_state['seedCounts'][data['seed']] == GAME_CONFIG['max_seed_count']:
+        message = "Can't buy any more %s seeds." % GAME_CONFIG['seeds'][data['seed']]['name']
+        return make_response(game_state, message)
 
     # update game_state
     game_state['seedCounts'][data['seed']] += 1
@@ -276,8 +279,14 @@ def harvest():
         return make_response(game_state, "no cheats >:(")
 
     # update game_state
-    game_state['seedCounts'][seed_type] += seed_data['seedYield']
+    seed_count = game_state['seedCounts'][seed_type]
+    seed_count += seed_data['seedYield']
     game_state['resources']['cash'] += seed_data['cashYield']
+    if seed_count > GAME_CONFIG['max_seed_count']:
+        overflow = seed_count - GAME_CONFIG['max_seed_count']
+        seed_count = GAME_CONFIG['max_seed_count']
+        game_state['resources']['cash'] += seed_data['cashYield'] * overflow
+    game_state['seedCounts'][seed_type] = seed_count
     plot['seedType'] = 0
 
     save_state(data['slug'], game_state)

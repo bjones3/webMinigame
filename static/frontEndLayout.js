@@ -134,7 +134,7 @@ var reset = function() {
         }
     }
     document.getElementById("cash").innerHTML = "CASH: $" + state.resources.cash;
-    buyMsg = "Buy Plot - $" + GAME_CONFIG['plotPrice'] * Math.pow(GAME_CONFIG['plotMultiplier'],state.unlockCount);
+    buyMsg = "Click any plot to unlock - $" + GAME_CONFIG['plotPrice'] * Math.pow(GAME_CONFIG['plotMultiplier'],state.unlockCount);
     document.getElementById("buyPlot").innerHTML = buyMsg;
     for (var seed in GAME_CONFIG.seeds) {
         if (GAME_CONFIG.seeds.hasOwnProperty(seed)) {
@@ -155,6 +155,10 @@ document.onreadystatechange = function() {
 var buy = function(seed) {
     if (state.resources.cash < GAME_CONFIG.seeds[seed].buyCost) {
         showFlash("Not enough cash.");
+        return;
+    }
+    if (state.seedCounts[seed] == GAME_CONFIG.max_seed_count) {
+        showFlash("Can't buy any more " + GAME_CONFIG.seeds[seed].name + " seeds.");
         return;
     }
     var callback = function(newState) {
@@ -284,7 +288,7 @@ var unlock = function(x, y) {
         state = newState;
         state["plot" + x + "_" + y].locked = 0;
         document.getElementById("cash").innerHTML = "CASH: $" + state.resources.cash;
-        buyMsg = "Buy Plot - $" + GAME_CONFIG['plotPrice'] * Math.pow(GAME_CONFIG['plotMultiplier'],state.unlockCount);
+        buyMsg = "Click any plot to unlock - $" + GAME_CONFIG['plotPrice'] * Math.pow(GAME_CONFIG['plotMultiplier'],state.unlockCount);
         document.getElementById("buyPlot").innerHTML = buyMsg;
         hideElement("lock", x, y);
         showElement("soil", x, y);

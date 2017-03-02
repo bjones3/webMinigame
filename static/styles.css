@@ -118,7 +118,7 @@ div#cash {
 .dropbtn:hover {background-color: #3e8e41;}
 
 .dropdown-content {
-    display: none;
+    display: block;
     position: absolute;
     right: 0;
     box-shadow: 0px 8px 16px 0px green;

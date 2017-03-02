@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Garden Sim 2K17</title>
+    <title id = "title">Garden Sim 2K17</title>
     <link rel="shortcut icon" href="/static/chilipepper_s.png">
 <link rel="stylesheet" href="/static/styles.css">
 </head>
@@ -11,14 +11,15 @@
 <div class="menuPanel">
     <table id = "seedCosts" style = "text-align: center;">
         <tr>
-            {% for heading in ('', 'Seed', 'Sell', 'Owned', 'Buy') %}
+            {% for heading in ('', 'Seed', 'Sell', 'Owned', 'Buy',) %}
             <td>
                 {{ heading }}
             </td>
             {% endfor %}
+            <td colspan="2">Extra Cost</td>
         </tr>
         {% for seed_letter, seed_data in seeds|dictsort %}
-            <tr>
+            <tr id = "row{{seed_letter}}">
                 <td>
                     <img src = "{{seed_data['imageSmall']}}" style = "height: 20px;">
                 </td>
@@ -36,16 +37,26 @@
                         <div id = "buy{{seed_letter}}_label"></div>
                     </div>
                 </td>
+                <td>
+                    <img id = "resource{{seed_letter}}" style = "height: 20px;">
+                </td>
+                <td>
+                    <div id = "resourceCost{{seed_letter}}"></div>
+                </td>
             </tr>
         {% endfor %}
     </table>
 
-    <div id = "cash"></div>
+    <div id = "cash" class = "resource"></div>
+    <div id = "carrots" class = "resource"></div>
+    <div id = "grass" class = "resource"></div>
+    <div id = "fertilizer" class = "resource"></div>
+
 
     <div class="dropdown">
         <button class="dropbtn">Shop</button>
         <div class="dropdown-content">
-            <button id="buyPlot" onclick = "buyPlot()">Buy Plot</button>
+            <button id="buyPlot"></button>
         </div>
     </div>
 </div>

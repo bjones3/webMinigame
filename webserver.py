@@ -111,6 +111,10 @@ def get_admin_data():
             cursor.execute('SELECT COUNT(*) FROM game_states;')
             result = cursor.fetchone()
             data['game_count'] = result[0]
+
+            cursor.execute('SELECT password FROM admin;')
+            result = cursor.fetchone()
+            data['password'] = result[0]
         return data
 
 
@@ -142,7 +146,8 @@ def admin_get():
 
 @app.route('/admin/', methods=['POST'])
 def admin_post():
-    if request.form['password'] != 'puppies':  # woefully insecure!!!
+    data = get_admin_data()
+    if request.form['password'] != data['password']:
         return "Wrong password", 401
     return render_template('admin.html', data=get_admin_data())
 
@@ -192,10 +197,25 @@ def buy():
     if game_state['resources']['cash'] < GAME_CONFIG['seeds'][data['seed']]['buyCost']:
         message = "Not enough cash to buy a %s seed." % GAME_CONFIG['seeds'][data['seed']]['name']
         return make_response(game_state, message)
+    if game_state['resources']['carrots'] < GAME_CONFIG['seeds'][data['seed']]['carrotCost']:
+        message = "Not enough carrots to buy a %s seed." % GAME_CONFIG['seeds'][data['seed']]['name']
+        return make_response(game_state, message)
+    if game_state['resources']['grass'] < GAME_CONFIG['seeds'][data['seed']]['grassCost']:
+        message = "Not enough grass to buy a %s seed." % GAME_CONFIG['seeds'][data['seed']]['name']
+        return make_response(game_state, message)
+    if game_state['resources']['fertilizer'] < GAME_CONFIG['seeds'][data['seed']]['fertilizerCost']:
+        message = "Not enough fertilizer to buy a %s seed." % GAME_CONFIG['seeds'][data['seed']]['name']
+        return make_response(game_state, message)
+    if game_state['seedCounts'][data['seed']] == GAME_CONFIG['max_seed_count']:
+        message = "Can't buy any more %s seeds." % GAME_CONFIG['seeds'][data['seed']]['name']
+        return make_response(game_state, message)
 
     # update game_state
     game_state['seedCounts'][data['seed']] += 1
     game_state['resources']['cash'] -= GAME_CONFIG['seeds'][data['seed']]['buyCost']
+    game_state['resources']['carrots'] -= GAME_CONFIG['seeds'][data['seed']]['carrotCost']
+    game_state['resources']['grass'] -= GAME_CONFIG['seeds'][data['seed']]['grassCost']
+    game_state['resources']['fertilizer'] -= GAME_CONFIG['seeds'][data['seed']]['fertilizerCost']
 
     save_state(data['slug'], game_state)
 
@@ -256,7 +276,7 @@ def sow():
 
 @app.route('/action/harvest', methods = ['GET', 'POST'])
 def harvest():
-    data = request.json  # data={slug,seed,x,y,password}
+    data = request.json  # data={x,y,password}
     game_state = load_state(data['slug'])
 
     # safety checks
@@ -272,8 +292,17 @@ def harvest():
         return make_response(game_state, "no cheats >:(")
 
     # update game_state
-    game_state['seedCounts'][seed_type] += seed_data['seedYield']
+    seed_count = game_state['seedCounts'][seed_type]
+    seed_count += seed_data['seedYield']
     game_state['resources']['cash'] += seed_data['cashYield']
+    game_state['resources']['carrots'] += seed_data['carrotYield']
+    game_state['resources']['grass'] += seed_data['grassYield']
+    game_state['resources']['fertilizer'] += seed_data['fertilizerYield']
+    if seed_count > GAME_CONFIG['max_seed_count']:
+        overflow = seed_count - GAME_CONFIG['max_seed_count']
+        seed_count = GAME_CONFIG['max_seed_count']
+        game_state['resources']['cash'] += seed_data['cashYield'] * overflow
+    game_state['seedCounts'][seed_type] = seed_count
     plot['seedType'] = 0
 
     save_state(data['slug'], game_state)

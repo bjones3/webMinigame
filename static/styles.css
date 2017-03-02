@@ -4,11 +4,11 @@ html, body {
     overflow: hidden;
 }
 div.menuPanel {
-    width: 380px;
+    width: 430px;
     float: right;
 }
 div.gamePanel {
-    margin-right: 390px;
+    margin-right: 450px;
     overflow: scroll;
     height: 100%;
 }
@@ -93,7 +93,7 @@ button.button {
     left: 10.5px;
     border: 2px solid black;
 }
-div#cash {
+div.resource {
     position: relative;
     top: 50px;
     left: 20px;
@@ -103,7 +103,7 @@ div#cash {
 .dropdown {
     position: fixed;
     right: 0;
-    top: 62%;
+    top: 80%;
     display: inline-block;
     float: right;
 }
@@ -118,7 +118,7 @@ div#cash {
 .dropbtn:hover {background-color: #3e8e41;}
 
 .dropdown-content {
-    display: none;
+    display: block;
     position: absolute;
     right: 0;
     box-shadow: 0px 8px 16px 0px green;

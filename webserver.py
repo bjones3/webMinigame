@@ -196,6 +196,15 @@ def buy():
     if game_state['resources']['cash'] < GAME_CONFIG['seeds'][data['seed']]['buyCost']:
         message = "Not enough cash to buy a %s seed." % GAME_CONFIG['seeds'][data['seed']]['name']
         return make_response(game_state, message)
+    if game_state['resources']['carrots'] < GAME_CONFIG['seeds'][data['seed']]['carrotCost']:
+        message = "Not enough carrots to buy a %s seed." % GAME_CONFIG['seeds'][data['seed']]['name']
+        return make_response(game_state, message)
+    if game_state['resources']['grass'] < GAME_CONFIG['seeds'][data['seed']]['grassCost']:
+        message = "Not enough grass to buy a %s seed." % GAME_CONFIG['seeds'][data['seed']]['name']
+        return make_response(game_state, message)
+    if game_state['resources']['fertilizer'] < GAME_CONFIG['seeds'][data['seed']]['fertilizerCost']:
+        message = "Not enough fertilizer to buy a %s seed." % GAME_CONFIG['seeds'][data['seed']]['name']
+        return make_response(game_state, message)
     if game_state['seedCounts'][data['seed']] == GAME_CONFIG['max_seed_count']:
         message = "Can't buy any more %s seeds." % GAME_CONFIG['seeds'][data['seed']]['name']
         return make_response(game_state, message)
@@ -203,6 +212,9 @@ def buy():
     # update game_state
     game_state['seedCounts'][data['seed']] += 1
     game_state['resources']['cash'] -= GAME_CONFIG['seeds'][data['seed']]['buyCost']
+    game_state['resources']['carrots'] -= GAME_CONFIG['seeds'][data['seed']]['carrotCost']
+    game_state['resources']['grass'] -= GAME_CONFIG['seeds'][data['seed']]['grassCost']
+    game_state['resources']['fertilizer'] -= GAME_CONFIG['seeds'][data['seed']]['fertilizerCost']
 
     save_state(data['slug'], game_state)
 
@@ -263,7 +275,7 @@ def sow():
 
 @app.route('/action/harvest', methods = ['GET', 'POST'])
 def harvest():
-    data = request.json  # data={slug,seed,x,y,password}
+    data = request.json  # data={x,y,password}
     game_state = load_state(data['slug'])
 
     # safety checks
@@ -282,6 +294,9 @@ def harvest():
     seed_count = game_state['seedCounts'][seed_type]
     seed_count += seed_data['seedYield']
     game_state['resources']['cash'] += seed_data['cashYield']
+    game_state['resources']['carrots'] += seed_data['carrotYield']
+    game_state['resources']['grass'] += seed_data['grassYield']
+    game_state['resources']['fertilizer'] += seed_data['fertilizerYield']
     if seed_count > GAME_CONFIG['max_seed_count']:
         overflow = seed_count - GAME_CONFIG['max_seed_count']
         seed_count = GAME_CONFIG['max_seed_count']

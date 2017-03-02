@@ -134,11 +134,26 @@ var reset = function() {
         }
     }
     document.getElementById("cash").innerHTML = "CASH: $" + state.resources.cash;
+    document.getElementById("carrots").innerHTML = "CARROTS: " + state.resources.carrots;
+    document.getElementById("grass").innerHTML = "GRASS: " + state.resources.grass;
+    document.getElementById("fertilizer").innerHTML = "FERTILIZER: " + state.resources.fertilizer;
     buyMsg = "Click any plot to unlock - $" + GAME_CONFIG['plotPrice'] * Math.pow(GAME_CONFIG['plotMultiplier'],state.unlockCount);
     document.getElementById("buyPlot").innerHTML = buyMsg;
     for (var seed in GAME_CONFIG.seeds) {
         if (GAME_CONFIG.seeds.hasOwnProperty(seed)) {
             var seedConfig = GAME_CONFIG.seeds[seed];
+        }
+        if (seedConfig.carrotCost > 0) {
+            document.getElementById("resource" + seed).src = "/static/carrot_s.png";
+            document.getElementById("resourceCost" + seed).innerHTML = "x" + seedConfig.carrotCost;
+        }
+        if (seedConfig.grassCost > 0) {
+            document.getElementById("resource" + seed).src = "/static/grass_s.png";
+            document.getElementById("resourceCost" + seed).innerHTML = "x" + seedConfig.grassCost;
+        }
+        if (seedConfig.fertilizerCost > 0) {
+            document.getElementById("resource" + seed).src = "/static/fertilizer_s.png";
+            document.getElementById("resourceCost" + seed).innerHTML = "x" + seedConfig.fertilizerCost;
         }
         document.getElementById("owned" + seed).innerHTML = state.seedCounts[seed];
         document.getElementById("buy" + seed + "_label").innerHTML = "$" + seedConfig.buyCost;
@@ -157,6 +172,18 @@ var buy = function(seed) {
         showFlash("Not enough cash.");
         return;
     }
+    if (state.resources.carrots < GAME_CONFIG.seeds[seed].carrotCost) {
+        showFlash("Not enough carrots.");
+        return;
+    }
+    if (state.resources.grass < GAME_CONFIG.seeds[seed].grassCost) {
+        showFlash("Not enough grass.");
+        return;
+    }
+    if (state.resources.fertilizer < GAME_CONFIG.seeds[seed].fertilizerCost) {
+        showFlash("Not enough fertilizer.");
+        return;
+    }
     if (state.seedCounts[seed] == GAME_CONFIG.max_seed_count) {
         showFlash("Can't buy any more " + GAME_CONFIG.seeds[seed].name + " seeds.");
         return;
@@ -165,6 +192,9 @@ var buy = function(seed) {
         state = newState;
         document.getElementById("owned" + seed).innerHTML = state.seedCounts[seed];
         document.getElementById("cash").innerHTML = "CASH: $" + state.resources.cash;
+        document.getElementById("carrots").innerHTML = "CARROTS: " + state.resources.carrots;
+        document.getElementById("grass").innerHTML = "GRASS: " + state.resources.grass;
+        document.getElementById("fertilizer").innerHTML = "FERTILIZER: " + state.resources.fertilizer;
         for (var i = 0; i < GAME_CONFIG.field_width; i++) {
             for (var j = 0; j < GAME_CONFIG.field_height; j++) {
                 if(state['plot' + i + "_" + j].seedType == 0 && state['plot' + i + "_" + j].locked == 0) {
@@ -253,6 +283,9 @@ var harvest = function(x, y) {
         state = newState;
         document.getElementById("owned" + seed).innerHTML = state.seedCounts[seed];
         document.getElementById("cash").innerHTML = "CASH: $" + state.resources.cash;
+        document.getElementById("carrots").innerHTML = "CARROTS: " + state.resources.carrots;
+        document.getElementById("grass").innerHTML = "GRASS: " + state.resources.grass;
+        document.getElementById("fertilizer").innerHTML = "FERTILIZER: " + state.resources.fertilizer;
         for (var s in GAME_CONFIG.seeds) {
             if (state.seedCounts[s] > 0) {
                 showElement("sow" + s, x, y);

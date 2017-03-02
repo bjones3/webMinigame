@@ -1,7 +1,10 @@
 #!usr/bin/env python
 
 from flask import Flask, render_template, request, jsonify
-import json, os, re, time
+import json
+import os
+import re
+import time
 import psycopg2
 import urlparse
 
@@ -15,7 +18,7 @@ else:
     DEBUG_MODE = False
 
 GAME_CONFIG = game_config.get_config(DEBUG_MODE)
-          
+
 conn = None
 
 
@@ -40,8 +43,7 @@ def load_state(slug):
     my_conn = get_conn()
     with my_conn:
         with my_conn.cursor() as cursor:
-            cursor.execute('SELECT game_state FROM game_states WHERE slug = %s;',
-                [slug])
+            cursor.execute('SELECT game_state FROM game_states WHERE slug = %s;', [slug])
             row = cursor.fetchone()
             if not row:
                 return None
@@ -90,7 +92,7 @@ def save_state(slug, game_state):
                            'ON CONFLICT (slug) DO UPDATE SET game_state=%s;',
                            [slug, json_game_state, json_game_state])
 
-            
+
 def get_leaderboard_data():
     my_conn = get_conn()
     with my_conn:
@@ -223,7 +225,7 @@ def buy():
     return make_response(game_state, message)
 
 
-@app.route('/action/sell', methods = ['GET', 'POST'])
+@app.route('/action/sell', methods=['GET', 'POST'])
 def sell():
     data = request.json  # data={slug,seed,password}
     game_state = load_state(data['slug'])
@@ -247,7 +249,7 @@ def sell():
     return make_response(game_state, message)
 
 
-@app.route('/action/sow', methods = ['GET', 'POST'])
+@app.route('/action/sow', methods=['GET', 'POST'])
 def sow():
     data = request.json  # data={slug,seed,x,y,password}
     game_state = load_state(data['slug'])
@@ -274,7 +276,7 @@ def sow():
     return make_response(game_state, message)
 
 
-@app.route('/action/harvest', methods = ['GET', 'POST'])
+@app.route('/action/harvest', methods=['GET', 'POST'])
 def harvest():
     data = request.json  # data={x,y,password}
     game_state = load_state(data['slug'])
@@ -311,7 +313,7 @@ def harvest():
     return make_response(game_state, message)
 
 
-@app.route('/action/unlock', methods = ['GET', 'POST'])
+@app.route('/action/unlock', methods=['GET', 'POST'])
 def unlock():
     data = request.json  # data={x,y,password}
     game_state = load_state(data['slug'])

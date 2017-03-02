@@ -1,4 +1,5 @@
-import unittest, webserver
+import unittest
+import webserver
 
 
 class TestConfig(unittest.TestCase):

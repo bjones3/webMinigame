@@ -390,7 +390,6 @@ var tick = function() {
         }
     }
     document.getElementById("title").innerHTML = readyToHarvest + " plots ready - Garden Sim 2K17";
-    }
 }
 
 setInterval(tick, 100);

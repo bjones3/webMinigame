@@ -125,7 +125,8 @@ def make_response(game_state, message=None):
 
 @app.route('/')
 def default():
-    return render_template('defaultPage.html', leaderboard=get_leaderboard_data())
+    leaderboard_data = get_leaderboard_data()
+    return render_template('defaultPage.html', leaderboard=leaderboard_data)
 
 
 @app.route('/game/')

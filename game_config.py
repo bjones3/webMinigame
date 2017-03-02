@@ -5,13 +5,14 @@ import math
 def get_config(debug_mode=False):
     config = {
         'plotPrice': 20,
-        'plotMultiplier': 3 ,
+        'plotMultiplier': 3,
         'field_height': 15,
         'field_width': 15,
         'starting_resources': {
             'cash': 10
         },
-        'seeds': {}
+        'seeds': {},
+        'firstSeed': 'a',
     }
 
     if debug_mode:

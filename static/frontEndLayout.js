@@ -39,7 +39,7 @@ var toolTip = function(msg, id) {
 var buyBtn = document.getElementById("buya");
 var sowBtn = document.getElementsByClassName("sowPlantButton");
 var gettingStarted = function() {
-    toolTip("Buy a " + GAME_CONFIG.seeds.a.name + " seed", "buya");
+    toolTip("Buy a " + GAME_CONFIG.seeds[GAME_CONFIG.firstSeed].name + " seed", "buya");
     buyBtn.style.animationName = 'borderChange';
     buyBtn.style.animationDuration = '2s';
     buyBtn.style.animationIterationCount = 'infinite';

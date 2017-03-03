@@ -1,6 +1,7 @@
 #!usr/bin/env python
 
 from flask import Flask, render_template, request, jsonify
+from werkzeug.exceptions import Unauthorized
 import json, os, re, time
 import psycopg2
 import urlparse
@@ -147,7 +148,7 @@ def admin_get():
 def admin_post():
     data = get_admin_data()
     if request.form['password'] != data['password']:
-        return "Wrong password", 401
+        raise Unauthorized()
     return render_template('admin.html', data=get_admin_data())
 
 
@@ -171,7 +172,7 @@ def state(slug):
         if password == game_state['password']:
             return make_response(game_state)
         else:
-            return "Invalid password", 401
+            raise Unauthorized()
     else:
         game_state = {
             'resources': {},
@@ -192,7 +193,7 @@ def buy():
 
     # safety checks
     if data['password'] != game_state['password']:
-        return "Invalid password", 401
+        raise Unauthorized()
     if game_state['resources']['cash'] < GAME_CONFIG['seeds'][data['seed']]['buyCost']:
         message = "Not enough cash to buy a %s seed." % GAME_CONFIG['seeds'][data['seed']]['name']
         return make_response(game_state, message)
@@ -229,7 +230,7 @@ def sell():
 
     # safety checks
     if data['password'] != game_state['password']:
-        return "Invalid password", 401
+        raise Unauthorized()
     if game_state['seedCounts'][data['seed']] <= 0:
         message = "No %s seeds to sell." % GAME_CONFIG['seeds'][data['seed']]['name']
         return make_response(game_state, message)
@@ -253,7 +254,7 @@ def sow():
 
     # safety checks
     if data['password'] != game_state['password']:
-        return "Invalid password", 401
+        raise Unauthorized()
     if game_state['seedCounts'][data['seed']] <= 0:
         message = "No %s seeds to plant." % GAME_CONFIG['seeds'][data['seed']]['name']
         return make_response(game_state, message)
@@ -280,7 +281,7 @@ def harvest():
 
     # safety checks
     if data['password'] != game_state['password']:
-        return "Invalid password", 401
+        raise Unauthorized()
     plot = get_plot(game_state, data['x'], data['y'])
     seed_type = plot['seedType']
     growing_time = int(round(time.time() - plot['sowTime'] / 1000))
@@ -317,7 +318,7 @@ def unlock():
 
     # safety checks
     if data['password'] != game_state['password']:
-        return "Invalid password", 401
+        raise Unauthorized()
     plot_price = GAME_CONFIG['plotPrice'] * GAME_CONFIG['plotMultiplier'] ** game_state['unlockCount']
     if game_state['resources']['cash'] < plot_price:
         return make_response(game_state, "Not enough cash to unlock plot.")
@@ -340,6 +341,12 @@ def unlock():
 def styles():
     return render_template('styles.css')
 
+
+@app.errorhandler(Unauthorized.code)
+def unauthorized_handler(error):
+    if error.description != Unauthorized.description:
+        return error.description, error.code
+    return "Invalid password", 401
 
 if __name__ == "__main__":
     app.run(debug=DEBUG_MODE, port=int(os.environ['PORT']), host='0.0.0.0')

@@ -20,7 +20,7 @@ else:
 
 GAME_CONFIG = game_config.get_config(DEBUG_MODE)
 RECIPE_CONFIG = game_config.get_recipes()
-          
+
 conn = None
 
 
@@ -358,7 +358,7 @@ def unlock():
     return make_response(game_state, message)
 
 
-@app.route('/recipe', methods = ['POST'])
+@app.route('/recipe', methods=['POST'])
 def recipe():
     data = request.json  # data={slug}
     game_state = load_state(data['slug'])
@@ -368,7 +368,7 @@ def recipe():
         if recipe_id in game_state['recipes']:
             known_recipes[recipe_id] = RECIPE_CONFIG['recipes'][recipe_id]
 
-    return make_response(game_state,recipes=known_recipes)
+    return make_response(game_state, recipes=known_recipes)
 
 
 @app.route('/styles.css')

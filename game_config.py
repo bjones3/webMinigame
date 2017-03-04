@@ -8,7 +8,7 @@ def get_config(debug_mode=False):
         'plotMultiplier': 3,
         'field_height': 15,
         'field_width': 15,
-        'max_seed_count': 99,
+        'max_seed_count': 20,
         'starting_resources': {
             'cash': 10,
             'fertilizer': 0,

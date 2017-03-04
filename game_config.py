@@ -15,7 +15,8 @@ def get_config(debug_mode=False):
             'grass': 0,
             'carrots': 0
         },
-        'seeds': {}
+        'seeds': {},
+        'firstSeed': 'a',
     }
 
     if debug_mode:

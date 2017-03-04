@@ -24,10 +24,6 @@ def get_config(debug_mode=False):
     with open('seed_data.csv') as csvfile:
         reader = csv.DictReader(csvfile)
         for seed in reader:
-            seed['buyCost'] = int(seed['buyCost'])
-            seed['carrotCost'] = int(seed['carrotCost'])
-            seed['grassCost'] = int(seed['grassCost'])
-            seed['fertilizerCost'] = int(seed['fertilizerCost'])
             seed['sellCost'] = int(seed['sellCost'])
             seed['seedYield'] = int(seed['seedYield'])
             seed['cashYield'] = int(seed['cashYield'])
@@ -40,4 +36,19 @@ def get_config(debug_mode=False):
                 seed['harvestTimeSeconds'] = int(seed['harvestTimeSeconds'])
             seed_id = seed.pop('id')
             config['seeds'][seed_id] = seed
+    return config
+
+
+def get_recipes():
+    config = {'recipes': {}}
+
+    with open('recipe_data.csv') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for recipe in reader:
+            recipe['cashCost'] = int(recipe['cashCost'])
+            recipe['carrotsCost'] = int(recipe['carrotsCost'])
+            recipe['grassCost'] = int(recipe['grassCost'])
+            recipe['fertilizerCost'] = int(recipe['fertilizerCost'])
+            recipe_id = recipe.pop('id')
+            config['recipes'][recipe_id] = recipe
     return config

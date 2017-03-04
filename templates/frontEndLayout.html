@@ -18,33 +18,6 @@
             {% endfor %}
             <td colspan="2">Extra Cost</td>
         </tr>
-        {% for seed_letter, seed_data in seeds|dictsort %}
-            <tr id = "row{{seed_letter}}">
-                <td>
-                    <img src = "{{seed_data['imageSmall']}}" style = "height: 20px;">
-                </td>
-                <td>
-                    <div style = "text-align: left;">{{seed_data['name']}}</div>
-                </td>
-                <td>
-                    <div id = "sell{{seed_letter}}" class = "border" onclick = "sell('{{seed_letter}}')"></div>
-                </td>
-                <td>
-                    <div id = "owned{{seed_letter}}"></div>
-                </td>
-                <td>
-                    <div id = "buy{{seed_letter}}" class = "border" onclick = "buy('{{seed_letter}}')">
-                        <div id = "buy{{seed_letter}}_label"></div>
-                    </div>
-                </td>
-                <td>
-                    <img id = "resource{{seed_letter}}" style = "height: 20px;">
-                </td>
-                <td>
-                    <div id = "resourceCost{{seed_letter}}"></div>
-                </td>
-            </tr>
-        {% endfor %}
     </table>
 
     <div id = "cash" class = "resource"></div>

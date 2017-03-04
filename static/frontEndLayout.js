@@ -1,4 +1,5 @@
 var GAME_CONFIG = null;
+var RECIPE_CONFIG = null;
 var state = null;
 
 var hideFlash = function() {
@@ -36,9 +37,11 @@ var toolTip = function(msg, id) {
     container.classList.add("tooltip");
     container.appendChild(span);
 }
-var buyBtn = document.getElementById("buya");
-var sowBtn = document.getElementsByClassName("sowPlantButton");
+
+
+
 var gettingStarted = function() {
+    var buyBtn = document.getElementById("buya");
     toolTip("Buy a " + GAME_CONFIG.seeds.a.name + " seed", "buya");
     buyBtn.style.animationName = 'borderChange';
     buyBtn.style.animationDuration = '2s';
@@ -46,6 +49,8 @@ var gettingStarted = function() {
     buyBtn.addEventListener('click', afterBuy);
 }
 var afterBuy = function() {
+    var buyBtn = document.getElementById("buya");
+    var sowBtn = document.getElementsByClassName("sowPlantButton");
     var tooltip = document.getElementsByClassName("tooltiptext");
     for(var i = 0; i < tooltip.length; i++) {
         tooltip[i].style.display = "none";
@@ -60,6 +65,7 @@ var afterBuy = function() {
     }
 }
 var afterSow = function() {
+    var sowBtn = document.getElementsByClassName("sowPlantButton");
     var tooltip = document.getElementsByClassName("tooltiptext");
     for(var i = 0; i < tooltip.length; i++) {
         tooltip[i].style.display = "none";
@@ -89,6 +95,7 @@ var loadGameState = function() {
     };
     var gameStateLoaded = function(gameState) {
         state = gameState;
+        fetchRecipes();
         reset();
     }
     server.sendToServer("/game-state/" + window.location.hash.substring(1), data, gameStateLoaded);
@@ -97,14 +104,12 @@ var loadGameState = function() {
 var loadGameConfig = function() {
     var gameConfigLoaded = function(gameConfig) {
         GAME_CONFIG = gameConfig;
-        var newOrLoad = localStorage.getItem('newOrLoad');
-        if (newOrLoad == "new") {
-            gettingStarted();
-        }
         loadGameState();
     }
     server.getFromServer("/game-config", gameConfigLoaded);
 }
+
+
 
 var reset = function() {
     for (var i = 0; i < GAME_CONFIG.field_width; i++) {
@@ -139,26 +144,26 @@ var reset = function() {
     document.getElementById("fertilizer").innerHTML = "FERTILIZER: " + state.resources.fertilizer;
     buyMsg = "Click any plot to unlock - $" + GAME_CONFIG['plotPrice'] * Math.pow(GAME_CONFIG['plotMultiplier'],state.unlockCount);
     document.getElementById("buyPlot").innerHTML = buyMsg;
-    for (var seed in GAME_CONFIG.seeds) {
-        if (GAME_CONFIG.seeds.hasOwnProperty(seed)) {
-            var seedConfig = GAME_CONFIG.seeds[seed];
+    /*for (var recipe in RECIPE_CONFIG.recipes) {
+        if (RECIPE_CONFIG.recipes.hasOwnProperty(recipe)) {
+            var recipeConfig = RECIPE_CONFIG.recipes[recipe];
         }
-        if (seedConfig.carrotCost > 0) {
-            document.getElementById("resource" + seed).src = "/static/carrot_s.png";
-            document.getElementById("resourceCost" + seed).innerHTML = "x" + seedConfig.carrotCost;
+        if (id.carrotsCost > 0) {
+            document.getElementById("resource" + recipe).src = "/static/carrot_s.png";
+            document.getElementById("resourceCost" + recipe).innerHTML = "x" + recipeConfig.carrotsCost;
         }
-        if (seedConfig.grassCost > 0) {
-            document.getElementById("resource" + seed).src = "/static/grass_s.png";
-            document.getElementById("resourceCost" + seed).innerHTML = "x" + seedConfig.grassCost;
+        if (recipeConfig.grassCost > 0) {
+            document.getElementById("resource" + recipe).src = "/static/grass_s.png";
+            document.getElementById("resourceCost" + recipe).innerHTML = "x" + recipeConfig.grassCost;
         }
-        if (seedConfig.fertilizerCost > 0) {
-            document.getElementById("resource" + seed).src = "/static/fertilizer_s.png";
-            document.getElementById("resourceCost" + seed).innerHTML = "x" + seedConfig.fertilizerCost;
+        if (recipeConfig.fertilizerCost > 0) {
+            document.getElementById("resource" + recipe).src = "/static/fertilizer_s.png";
+            document.getElementById("resourceCost" + recipe).innerHTML = "x" + recipeConfig.fertilizerCost;
         }
-        document.getElementById("owned" + seed).innerHTML = state.seedCounts[seed];
-        document.getElementById("buy" + seed + "_label").innerHTML = "$" + seedConfig.buyCost;
-        document.getElementById("sell" + seed).innerHTML = "$" + seedConfig.sellCost;
-    }
+        document.getElementById("owned" + recipe).innerHTML = state.seedCounts[recipe];
+        document.getElementById("buy" + recipe + "_label").innerHTML = "$" + recipeConfig.cashCost;
+        document.getElementById("sell" + recipe).innerHTML = "$" + GAME_CONFIG.seeds[recipe].sellCost;
+    }*/
 }
 
 document.onreadystatechange = function() {
@@ -168,19 +173,19 @@ document.onreadystatechange = function() {
 };
 
 var buy = function(seed) {
-    if (state.resources.cash < GAME_CONFIG.seeds[seed].buyCost) {
+    if (state.resources.cash < RECIPE_CONFIG[seed].cashCost) {
         showFlash("Not enough cash.");
         return;
     }
-    if (state.resources.carrots < GAME_CONFIG.seeds[seed].carrotCost) {
+    if (state.resources.carrots < RECIPE_CONFIG[seed].carrotsCost) {
         showFlash("Not enough carrots.");
         return;
     }
-    if (state.resources.grass < GAME_CONFIG.seeds[seed].grassCost) {
+    if (state.resources.grass < RECIPE_CONFIG[seed].grassCost) {
         showFlash("Not enough grass.");
         return;
     }
-    if (state.resources.fertilizer < GAME_CONFIG.seeds[seed].fertilizerCost) {
+    if (state.resources.fertilizer < RECIPE_CONFIG[seed].fertilizerCost) {
         showFlash("Not enough fertilizer.");
         return;
     }
@@ -281,11 +286,13 @@ var harvest = function(x, y) {
     var callback = function(newState) {
         var seed = state["plot" + x + "_" + y].seedType;
         state = newState;
+        fetchRecipes();
         document.getElementById("owned" + seed).innerHTML = state.seedCounts[seed];
         document.getElementById("cash").innerHTML = "CASH: $" + state.resources.cash;
         document.getElementById("carrots").innerHTML = "CARROTS: " + state.resources.carrots;
         document.getElementById("grass").innerHTML = "GRASS: " + state.resources.grass;
         document.getElementById("fertilizer").innerHTML = "FERTILIZER: " + state.resources.fertilizer;
+
         for (var s in GAME_CONFIG.seeds) {
             if (state.seedCounts[s] > 0) {
                 showElement("sow" + s, x, y);
@@ -349,6 +356,105 @@ var buyPlot = function() {
             }
         }
     }
+}
+
+var createSeedMenu = function() {
+    for (var id in RECIPE_CONFIG) {
+        if (RECIPE_CONFIG.hasOwnProperty(id) && document.getElementById("row" + id) == null) {
+            var container = document.getElementById("seedCosts");
+                var tr = document.createElement("TR");
+                tr.id = "row" + id;
+            container.appendChild(tr);
+
+                var td1 = document.createElement("TD");
+                    var img1 = document.createElement("IMG");
+                    img1.src = GAME_CONFIG.seeds[id].imageSmall;
+                td1.appendChild(img1);
+
+                var td2 = document.createElement("TD");
+                    var div2 = document.createElement("DIV");
+                    div2.style.textAlign = 'left'
+                    div2.innerHTML = GAME_CONFIG.seeds[id].name;
+                td2.appendChild(div2);
+
+                var td3 = document.createElement("TD");
+                    var div3 = document.createElement("DIV");
+                    div3.id = "sell" + id;
+                    div3.classList.add('border');
+                    div3.addEventListener('click',createListener(sell,id));
+                td3.appendChild(div3);
+
+                var td4 = document.createElement("TD");
+                    var div4 = document.createElement("DIV");
+                    div4.id = "owned" + id;
+                td4.appendChild(div4);
+
+                var td5 = document.createElement("TD");
+                    var div5 = document.createElement("DIV");
+                    div5.classList.add('border');
+                    div5.id = 'buy' + id;
+                    div5.addEventListener('click',createListener(buy,id));
+                        var div5a = document.createElement("DIV");
+                            div5a.id = "buy" + id + "_label";
+                    div5.appendChild(div5a);
+                td5.appendChild(div5);
+
+                var td6 = document.createElement("TD");
+                    var img6 = document.createElement("IMG");
+                    img6.id = "resource" + id;
+                    img6.style.height = '20px';
+                td6.appendChild(img6);
+
+                var td7 = document.createElement("TD");
+                    var div7 = document.createElement("DIV");
+                    div7.id = "resourceCost" + id;
+                td7.appendChild(div7);
+
+            tr.appendChild(td1);
+            tr.appendChild(td2);
+            tr.appendChild(td3);
+            tr.appendChild(td4);
+            tr.appendChild(td5);
+            tr.appendChild(td6);
+            tr.appendChild(td7);
+
+            if (RECIPE_CONFIG[id].carrotsCost > 0) {
+                document.getElementById("resource" + id).src = "/static/carrot_s.png";
+                document.getElementById("resourceCost" + id).innerHTML = "x" + RECIPE_CONFIG[id].carrotsCost;
+            }
+            if (RECIPE_CONFIG[id].grassCost > 0) {
+                document.getElementById("resource" + id).src = "/static/grass_s.png";
+                document.getElementById("resourceCost" + id).innerHTML = "x" + RECIPE_CONFIG[id].grassCost;
+            }
+            if (RECIPE_CONFIG[id].fertilizerCost > 0) {
+                document.getElementById("resource" + id).src = "/static/fertilizer_s.png";
+                document.getElementById("resourceCost" + id).innerHTML = "x" + RECIPE_CONFIG[id].fertilizerCost;
+            }
+            document.getElementById("owned" + id).innerHTML = state.seedCounts[id];
+            document.getElementById("buy" + id + "_label").innerHTML = "$" + RECIPE_CONFIG[id].cashCost;
+            document.getElementById("sell" + id).innerHTML = "$" + GAME_CONFIG.seeds[id].sellCost;
+        }
+    }
+}
+
+var createListener = function(fn,arg) {
+    return function(){fn(arg);};
+}
+
+var fetchRecipes = function() {
+    var callback = function(game_state,knownRecipes) {
+        RECIPE_CONFIG = knownRecipes;
+        createSeedMenu();
+        var newOrLoad = localStorage.getItem('newOrLoad');
+        if (newOrLoad == "new") {
+            gettingStarted();
+        }
+    }
+    var data = {
+        slug: state.slug,
+        password: localStorage.getItem('pwd_' + state.slug)
+    };
+    server.sendToServer('/recipe', data, callback);
 }
 
 var tick = function() {

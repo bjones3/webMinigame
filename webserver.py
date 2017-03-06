@@ -197,38 +197,38 @@ def state(slug):
 
 @app.route('/action/buy', methods=['GET', 'POST'])
 def buy():
-    data = request.json  # data={slug,seed,password}
+    data = request.json  # data={slug,recipeID,password}
     game_state = load_state(data['slug'])
 
     # safety checks
     if data['password'] != game_state['password']:
         return "Invalid password", 401
-    if game_state['resources']['cash'] < RECIPE_CONFIG['recipes'][data['seed']]['cashCost']:
-        message = "Not enough cash to buy a %s seed." % GAME_CONFIG['seeds'][data['seed']]['name']
+    if game_state['resources']['cash'] < RECIPE_CONFIG['recipes'][data['recipe_id']]['cashCost']:
+        message = "Not enough cash to buy a %s seed." % RECIPE_CONFIG['recipes'][data['recipe_id']]['name']
         return make_response(game_state, message)
-    if game_state['resources']['carrots'] < RECIPE_CONFIG['recipes'][data['seed']]['carrotsCost']:
-        message = "Not enough carrots to buy a %s seed." % GAME_CONFIG['seeds'][data['seed']]['name']
+    if game_state['resources']['carrots'] < RECIPE_CONFIG['recipes'][data['recipe_id']]['carrotsCost']:
+        message = "Not enough carrots to buy a %s seed." % RECIPE_CONFIG['recipes'][data['recipe_id']]['name']
         return make_response(game_state, message)
-    if game_state['resources']['grass'] < RECIPE_CONFIG['recipes'][data['seed']]['grassCost']:
-        message = "Not enough grass to buy a %s seed." % GAME_CONFIG['seeds'][data['seed']]['name']
+    if game_state['resources']['grass'] < RECIPE_CONFIG['recipes'][data['recipe_id']]['grassCost']:
+        message = "Not enough grass to buy a %s seed." % RECIPE_CONFIG['recipes'][data['recipe_id']]['name']
         return make_response(game_state, message)
-    if game_state['resources']['fertilizer'] < RECIPE_CONFIG['recipes'][data['seed']]['fertilizerCost']:
-        message = "Not enough fertilizer to buy a %s seed." % GAME_CONFIG['seeds'][data['seed']]['name']
+    if game_state['resources']['fertilizer'] < RECIPE_CONFIG['recipes'][data['recipe_id']]['fertilizerCost']:
+        message = "Not enough fertilizer to buy a %s seed." % RECIPE_CONFIG['recipes'][data['recipe_id']]['name']
         return make_response(game_state, message)
-    if game_state['seedCounts'][data['seed']] == GAME_CONFIG['max_seed_count']:
-        message = "Can't buy any more %s seeds." % GAME_CONFIG['seeds'][data['seed']]['name']
+    if game_state['seedCounts'][data['recipe_id']] == GAME_CONFIG['max_seed_count']:
+        message = "Can't buy any more %s seeds." % RECIPE_CONFIG['recipes'][data['recipe_id']]['name']
         return make_response(game_state, message)
 
     # update game_state
-    game_state['seedCounts'][data['seed']] += 1
-    game_state['resources']['cash'] -= RECIPE_CONFIG['recipes'][data['seed']]['cashCost']
-    game_state['resources']['carrots'] -= RECIPE_CONFIG['recipes'][data['seed']]['carrotsCost']
-    game_state['resources']['grass'] -= RECIPE_CONFIG['recipes'][data['seed']]['grassCost']
-    game_state['resources']['fertilizer'] -= RECIPE_CONFIG['recipes'][data['seed']]['fertilizerCost']
+    game_state['seedCounts'][data['recipe_id']] += 1
+    game_state['resources']['cash'] -= RECIPE_CONFIG['recipes'][data['recipe_id']]['cashCost']
+    game_state['resources']['carrots'] -= RECIPE_CONFIG['recipes'][data['recipe_id']]['carrotsCost']
+    game_state['resources']['grass'] -= RECIPE_CONFIG['recipes'][data['recipe_id']]['grassCost']
+    game_state['resources']['fertilizer'] -= RECIPE_CONFIG['recipes'][data['recipe_id']]['fertilizerCost']
 
     save_state(data['slug'], game_state)
 
-    message = "Bought a %s seed." % GAME_CONFIG['seeds'][data['seed']]['name']
+    message = "Bought a %s seed." % RECIPE_CONFIG['recipes'][data['recipe_id']]['name']
     return make_response(game_state, message)
 
 

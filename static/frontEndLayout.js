@@ -144,26 +144,6 @@ var reset = function() {
     document.getElementById("fertilizer").innerHTML = "FERTILIZER: " + state.resources.fertilizer;
     buyMsg = "Click any plot to unlock - $" + GAME_CONFIG['plotPrice'] * Math.pow(GAME_CONFIG['plotMultiplier'],state.unlockCount);
     document.getElementById("buyPlot").innerHTML = buyMsg;
-    /*for (var recipe in RECIPE_CONFIG.recipes) {
-        if (RECIPE_CONFIG.recipes.hasOwnProperty(recipe)) {
-            var recipeConfig = RECIPE_CONFIG.recipes[recipe];
-        }
-        if (id.carrotsCost > 0) {
-            document.getElementById("resource" + recipe).src = "/static/carrot_s.png";
-            document.getElementById("resourceCost" + recipe).innerHTML = "x" + recipeConfig.carrotsCost;
-        }
-        if (recipeConfig.grassCost > 0) {
-            document.getElementById("resource" + recipe).src = "/static/grass_s.png";
-            document.getElementById("resourceCost" + recipe).innerHTML = "x" + recipeConfig.grassCost;
-        }
-        if (recipeConfig.fertilizerCost > 0) {
-            document.getElementById("resource" + recipe).src = "/static/fertilizer_s.png";
-            document.getElementById("resourceCost" + recipe).innerHTML = "x" + recipeConfig.fertilizerCost;
-        }
-        document.getElementById("owned" + recipe).innerHTML = state.seedCounts[recipe];
-        document.getElementById("buy" + recipe + "_label").innerHTML = "$" + recipeConfig.cashCost;
-        document.getElementById("sell" + recipe).innerHTML = "$" + GAME_CONFIG.seeds[recipe].sellCost;
-    }*/
 }
 
 document.onreadystatechange = function() {
@@ -172,30 +152,30 @@ document.onreadystatechange = function() {
     }
 };
 
-var buy = function(seed) {
-    if (state.resources.cash < RECIPE_CONFIG[seed].cashCost) {
+var buy = function(recipeID) {
+    if (state.resources.cash < RECIPE_CONFIG[recipeID].cashCost) {
         showFlash("Not enough cash.");
         return;
     }
-    if (state.resources.carrots < RECIPE_CONFIG[seed].carrotsCost) {
+    if (state.resources.carrots < RECIPE_CONFIG[recipeID].carrotsCost) {
         showFlash("Not enough carrots.");
         return;
     }
-    if (state.resources.grass < RECIPE_CONFIG[seed].grassCost) {
+    if (state.resources.grass < RECIPE_CONFIG[recipeID].grassCost) {
         showFlash("Not enough grass.");
         return;
     }
-    if (state.resources.fertilizer < RECIPE_CONFIG[seed].fertilizerCost) {
+    if (state.resources.fertilizer < RECIPE_CONFIG[recipeID].fertilizerCost) {
         showFlash("Not enough fertilizer.");
         return;
     }
-    if (state.seedCounts[seed] == GAME_CONFIG.max_seed_count) {
-        showFlash("Can't buy any more " + GAME_CONFIG.seeds[seed].name + " seeds.");
+    if (state.seedCounts[recipeID] == GAME_CONFIG.max_seed_count) {
+        showFlash("Can't buy any more " + GAME_CONFIG.seeds[recipeID].name + " seeds.");
         return;
     }
     var callback = function(newState) {
         state = newState;
-        document.getElementById("owned" + seed).innerHTML = state.seedCounts[seed];
+        document.getElementById("owned" + recipeID).innerHTML = state.seedCounts[recipeID];
         document.getElementById("cash").innerHTML = "CASH: $" + state.resources.cash;
         document.getElementById("carrots").innerHTML = "CARROTS: " + state.resources.carrots;
         document.getElementById("grass").innerHTML = "GRASS: " + state.resources.grass;
@@ -203,14 +183,14 @@ var buy = function(seed) {
         for (var i = 0; i < GAME_CONFIG.field_width; i++) {
             for (var j = 0; j < GAME_CONFIG.field_height; j++) {
                 if(state['plot' + i + "_" + j].seedType == 0 && state['plot' + i + "_" + j].locked == 0) {
-                    showElement("sow" + seed, i, j);
+                    showElement("sow" + recipeID, i, j);
                 }
             }
         }
     }
     var data = {
         slug: state.slug,
-        seed: seed,
+        recipe_id: recipeID,
         password: localStorage.getItem('pwd_' + state.slug)
     };
     server.sendToServer('/action/buy', data, callback);

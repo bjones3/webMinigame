@@ -9,7 +9,7 @@ var Server = function(alertCallback, infoCallback) {
                         infoCallback(response.message);
                     }
                     if (response.state) {
-                        callback(response.state);
+                        callback(response.state,response.recipes);
                     }
                 } else if (this.status == 400) {
                     alertCallback(this.responseText);

@@ -10,6 +10,7 @@ import urlparse
 
 import game_config
 
+
 app = Flask(__name__)
 
 if os.environ.get('DEBUG_MODE') == '1':
@@ -18,6 +19,7 @@ else:
     DEBUG_MODE = False
 
 GAME_CONFIG = game_config.get_config(DEBUG_MODE)
+RECIPE_CONFIG = game_config.get_recipes()
 
 conn = None
 
@@ -55,7 +57,7 @@ def get_plot(game_state, x, y):
     return game_state['plot' + str(x) + "_" + str(y)]
 
 
-# add missing seeds, resources, and plots to game_state
+# add missing seed counts, resources, and plots to game_state
 # unlock first four plots
 # check to never run out of money
 def initialize_state(game_state):
@@ -78,8 +80,10 @@ def initialize_state(game_state):
         for j in range(2):
             get_plot(game_state, i, j)['locked'] = 0
     if total_seed_count == 0 and total_crops_planted == 0:
-        if game_state['resources']['cash'] < GAME_CONFIG['starting_resources'][resource]:
+        if game_state['resources']['cash'] < GAME_CONFIG['starting_resources']['cash']:
             game_state['resources']['cash'] = GAME_CONFIG['starting_resources']['cash']
+    if game_state.get('recipes') is None:
+        game_state['recipes'] = []
     return game_state
 
 
@@ -120,12 +124,14 @@ def get_admin_data():
         return data
 
 
-def make_response(game_state, message=None):
+def make_response(game_state, message=None, recipes=None):
     response = {
         'state': game_state
     }
     if message is not None:
         response['message'] = message
+    if recipes is not None:
+        response['recipes'] = recipes
     return jsonify(response)
 
 
@@ -181,7 +187,8 @@ def state(slug):
             'slug': slug,
             'password': password,
             'unlockCount': 0,
-            'seedCounts': {}
+            'seedCounts': {},
+            'recipes': ['a']
         }
         game_state = initialize_state(game_state)
         save_state(slug, game_state)
@@ -196,16 +203,16 @@ def buy():
     # safety checks
     if data['password'] != game_state['password']:
         return "Invalid password", 401
-    if game_state['resources']['cash'] < GAME_CONFIG['seeds'][data['seed']]['buyCost']:
+    if game_state['resources']['cash'] < RECIPE_CONFIG['recipes'][data['seed']]['cashCost']:
         message = "Not enough cash to buy a %s seed." % GAME_CONFIG['seeds'][data['seed']]['name']
         return make_response(game_state, message)
-    if game_state['resources']['carrots'] < GAME_CONFIG['seeds'][data['seed']]['carrotCost']:
+    if game_state['resources']['carrots'] < RECIPE_CONFIG['recipes'][data['seed']]['carrotsCost']:
         message = "Not enough carrots to buy a %s seed." % GAME_CONFIG['seeds'][data['seed']]['name']
         return make_response(game_state, message)
-    if game_state['resources']['grass'] < GAME_CONFIG['seeds'][data['seed']]['grassCost']:
+    if game_state['resources']['grass'] < RECIPE_CONFIG['recipes'][data['seed']]['grassCost']:
         message = "Not enough grass to buy a %s seed." % GAME_CONFIG['seeds'][data['seed']]['name']
         return make_response(game_state, message)
-    if game_state['resources']['fertilizer'] < GAME_CONFIG['seeds'][data['seed']]['fertilizerCost']:
+    if game_state['resources']['fertilizer'] < RECIPE_CONFIG['recipes'][data['seed']]['fertilizerCost']:
         message = "Not enough fertilizer to buy a %s seed." % GAME_CONFIG['seeds'][data['seed']]['name']
         return make_response(game_state, message)
     if game_state['seedCounts'][data['seed']] == GAME_CONFIG['max_seed_count']:
@@ -214,10 +221,10 @@ def buy():
 
     # update game_state
     game_state['seedCounts'][data['seed']] += 1
-    game_state['resources']['cash'] -= GAME_CONFIG['seeds'][data['seed']]['buyCost']
-    game_state['resources']['carrots'] -= GAME_CONFIG['seeds'][data['seed']]['carrotCost']
-    game_state['resources']['grass'] -= GAME_CONFIG['seeds'][data['seed']]['grassCost']
-    game_state['resources']['fertilizer'] -= GAME_CONFIG['seeds'][data['seed']]['fertilizerCost']
+    game_state['resources']['cash'] -= RECIPE_CONFIG['recipes'][data['seed']]['cashCost']
+    game_state['resources']['carrots'] -= RECIPE_CONFIG['recipes'][data['seed']]['carrotsCost']
+    game_state['resources']['grass'] -= RECIPE_CONFIG['recipes'][data['seed']]['grassCost']
+    game_state['resources']['fertilizer'] -= RECIPE_CONFIG['recipes'][data['seed']]['fertilizerCost']
 
     save_state(data['slug'], game_state)
 
@@ -278,7 +285,7 @@ def sow():
 
 @app.route('/action/harvest', methods=['GET', 'POST'])
 def harvest():
-    data = request.json  # data={x,y,password}
+    data = request.json  # data={slug,x,y,password}
     game_state = load_state(data['slug'])
 
     # safety checks
@@ -307,6 +314,18 @@ def harvest():
     game_state['seedCounts'][seed_type] = seed_count
     plot['seedType'] = 0
 
+    recipe_list = []
+    for recipe_id in RECIPE_CONFIG['recipes']:
+        recipe_list.append(recipe_id)
+    for resource in GAME_CONFIG['starting_resources']:
+        if game_state['resources'][resource] == 0:
+            for recipe_id in RECIPE_CONFIG['recipes']:
+                if RECIPE_CONFIG['recipes'][recipe_id][resource + 'Cost'] > 0:
+                    recipe_list.remove(recipe_id)
+    for recipe_id in recipe_list:
+        if recipe_id not in game_state['recipes']:
+            game_state['recipes'].append(recipe_id)
+
     save_state(data['slug'], game_state)
 
     message = "Harvested a %s." % GAME_CONFIG['seeds'][seed_type]['name']
@@ -315,7 +334,7 @@ def harvest():
 
 @app.route('/action/unlock', methods=['GET', 'POST'])
 def unlock():
-    data = request.json  # data={x,y,password}
+    data = request.json  # data={slug,x,y,password}
     game_state = load_state(data['slug'])
 
     # safety checks
@@ -337,6 +356,19 @@ def unlock():
 
     message = "Unlocked plot for $%s." % plot_price
     return make_response(game_state, message)
+
+
+@app.route('/recipe', methods=['POST'])
+def recipe():
+    data = request.json  # data={slug}
+    game_state = load_state(data['slug'])
+
+    known_recipes = {}
+    for recipe_id in RECIPE_CONFIG['recipes']:
+        if recipe_id in game_state['recipes']:
+            known_recipes[recipe_id] = RECIPE_CONFIG['recipes'][recipe_id]
+
+    return make_response(game_state, recipes=known_recipes)
 
 
 @app.route('/styles.css')

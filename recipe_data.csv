@@ -1,17 +1,17 @@
-id,name,cashCost,carrotsCost,grassCost,fertilizerCost
-a,Potato,5,0,0,0
-b,Cauliflower,20,0,0,0
-c,Carrot,100,0,0,0
-d,Leek,300,0,0,0
-e,Broccoli,1000,0,0,0
-f,Turnip,1500,0,0,0
-g,Beet,5000,0,0,1
-h,Bell Pepper,15000,0,0,2
-i,Eggplant,40000,0,0,3
-j,Chili Pepper,60000,0,0,5
-k,Tomato,300000,0,0,9
-l,Beans,1000000,0,0,15
-m,Garlic,10000000,0,0,30
-n,Grass,200,0,0,0
-o,Pig,200,10,0,0
-p,Cow,2000,0,25,0
+id,seed_id,name,cashCost,carrotsCost,grassCost,fertilizerCost
+a,a,Potato,5,0,0,0
+b,b,Cauliflower,20,0,0,0
+c,c,Carrot,100,0,0,0
+d,d,Leek,300,0,0,0
+e,e,Broccoli,1000,0,0,0
+f,f,Turnip,1500,0,0,0
+g,g,Beet,5000,0,0,1
+h,h,Bell Pepper,15000,0,0,2
+i,i,Eggplant,40000,0,0,3
+j,j,Chili Pepper,60000,0,0,5
+k,k,Tomato,300000,0,0,9
+l,l,Beans,1000000,0,0,15
+m,m,Garlic,10000000,0,0,30
+n,n,Grass,200,0,0,0
+o,o,Pig,200,10,0,0
+p,p,Cow,2000,0,25,0

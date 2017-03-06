@@ -49,6 +49,6 @@ class TestWebserver(unittest.TestCase):
         first_seed = self.game_config['firstSeed']
         rv = self.post('/action/buy', {'slug': slug,
                                        'password': state['password'],
-                                       'seed': first_seed})
+                                       'recipe_id': first_seed})
         new_state = rv['state']
         self.assertEquals(new_state['seedCounts'][first_seed], 1, "Could not buy initial seed")

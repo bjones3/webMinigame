@@ -31,6 +31,7 @@ def get_config(debug_mode=False):
             seed['carrotYield'] = int(seed['carrotYield'])
             seed['grassYield'] = int(seed['grassYield'])
             seed['fertilizerYield'] = int(seed['fertilizerYield'])
+            seed['probability'] = float(seed['probability'])
             if debug_mode:
                 seed['harvestTimeSeconds'] = math.ceil(int(seed['harvestTimeSeconds']) / 10.0)
             else:

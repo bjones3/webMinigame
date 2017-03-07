@@ -7,6 +7,7 @@ import re
 import time
 import psycopg2
 import urlparse
+import random
 
 import game_config
 
@@ -133,6 +134,14 @@ def make_response(game_state, message=None, recipes=None):
     if recipes is not None:
         response['recipes'] = recipes
     return jsonify(response)
+
+
+def generate(seed_id):
+    x = random.random()
+    if x < GAME_CONFIG['seeds'][seed_id]['probability']:
+        return 1
+    else:
+        return 0
 
 
 @app.route('/')
@@ -303,6 +312,10 @@ def harvest():
     # update game_state
     seed_count = game_state['seedCounts'][seed_type]
     seed_count += seed_data['seedYield']
+    bonus = 0
+    while (generate(seed_type)) == 1:
+        seed_count += 1
+        bonus += 1
     game_state['resources']['cash'] += seed_data['cashYield']
     game_state['resources']['carrots'] += seed_data['carrotYield']
     game_state['resources']['grass'] += seed_data['grassYield']
@@ -328,7 +341,12 @@ def harvest():
 
     save_state(data['slug'], game_state)
 
-    message = "Harvested a %s." % GAME_CONFIG['seeds'][seed_type]['name']
+    message = 'Harvested a %s.' % GAME_CONFIG['seeds'][seed_type]['name']
+    if bonus == 1:
+        message += ' Got 1 bonus seed!'
+    if bonus > 1:
+        message += ' Got %s bonus seeds!' % bonus
+
     return make_response(game_state, message)
 
 

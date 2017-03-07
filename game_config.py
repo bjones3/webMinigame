@@ -37,7 +37,12 @@ def get_config(debug_mode=False):
             else:
                 seed['harvestTimeSeconds'] = int(seed['harvestTimeSeconds'])
             seed_id = seed.pop('id')
+            y = {}
+            y.update({'seedYield': seed.pop('seedYield'), 'cashYield': seed.pop('cashYield'),
+                      'carrotYield': seed.pop('carrotYield'), 'grassYield': seed.pop('grassYield'),
+                      'fertilizerYield': seed.pop('fertilizerYield')})
             config['seeds'][seed_id] = seed
+            config['seeds'][seed_id]['yield'] = y
     return config
 
 

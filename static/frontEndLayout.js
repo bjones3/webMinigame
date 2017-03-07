@@ -366,7 +366,7 @@ var createSeedInfo = function(id) {
     seedInfoMenu.appendChild(divCost);
 
     for (var cost in RECIPE_CONFIG[id]) {
-        if (RECIPE_CONFIG[id][cost] > 0) {
+        if (RECIPE_CONFIG[id].hasOwnProperty(cost) && RECIPE_CONFIG[id][cost] > 0) {
             var div = document.createElement("DIV");
                 var img = document.createElement("IMG");
                 if (cost == 'cashCost') {img.src = "/static/cash.png";}
@@ -390,20 +390,20 @@ var createSeedInfo = function(id) {
         divYield.innerHTML = "Yield:";
     seedInfoMenu.appendChild(divYield);
 
-    for (var yield in GAME_CONFIG.seeds[id]) {
-        if (GAME_CONFIG.seeds[id][yield] > 0 && yield.includes("Yield")) {
+    for (var yieldType in GAME_CONFIG.seeds[id].yield) {
+        if (GAME_CONFIG.seeds[id].yield[yieldType] > 0) {
             var div = document.createElement("DIV");
                 var img = document.createElement("IMG");
-                if (yield == 'seedYield') {img.src = GAME_CONFIG.seeds[id].imageSmall}
-                if (yield == 'cashYield') {img.src = "/static/cash.png";}
-                if (yield == 'carrotYield') {img.src = "/static/carrot_s.png";}
-                if (yield == 'grassYield') {img.src = "/static/grass_s.png";}
-                if (yield == 'fertilizerYield') {img.src = "/static/fertilizer_s.png";}
+                if (yieldType == 'seedYield') {img.src = GAME_CONFIG.seeds[id].imageSmall}
+                if (yieldType == 'cashYield') {img.src = "/static/cash.png";}
+                if (yieldType == 'carrotYield') {img.src = "/static/carrot_s.png";}
+                if (yieldType == 'grassYield') {img.src = "/static/grass_s.png";}
+                if (yieldType == 'fertilizerYield') {img.src = "/static/fertilizer_s.png";}
                 img.style.height = '20px';
                 img.style.display = 'inline';
 
                 var divYieldMult = document.createElement("DIV");
-                divYieldMult.innerHTML = "x" + GAME_CONFIG.seeds[id][yield];
+                divYieldMult.innerHTML = "x" + GAME_CONFIG.seeds[id].yield[yieldType];
                 divYieldMult.style.display = 'inline';
             div.appendChild(img);
             div.appendChild(divYieldMult);
@@ -416,6 +416,9 @@ var createSeedInfo = function(id) {
         divHarvestTime.innerHTML = "Harvest Time: " + toHHMMSS(GAME_CONFIG.seeds[id].harvestTimeSeconds);
     seedInfoMenu.appendChild(divHarvestTime);
 
+    var divBonus = document.createElement("DIV");
+        divBonus.innerHTML = "Bonus seed chance: " + GAME_CONFIG.seeds[id].probability;
+    seedInfoMenu.appendChild(divBonus);
 }
 
 var createSeedMenu = function() {

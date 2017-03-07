@@ -311,19 +311,19 @@ def harvest():
 
     # update game_state
     seed_count = game_state['seedCounts'][seed_type]
-    seed_count += seed_data['seedYield']
+    seed_count += seed_data['yield']['seedYield']
     bonus = 0
-    while (generate(seed_type)) == 1:
+    while generate(seed_type) == 1:
         seed_count += 1
         bonus += 1
-    game_state['resources']['cash'] += seed_data['cashYield']
-    game_state['resources']['carrots'] += seed_data['carrotYield']
-    game_state['resources']['grass'] += seed_data['grassYield']
-    game_state['resources']['fertilizer'] += seed_data['fertilizerYield']
+    game_state['resources']['cash'] += seed_data['yield']['cashYield']
+    game_state['resources']['carrots'] += seed_data['yield']['carrotYield']
+    game_state['resources']['grass'] += seed_data['yield']['grassYield']
+    game_state['resources']['fertilizer'] += seed_data['yield']['fertilizerYield']
     if seed_count > GAME_CONFIG['max_seed_count']:
         overflow = seed_count - GAME_CONFIG['max_seed_count']
         seed_count = GAME_CONFIG['max_seed_count']
-        game_state['resources']['cash'] += seed_data['cashYield'] * overflow
+        game_state['resources']['cash'] += seed_data['yield']['cashYield'] * overflow
     game_state['seedCounts'][seed_type] = seed_count
     plot['seedType'] = 0
 

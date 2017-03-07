@@ -338,6 +338,86 @@ var buyPlot = function() {
     }
 }
 
+var createSeedInfo = function(id) {
+    for (var recipe_id in RECIPE_CONFIG) {
+        document.getElementById('seedInfoButton' + recipe_id).style.backgroundColor = 'white';
+        document.getElementById('seedInfoButton' + recipe_id).style.color = 'black';
+    }
+    document.getElementById('seedInfoButton' + id).style.backgroundColor = 'blue';
+    document.getElementById('seedInfoButton' + id).style.color = 'white';
+
+    var seedInfoMenu = document.getElementById('seedInfoContent');
+    while (seedInfoMenu.firstChild) {
+        seedInfoMenu.removeChild(seedInfoMenu.firstChild);
+    }
+    var div = document.createElement("DIV");
+        var img = document.createElement("IMG");
+            img.src = GAME_CONFIG.seeds[id].imageSmall;
+            img.style.display = 'inline';
+        var divName = document.createElement("DIV");
+            divName.innerHTML = GAME_CONFIG.seeds[id].name;
+            divName.style.display = 'inline';
+    div.appendChild(img);
+    div.appendChild(divName);
+    var divCost = document.createElement("DIV");
+        divCost.innerHTML = 'Cost:';
+
+    seedInfoMenu.appendChild(div);
+    seedInfoMenu.appendChild(divCost);
+
+    for (var cost in RECIPE_CONFIG[id]) {
+        if (RECIPE_CONFIG[id][cost] > 0) {
+            var div = document.createElement("DIV");
+                var img = document.createElement("IMG");
+                if (cost == 'cashCost') {img.src = "/static/cash.png";}
+                if (cost == 'carrotsCost') {img.src = "/static/carrot_s.png";}
+                if (cost == 'grassCost') {img.src = "/static/grass_s.png";}
+                if (cost == 'fertilizerCost') {img.src = "/static/fertilizer_s.png";}
+                img.style.height = '20px';
+                img.style.display = 'inline';
+
+                var divCost = document.createElement("DIV");
+                divCost.innerHTML = "x" + RECIPE_CONFIG[id][cost];
+                divCost.style.display = 'inline';
+            div.appendChild(img);
+            div.appendChild(divCost);
+
+            seedInfoMenu.appendChild(div);
+        }
+    }
+
+    var divYield = document.createElement("DIV");
+        divYield.innerHTML = "Yield:";
+    seedInfoMenu.appendChild(divYield);
+
+    for (var yield in GAME_CONFIG.seeds[id]) {
+        if (GAME_CONFIG.seeds[id][yield] > 0 && yield.includes("Yield")) {
+            var div = document.createElement("DIV");
+                var img = document.createElement("IMG");
+                if (yield == 'seedYield') {img.src = GAME_CONFIG.seeds[id].imageSmall}
+                if (yield == 'cashYield') {img.src = "/static/cash.png";}
+                if (yield == 'carrotYield') {img.src = "/static/carrot_s.png";}
+                if (yield == 'grassYield') {img.src = "/static/grass_s.png";}
+                if (yield == 'fertilizerYield') {img.src = "/static/fertilizer_s.png";}
+                img.style.height = '20px';
+                img.style.display = 'inline';
+
+                var divYieldMult = document.createElement("DIV");
+                divYieldMult.innerHTML = "x" + GAME_CONFIG.seeds[id][yield];
+                divYieldMult.style.display = 'inline';
+            div.appendChild(img);
+            div.appendChild(divYieldMult);
+
+            seedInfoMenu.appendChild(div);
+        }
+    }
+
+    var divHarvestTime = document.createElement("DIV");
+        divHarvestTime.innerHTML = "Harvest Time: " + toHHMMSS(GAME_CONFIG.seeds[id].harvestTimeSeconds);
+    seedInfoMenu.appendChild(divHarvestTime);
+
+}
+
 var createSeedMenu = function() {
     for (var id in RECIPE_CONFIG) {
         if (RECIPE_CONFIG.hasOwnProperty(id) && document.getElementById("row" + id) == null) {
@@ -345,6 +425,14 @@ var createSeedMenu = function() {
                 var tr = document.createElement("TR");
                 tr.id = "row" + id;
             container.appendChild(tr);
+
+                var td0 = document.createElement("TD");
+                    var div0 = document.createElement("DIV");
+                    div0.id = 'seedInfoButton' + id;
+                    div0.classList.add('seedInfoButton');
+                    div0.innerHTML = "i";
+                    div0.addEventListener('click',createListener(createSeedInfo,id));
+                td0.appendChild(div0);
 
                 var td1 = document.createElement("TD");
                     var img1 = document.createElement("IMG");
@@ -360,6 +448,7 @@ var createSeedMenu = function() {
                 var td3 = document.createElement("TD");
                     var div3 = document.createElement("DIV");
                     div3.id = "sell" + id;
+                    div3.innerHTML = "$" + GAME_CONFIG.seeds[id].sellCost;
                     div3.classList.add('border');
                     div3.addEventListener('click',createListener(sell,id));
                 td3.appendChild(div3);
@@ -367,55 +456,42 @@ var createSeedMenu = function() {
                 var td4 = document.createElement("TD");
                     var div4 = document.createElement("DIV");
                     div4.id = "owned" + id;
+                    div4.innerHTML = state.seedCounts[id];
                 td4.appendChild(div4);
 
                 var td5 = document.createElement("TD");
                     var div5 = document.createElement("DIV");
                     div5.classList.add('border');
                     div5.id = 'buy' + id;
+                    div5.innerHTML = "$" + RECIPE_CONFIG[id].cashCost;
                     div5.addEventListener('click',createListener(buy,id));
                         var div5a = document.createElement("DIV");
                             div5a.id = "buy" + id + "_label";
                     div5.appendChild(div5a);
                 td5.appendChild(div5);
 
-                var td6 = document.createElement("TD");
-                    var img6 = document.createElement("IMG");
-                    img6.id = "resource" + id;
-                    img6.style.height = '20px';
-                td6.appendChild(img6);
-
-                var td7 = document.createElement("TD");
-                    var div7 = document.createElement("DIV");
-                    div7.id = "resourceCost" + id;
-                td7.appendChild(div7);
-
+            tr.appendChild(td0);
             tr.appendChild(td1);
             tr.appendChild(td2);
             tr.appendChild(td3);
             tr.appendChild(td4);
             tr.appendChild(td5);
-            tr.appendChild(td6);
-            tr.appendChild(td7);
-
-            if (RECIPE_CONFIG[id].carrotsCost > 0) {
-                document.getElementById("resource" + id).src = "/static/carrot_s.png";
-                document.getElementById("resourceCost" + id).innerHTML = "x" + RECIPE_CONFIG[id].carrotsCost;
-            }
-            if (RECIPE_CONFIG[id].grassCost > 0) {
-                document.getElementById("resource" + id).src = "/static/grass_s.png";
-                document.getElementById("resourceCost" + id).innerHTML = "x" + RECIPE_CONFIG[id].grassCost;
-            }
-            if (RECIPE_CONFIG[id].fertilizerCost > 0) {
-                document.getElementById("resource" + id).src = "/static/fertilizer_s.png";
-                document.getElementById("resourceCost" + id).innerHTML = "x" + RECIPE_CONFIG[id].fertilizerCost;
-            }
-            document.getElementById("owned" + id).innerHTML = state.seedCounts[id];
-            document.getElementById("buy" + id + "_label").innerHTML = "$" + RECIPE_CONFIG[id].cashCost;
-            document.getElementById("sell" + id).innerHTML = "$" + GAME_CONFIG.seeds[id].sellCost;
         }
     }
 }
+
+var toHHMMSS = function(sec_num) {
+                    var hours   = Math.floor(sec_num / 3600);
+                    var minutes = Math.floor((sec_num % 3600) / 60);
+                    var seconds = Math.floor(sec_num % 60);
+
+                    if (hours   < 10) {hours   = "0" + hours;}
+                    if (minutes < 10) {minutes = "0" + minutes;}
+                    if (seconds < 10) {seconds = "0" + seconds;}
+
+                    if (hours   <= 0) {return minutes + ':' + seconds;}
+                    return hours + ':' + minutes + ':' + seconds;
+                }
 
 var createListener = function(fn,arg) {
     return function(){fn(arg);};

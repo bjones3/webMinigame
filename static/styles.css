@@ -215,3 +215,24 @@ div#notificationPanel {
     border-color: transparent transparent black transparent;
 }
 table#seedCosts img {height:20px;}
+
+div.seedInfoContent img {height:30px;}
+
+.seedInfoButton {
+    border: 2px solid black;
+    border-radius: 50%;
+    width: 17px;
+    cursor: pointer;
+}
+
+.seedInfoContent {
+    display: block;
+    width: 100px;
+    border: 2px solid black;
+    position: fixed;
+    right: 0;
+    background-color: white;
+    padding: 4px;
+}
+
+.seedInfoButton:hover .seedInfoContent {display: none;}

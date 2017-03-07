@@ -11,20 +11,25 @@
 <div class="menuPanel">
     <table id = "seedCosts" style = "text-align: center;">
         <tr>
-            {% for heading in ('', 'Seed', 'Sell', 'Owned', 'Buy',) %}
+            {% for heading in ('', '', 'Seed', 'Sell', 'Owned', 'Buy',) %}
             <td>
                 {{ heading }}
             </td>
             {% endfor %}
-            <td colspan="2">Extra Cost</td>
         </tr>
     </table>
+
+    <div id="seedInfoContent" class="seedInfoContent">
+        <div>
+            <img id="seedInfoImg" style="display: inline;">
+            <div id="seedInfoName" style="display: inline;"></div>
+        </div>
+    </div>
 
     <div id = "cash" class = "resource"></div>
     <div id = "carrots" class = "resource"></div>
     <div id = "grass" class = "resource"></div>
     <div id = "fertilizer" class = "resource"></div>
-
 
     <div class="dropdown">
         <button class="dropbtn">Shop</button>
@@ -33,6 +38,7 @@
         </div>
     </div>
 </div>
+
 
 <div class="gamePanel">
 

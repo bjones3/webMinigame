@@ -166,7 +166,7 @@ def admin_post():
     data = get_admin_data()
     if request.form['password'] != data['password']:
         return "Wrong password", 401
-    return render_template('admin.html', data=get_admin_data())
+    return render_template('admin.html', data=get_admin_data(), recipes=RECIPE_CONFIG['recipes'], seeds=GAME_CONFIG['seeds'])
 
 
 @app.route('/game-config')

@@ -6,6 +6,15 @@
     <link rel="shortcut icon" href="/static/eggplant_s.png">
 </head>
 <body>
-Total number of games: {{ data['game_count'] }}
+<p>Total number of games: {{data['game_count']}}</p>
+
+<p>All recipes:
+    {% for i in recipes %}
+        <dt>{{i}}:{{recipes[i]}}
+            <dd>Harvest Time: {{seeds[recipes[i]['seed_id']]['harvestTimeSeconds']}}</dd>
+            <dd>Yield: {{seeds[recipes[i]['seed_id']]['yield']}}</dd>
+        </dt>
+    {% endfor %}
+</p>
 </body>
 </html>

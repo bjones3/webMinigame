@@ -396,7 +396,7 @@ var createSeedInfo = function(id) {
                 var img = document.createElement("IMG");
                 if (yieldType == 'seedYield') {img.src = GAME_CONFIG.seeds[id].imageSmall}
                 if (yieldType == 'cashYield') {img.src = "/static/cash.png";}
-                if (yieldType == 'carrotYield') {img.src = "/static/carrot_s.png";}
+                if (yieldType == 'carrotsYield') {img.src = "/static/carrot_s.png";}
                 if (yieldType == 'grassYield') {img.src = "/static/grass_s.png";}
                 if (yieldType == 'fertilizerYield') {img.src = "/static/fertilizer_s.png";}
                 img.style.height = '20px';
@@ -484,17 +484,17 @@ var createSeedMenu = function() {
 }
 
 var toHHMMSS = function(sec_num) {
-                    var hours   = Math.floor(sec_num / 3600);
-                    var minutes = Math.floor((sec_num % 3600) / 60);
-                    var seconds = Math.floor(sec_num % 60);
+    var hours   = Math.floor(sec_num / 3600);
+    var minutes = Math.floor((sec_num % 3600) / 60);
+    var seconds = Math.floor(sec_num % 60);
 
-                    if (hours   < 10) {hours   = "0" + hours;}
-                    if (minutes < 10) {minutes = "0" + minutes;}
-                    if (seconds < 10) {seconds = "0" + seconds;}
+    if (hours   < 10) {hours   = "0" + hours;}
+    if (minutes < 10) {minutes = "0" + minutes;}
+    if (seconds < 10) {seconds = "0" + seconds;}
 
-                    if (hours   <= 0) {return minutes + ':' + seconds;}
-                    return hours + ':' + minutes + ':' + seconds;
-                }
+    if (hours   <= 0) {return minutes + ':' + seconds;}
+    return hours + ':' + minutes + ':' + seconds;
+}
 
 var createListener = function(fn,arg) {
     return function(){fn(arg);};

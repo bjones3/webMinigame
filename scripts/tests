@@ -1,0 +1,4 @@
+#!/bin/bash
+
+coverage run --include="./*.py" --omit="./tests/*" -m unittest discover
+coverage report

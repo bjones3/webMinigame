@@ -1,4 +1,4 @@
-id,name,imageSmall,imageMedium,imageLarge,sellCost,seedYield,cashYield,carrotYield,grassYield,fertilizerYield,harvestTimeSeconds,probability
+id,name,imageSmall,imageMedium,imageLarge,sellCost,seedYield,cashYield,carrotsYield,grassYield,fertilizerYield,harvestTimeSeconds,probability
 a,Potato,/static/potato_s.png,/static/potato_m.png,/static/potato_l.png,1,2,2,0,0,0,18,0.25
 b,Cauliflower,/static/cauliflower_s.png,/static/cauliflower_m.png,/static/cauliflower_l.png,5,2,7,0,0,0,75,0.25
 c,Carrot,/static/carrot_s.png,/static/carrot_m.png,/static/carrot_l.png,12,1,15,5,0,0,75,0.25

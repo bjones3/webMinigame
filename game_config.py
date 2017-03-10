@@ -28,7 +28,7 @@ def get_config(debug_mode=False):
             seed['sellCost'] = int(seed['sellCost'])
             seed['seedYield'] = int(seed['seedYield'])
             seed['cashYield'] = int(seed['cashYield'])
-            seed['carrotYield'] = int(seed['carrotYield'])
+            seed['carrotsYield'] = int(seed['carrotsYield'])
             seed['grassYield'] = int(seed['grassYield'])
             seed['fertilizerYield'] = int(seed['fertilizerYield'])
             seed['probability'] = float(seed['probability'])
@@ -39,7 +39,7 @@ def get_config(debug_mode=False):
             seed_id = seed.pop('id')
             y = {}
             y.update({'seedYield': seed.pop('seedYield'), 'cashYield': seed.pop('cashYield'),
-                      'carrotYield': seed.pop('carrotYield'), 'grassYield': seed.pop('grassYield'),
+                      'carrotsYield': seed.pop('carrotsYield'), 'grassYield': seed.pop('grassYield'),
                       'fertilizerYield': seed.pop('fertilizerYield')})
             config['seeds'][seed_id] = seed
             config['seeds'][seed_id]['yield'] = y

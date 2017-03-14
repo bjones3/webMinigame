@@ -33,6 +33,7 @@ div.sowPlantButton {
     border-radius: 5px;
     background-repeat: no-repeat;
     background-size: contain;
+    cursor: pointer;
 }
 div.invisPlantContainer {
     display: none;
@@ -92,6 +93,7 @@ button.button {
     top: 144px;
     left: 10.5px;
     border: 2px solid black;
+    cursor: pointer;
 }
 div.resource {
     position: relative;

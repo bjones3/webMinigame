@@ -31,7 +31,7 @@ class TestWebserver(GardenSimTest):
         return self.post('/game-state/' + slug,
                          {'password': self.password, 'newOrLoad': 'new'})['state']
 
-    @mock.patch('webserver.get_leaderboard_data')
+    @mock.patch('db.get_leaderboard_data')
     def test_homepage(self, get_leaderboard_data):
         get_leaderboard_data.side_effect = [
             [('Player1', 1000, 10)],

@@ -1,8 +1,8 @@
 import uuid
 
 from werkzeug.exceptions import HTTPException
-
-from webserver import GameState, GAME_CONFIG
+from game import GameState
+from webserver import GAME_CONFIG
 from tests.common import GardenSimTest
 
 

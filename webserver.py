@@ -97,12 +97,15 @@ class GameState(object):
         # temp code for data migration of previous game_states
         if self.data.get('plots') is None:
             self.data['plots'] = {}
+        if self.data.get('recipes') is None:
+            self.data['recipes'] = []
         if 'unlockCount' in self.data:
             del self.data['unlockCount']
         for i in range(GAME_CONFIG['field_width']):
             for j in range(GAME_CONFIG['field_height']):
                 if 'plot' + str(i) + '_' + str(j) in self.data:
                     if self.data['plot' + str(i) + '_' + str(j)]['locked'] == 0:
+                        self.data['plots'][str(i) + '_' + str(j)] = {}
                         self.data['plots'][str(i) + '_' + str(j)]['seedType'] = self.data['plot' + str(i) + '_' + str(j)]['seedType']
                         self.data['plots'][str(i) + '_' + str(j)]['sowTime'] = self.data['plot' + str(i) + '_' + str(j)]['sowTime']
                     del self.data['plot' + str(i) + '_' + str(j)]

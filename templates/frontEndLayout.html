@@ -26,10 +26,9 @@
         </div>
     </div>
 
-    <div id = "cash" class = "resource"></div>
-    <div id = "carrots" class = "resource"></div>
-    <div id = "grass" class = "resource"></div>
-    <div id = "fertilizer" class = "resource"></div>
+    {% for resource_id in resources %}
+      <div id = "resource_{{ resource_id }}" class = "resource"></div>
+    {% endfor %}
 
     <div class="dropdown">
         <button class="dropbtn">Shop</button>

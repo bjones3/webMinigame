@@ -59,7 +59,7 @@ def admin_post():
     data = db.get_admin_data()
     if request.form['password'] != data['password']:
         raise Unauthorized("Invalid password")
-    return render_template('admin.html', data=data, recipes=CONFIG.recipes, seeds=CONFIG.seeds)
+    return render_template('admin.html', data=data, config=CONFIG)
 
 
 @app.route('/game-config')

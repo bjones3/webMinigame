@@ -1,17 +1,17 @@
 id,seed_id,name
-a,a,Potato
-b,b,Cauliflower
-c,c,Carrot
-d,d,Leek
-e,e,Broccoli
-f,f,Turnip
-g,g,Beet
-h,h,Bell Pepper
-i,i,Eggplant
-j,j,Chili Pepper
-k,k,Tomato
-l,l,Beans
-m,m,Garlic
-n,n,Grass
-o,o,Pig
-p,p,Cow
+a,seed0,Potato
+b,seed1,Cauliflower
+c,seed2,Carrot
+d,seed3,Leek
+e,seed4,Broccoli
+f,seed5,Turnip
+g,seed6,Beet
+h,seed7,Bell Pepper
+i,seed8,Eggplant
+j,seed9,Chili Pepper
+k,seed10,Tomato
+l,seed11,Beans
+m,seed12,Garlic
+n,seed13,Grass
+o,seed14,Pig
+p,seed15,Cow

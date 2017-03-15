@@ -124,16 +124,17 @@ class GameState(object):
 
     def buy(self, recipe_id):
         recipe_data = CONFIG.recipes[recipe_id]
+        seed_id = recipe_data['seed_id']
         for resource in recipe_data['cost']:
             if self.get_resource_count(resource) < recipe_data['cost'][resource]:
                 resource_name = CONFIG.resources[resource]['name']
                 message = "Not enough " + resource_name + " to buy a %s seed." % recipe_data['name']
                 return message
-            if self.data['seedCounts'][recipe_id] >= CONFIG.general['max_seed_count']:
+            if self.get_seed_count(seed_id) >= CONFIG.general['max_seed_count']:
                 message = "Can't buy any more %s seeds." % recipe_data['name']
                 return message
             self.data['resources'][resource] -= recipe_data['cost'][resource]
-        self.data['seedCounts'][recipe_id] += 1
+        self.data['seedCounts'][seed_id] += 1
         message = "Bought a %s seed." % recipe_data['name']
         return message
 

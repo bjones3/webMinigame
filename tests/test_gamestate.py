@@ -28,7 +28,7 @@ class TestGameState(GardenSimTest):
         plot = gs.get_plot(0, 0)
         plot['sowTime'] -= seed_data['harvestTimeSeconds'] * 1000 + 3000  # set plant time to long enough ago that we can harvest
         cash_before = gs.data['resources'][CONFIG.CASH_RESOURCE]
-        gs.data['seedCounts'][recipe_id] = CONFIG.general['max_seed_count']
+        gs.data['seedCounts'][seed_id] = CONFIG.general['max_seed_count']
         msg = gs.harvest(0, 0)
         # hacky way to extract number of seeds harvested
         seeds_generated = seed_data['seed']

@@ -8,14 +8,44 @@
 <body>
 <p>Total number of games: {{data['game_count']}}</p>
 
-<p>All recipes:
-    {% for i in config.recipes %}
-        <dt>{{i}}:{{config.recipes[i]}}
-            <dd>Harvest Time: {{config.seeds[config.recipes[i]['seed_id']]['harvestTimeSeconds']}}</dd>
-            <dd>Yield: {{config.seeds[config.recipes[i]['seed_id']]['yield']}}</dd>
-        </dt>
-    {% endfor %}
-</p>
+<table border="1">
+  <thead>
+    <th>Recipe</th>
+    <th>Seed</th>
+    <th>Yield</th>
+  </thead>
+  {% for seed in config.seeds.values() %}
+    <tr>
+      <td>
+        {% for recipe in config.recipes.values() %}
+          {% if recipe['seed_id'] == seed['id'] %}
+            <li>{{ recipe['name'] }}</li>
+            <ul>
+              {% for res, qty in recipe['cost'].items() %}
+                <li><img height=20 src="{{ config.resources[res]['imageUrl'] }}"/> {{ config.resources[res]['name'] }} x {{ qty }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        {% endfor %}
+      </td>
+      <td>
+        {{ seed['name'] }}
+        <img height=80 src="{{ seed['imageMedium'] }}"/>
+      </td>
+      <td>
+        {% for res, qty in seed['yield'].items() %}
+          <li><img height=20 src="{{ config.resources[res]['imageUrl'] }}"/> {{ config.resources[res]['name'] }} x {{ qty }}</li>
+        {% endfor %}
+        {% if seed['seed'] > 0 %}
+          <li><img height=20 src="{{ seed['imageSmall'] }}"/> {{ seed['name'] }} seed x {{ seed['seed'] }}</li>
+        {% endif %}
+        {% if seed['probability'] > 0 %}
+          BONUS: {{ seed['probability'] * 100 }}%
+        {% endif %}
+      </td>
+    </tr>
+  {% endfor %}
+</table>
 
 <hr />
 

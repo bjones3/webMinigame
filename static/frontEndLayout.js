@@ -50,12 +50,13 @@ var gettingStarted = function() {
 }
 var afterBuy = function() {
     var buyBtn = document.getElementById("buya");
-    var sowBtn = document.getElementsByClassName("sowPlantButton");
+    var sowBtn = document.getElementsByClassName("sowBtn");
     var tooltip = document.getElementsByClassName("tooltiptext");
     for(var i = 0; i < tooltip.length; i++) {
         tooltip[i].style.display = "none";
     }
-    toolTip("Plant seed", "sowa0_0");
+    createSowButton('a')
+    toolTip("Plant seed", "sowBtna0_0");
     buyBtn.style.animationIterationCount = '0';
     for (var i = 0; i < sowBtn.length; i++) {
         sowBtn[i].style.animationName = 'borderChange';
@@ -65,7 +66,7 @@ var afterBuy = function() {
     }
 }
 var afterSow = function() {
-    var sowBtn = document.getElementsByClassName("sowPlantButton");
+    var sowBtn = document.getElementsByClassName("sowBtn");
     var tooltip = document.getElementsByClassName("tooltiptext");
     for(var i = 0; i < tooltip.length; i++) {
         tooltip[i].style.display = "none";
@@ -109,31 +110,31 @@ var loadGameConfig = function() {
     server.getFromServer("/game-config", gameConfigLoaded);
 }
 
+var plotStatus = function(status, x, y) {
+    document.getElementById('plot' + x + '_' + y).classList.remove('sowable', 'growing', 'harvestable', 'locked');
+    document.getElementById('plot' + x + '_' + y).classList.add(status);
+}
 
 
 var reset = function() {
     for (var i = 0; i < GAME_CONFIG.field_width; i++) {
         for (var j = 0; j < GAME_CONFIG.field_height; j++) {
             if (state.plots.hasOwnProperty(i + "_" + j)) {
-                hideElement("lock", i, j);
                 if (state.plots[i + "_" + j].seedType != 0) {
-                    for (var seed in GAME_CONFIG.seeds) {
-                        hideElement("sow" + seed, i, j);
-                    }
+                    plotStatus('growing', i, j)
                     var growingImage = showElement("growing", i, j);
                     growingImage.style.backgroundImage = "url(" + GAME_CONFIG.seeds[state.plots[i + "_" + j].seedType].imageLarge + ")";
-                    hideElement("soil", i, j);
-                    showElement("progressBar", i, j);
+
                 } else {
+                    plotStatus('sowable', i, j)
                     for (var seed in GAME_CONFIG.seeds) {
                         if (state.seedCounts[seed] > 0) {
-                            showElement("sow" + seed, i, j);
+                            hideElement("sowBtn" + seed, i, j);
                         }
                     }
-                    hideElement("growing", i, j);
-                    showElement("soil", i, j);
-                    hideElement("progressBar", i, j);
                 }
+            } else {
+                plotStatus('locked', i, j)
             }
         }
     }
@@ -171,6 +172,7 @@ var buy = function(recipeID) {
     }
     var callback = function(newState) {
         state = newState;
+        createSowButton(recipeID);
         document.getElementById("owned" + recipeID).innerHTML = state.seedCounts[recipeID];
         for (var resource in state.resources) {
             if (state.resources.hasOwnProperty(resource)) {
@@ -182,7 +184,7 @@ var buy = function(recipeID) {
             for (var j = 0; j < GAME_CONFIG.field_height; j++) {
                 if (state.plots.hasOwnProperty(i + "_" + j)) {
                     if(state.plots[i + "_" + j].seedType == 0) {
-                        showElement("sow" + recipeID, i, j);
+                        showElement("sowBtn" + recipeID, i, j);
                     }
                 }
             }
@@ -208,7 +210,7 @@ var sell = function(seed) {
         for (var i = 0; i < GAME_CONFIG.field_width; i++) {
             for (var j = 0; j < GAME_CONFIG.field_height; j++) {
                 if(state.seedCounts[seed] == 0) {
-                    hideElement("sow" + seed, i, j);
+                    hideElement("sowBtn" + seed, i, j);
                 }
             }
         }
@@ -232,25 +234,15 @@ var sow = function(x, y, seed) {
     var callback = function(newState) {
         state = newState;
         document.getElementById("owned" + seed).innerHTML = state.seedCounts[seed];
-        var plotBox = document.getElementById("plot" + x + "_" + y);
-        var sowButtons = plotBox.getElementsByClassName("sowPlantButton");
-        for(var i = 0; i < sowButtons.length; i++) {
-            sowButtons[i].style.display = "none";
-        }
+        plotStatus('growing', x, y)
         if (state.seedCounts[seed] == 0) {
             for (var i = 0; i < GAME_CONFIG.field_width; i++) {
                 for (var j = 0; j < GAME_CONFIG.field_height; j++) {
-                    hideElement("sow" + seed, i, j);
+                    hideElement("sowBtn" + seed, i, j);
                 }
             }
         }
-        var growingImage = showElement("growing", x, y);
-        growingImage.style.backgroundImage = "url(" + GAME_CONFIG.seeds[seed].imageLarge + ")";
-        hideElement("soil", x, y);
-
         tick();
-        showElement("progressBar", x, y);
-
     }
     var data = {
         slug: state.slug,
@@ -278,22 +270,19 @@ var harvest = function(x, y) {
 
         for (var s in GAME_CONFIG.seeds) {
             if (state.seedCounts[s] > 0) {
-                showElement("sow" + s, x, y);
+                showElement("sowBtn" + s, x, y);
             }
         }
         for (var i = 0; i < GAME_CONFIG.field_width; i++) {
             for (var j = 0; j < GAME_CONFIG.field_height; j++) {
                 if (state.plots.hasOwnProperty(i + "_" + j)) {
                     if(state.plots[i + "_" + j].seedType == 0 && state.seedCounts[seed] > 0) {
-                        showElement("sow" + seed, i , j);
+                        showElement("sowBtn" + seed, i , j);
                     }
                 }
             }
         }
-        var growingImage = hideElement("growing", x, y);
-        growingImage.style.backgroundImage = "url(" + GAME_CONFIG.seeds[seed].imageLarge + ")";
-        showElement("soil", x, y);
-        hideElement("button", x, y);
+        plotStatus('sowable');
     }
     var data = {
         slug: state.slug,
@@ -339,6 +328,22 @@ var buyPlot = function() {
             if (state.plots.hasOwnProperty(i + "_" + j) == False) {
                 unlock(i, j);
                 return;
+            }
+        }
+    }
+}
+
+var createSowButton = function(id) {
+    for (var i = 0; i < GAME_CONFIG.field_width; i++) {
+        for (var j = 0; j < GAME_CONFIG.field_height; j++) {
+            if (document.getElementById("sowBtn" + id + i + '_' + j) == null) {
+                var container = document.getElementById('plot' + i + '_' + j)
+                    var p = document.createElement("P");
+                    p.id = "sowBtn" + id + i + '_' + j;
+                    p.classList.add('sowable', 'sowBtn');
+                    p.style.backgroundImage = "url(" + GAME_CONFIG.seeds[id].imageMedium + ")";
+                    p.addEventListener('click',createListener2(sow, i, j, id));
+                container.appendChild(p);
             }
         }
     }
@@ -505,6 +510,9 @@ var toHHMMSS = function(sec_num) {
 var createListener = function(fn,arg) {
     return function(){fn(arg);};
 }
+var createListener2 = function(fn,arg,arg2,arg3) {
+    return function(){fn(arg,arg2,arg3);};
+}
 
 var fetchRecipes = function() {
     var callback = function(game_state,knownRecipes) {
@@ -555,8 +563,7 @@ var tick = function() {
                     document.getElementById("time" + i + "_" + j).innerHTML = clockDisplay;
                     if (countdown <= 0) {
                         readyToHarvest += 1;
-                        hideElement("progressBar", i, j);
-                        showElement("button", i, j);
+                        plotStatus('harvestable', i, j)
                     }
                 }
             }

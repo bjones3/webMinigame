@@ -41,24 +41,20 @@
 
 
 <div class="gamePanel">
-
-<table>
+<table style="border-spacing: 10px">
 {% for i in range(field_width) %}
     <tr>
     {% for j in range(field_height) %}
         <td>
-            <div id = "plot{{ i }}_{{ j }}" class = "plotBox">
-                {% for seed_letter, seed_data in seeds|dictsort %}
-                    <div id = "sow{{seed_letter}}{{ i }}_{{ j }}" class = "sowPlantButton" style = "background-image: url({{seed_data['imageMedium']}});" onclick = "sow({{ i }}, {{ j }}, '{{seed_letter}}')"></div>
-                {% endfor %}
-                <div id = "growing{{ i }}_{{ j }}" class = "invisPlantContainer"></div>
-                <img id = "soil{{ i }}_{{ j }}" src = "/static/soil.png" class = "soil">
-                <img id = "lock{{ i }}_{{ j }}" src = "/static/lock.png" class = "lock" onclick="unlock({{ i }}, {{ j }});">
-                <div id = "progressBar{{ i }}_{{ j }}" class = "progressBar">
-                    <div id = "filler{{ i }}_{{ j }}" class = "filler"></div>
-                    <div id = "time{{ i }}_{{ j }}" class = "time"></div>
-                </div>
-                <button id = "button{{ i }}_{{ j }}" class="button" onclick = "harvest({{ i }}, {{ j }})">Harvest</button>
+            <div id="plot{{ i }}_{{ j }}" class="plot">
+                <img class="sowable soil" src="/static/soil.png">
+                <p id="growing{{seed_letter}}{{ i }}_{{ j }}" class="growing harvestable growingImg"></p>
+                <img class="locked lock" onclick="unlock({{ i }}, {{ j }})" src="/static/lock.png">
+                <p class="growing progressBar">
+                    <div id="filler{{ i }}_{{ j }}" class="filler"></div>
+                    <div id="time{{ i }}_{{ j }}" class="time"></div>
+                </p>
+                <button class = "harvestable harvestBtn" onclick = "harvest({{ i }}, {{ j }})">Harvest</button>
             </div>
         </td>
     {% endfor %}

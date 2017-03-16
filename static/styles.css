@@ -4,39 +4,64 @@ html, body {
     overflow: hidden;
 }
 div.menuPanel {
-    width: 430px;
+    width: 450px;
     float: right;
 }
 div.gamePanel {
-    margin-right: 450px;
     overflow: scroll;
     height: 100%;
 }
-div.plotBox {
+div.plot {
     position: relative;
     width: 185px;
     min-height: 185px;
     border: 4px solid black;
-    margin: 5px;
     box-shadow: 3px 3px 3px green;
     overflow: auto;
 }
-div.sowPlantButton {
+
+div.plot p {
     display: none;
+}
+div.plot img {
+    display: none;
+}
+div.plot button {
+    display: none;
+}
+
+div.locked .locked {
+  display: block;
+}
+div.sowable .sowable {
+  display: block;
+}
+div.growing .growing {
+  display: block;
+}
+div.harvestable .harvestable {
+  display: block;
+}
+
+p.sowBtn {
     float: left;
     width: 37px;
     height: 37px;
-    margin-left: 12px;
-    margin-right: 7px;
-    margin-top: 9px;
+    margin: 5px 10px;
     border: 2px solid black;
     border-radius: 5px;
     background-repeat: no-repeat;
     background-size: contain;
+    background-position: center center;
     cursor: pointer;
 }
-div.invisPlantContainer {
-    display: none;
+img.soil {
+    position: absolute;
+    width: 90%;
+    left: 5%;
+    bottom: 5px;
+}
+p.growingImg {
     position: absolute;
     width: 115px;
     height: 115px;
@@ -45,26 +70,13 @@ div.invisPlantContainer {
     background-repeat: no-repeat;
     background-size: contain;
 }
-img.soil {
-    display: none;
-    position: relative;
-    margin-top: 50%;
-    width: 100%;
-    bottom: 0px;
-}
 img.lock {
-    display: block;
+    height: 170px;
+    max-width: 90%;
+    padding: 10px 0px;
     margin: auto;
-    margin-top: 5%;
-    height: 160px;
 }
-div.border {
-    border: 2px solid black;
-    box-shadow: 3px 3px 3px green;
-    cursor: pointer;
-    user-select: none;
-}
-div.progressBar {
+p.progressBar {
     display: none;
     position: absolute;
     width: 160px;
@@ -74,19 +86,18 @@ div.progressBar {
     border: 2px solid black;
     background-color: lightblue;
 }
-div.progressBar div.filler {
+p.progressBar div.filler {
     position: absolute;
     width: 100%;
     height: 100%;
     background-color: orange;
 }
-div.progressBar div.time {
+p.progressBar div.time {
     position: absolute;
     width: 100%;
     text-align: center;
 }
-button.button {
-    display: none;
+button.harvestBtn {
     position: absolute;
     width: 164px;
     height: 24px;
@@ -94,6 +105,13 @@ button.button {
     left: 10.5px;
     border: 2px solid black;
     cursor: pointer;
+}
+
+div.border {
+    border: 2px solid black;
+    box-shadow: 3px 3px 3px green;
+    cursor: pointer;
+    user-select: none;
 }
 div.resource {
     position: relative;

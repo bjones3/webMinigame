@@ -15,6 +15,57 @@ var showFlash = function(message) {
   setTimeout(hideFlash, 1500);
 }
 
+var setPlotStatus = function(plot, status) {
+    plot.classList.remove('sowable', 'growing', 'harvestable', 'locked');
+    plot.classList.add(status);
+};
+
+var updateGameState = function(newGameState) {
+    /*  Update the global game state object, and update any UI elements needed
+
+    This method will take a new game state (or a part of a new game state) and
+    update the global `state` object.  When parts differ between the two, it
+    will update the proper UI components to reflect the new change.  This
+    should allow calling functions to blindly update parts of the game state
+    without having to have knowledge of all the UI components that rely on it.
+    By looking at the old verson of the game state, the hope is to only update
+    parts of the display that need it rather than redrawing the entire thing
+    from scratch every time.
+
+    */
+
+    state = newGameState;
+
+    for (var plotName in newGameState.plots) {
+        if (newGameState.plots.hasOwnProperty(plotName)) {
+            if (!state.plots || state.plots[plotName] != newGameState.plots[plotName]) {
+                // A plot has been updated
+                var statePlot = newGameState.plots[plotName];
+                var plotElement = document.getElementById("plot" + plotname);
+                if (statePlot.seedType == 0) {
+                    setPlotStatus(plotElement, 'sowable');
+                }
+                //TODO else: growing, harvestable, etc
+            }
+        }
+    }
+
+    for (var resourceId in newGameState.resources) {
+        if (newGameState.resources.hasOwnProperty(resourceId)) {
+            if (!state.resources || state.resources[resourceId] != newGameState.resources[resourceId]) {
+                // A resource value has been updated
+                document.getElementById(resource).innerHTML = resource + ': ' + state.resources[resource];
+            }
+        }
+    }
+    document.getElementById("cash").innerHTML = "cash: $" + state.resources.cash;
+    var numPlots = Object.keys(state.plots).length
+    var startingPlots = GAME_CONFIG['starting_field_width'] * GAME_CONFIG['starting_field_height']
+    buyMsg = "Click any plot to unlock - $" + GAME_CONFIG['plotPrice'] * Math.pow(GAME_CONFIG['plotMultiplier'],numPlots - startingPlots);
+    document.getElementById("buyPlot").innerHTML = buyMsg;
+
+};
+
 var setElementDisplay = function(name, x, y, display) {
     var id = name + x + '_' + y;
     var element = document.getElementById(id);
@@ -95,7 +146,7 @@ var loadGameState = function() {
         newOrLoad: "load"
     };
     var gameStateLoaded = function(gameState) {
-        state = gameState;
+        updateGameState(gameState);
         fetchRecipes();
         reset();
     }

@@ -46,7 +46,7 @@
     <tr>
     {% for j in range(field_height) %}
         <td>
-            <div id="plot{{ i }}_{{ j }}" class="plot">
+            <div id="plot{{ i }}_{{ j }}" class="plot locked">
                 <img class="sowable soil" src="/static/soil.png">
                 <p id="growing{{seed_letter}}{{ i }}_{{ j }}" class="growing harvestable growingImg"></p>
                 <img class="locked lock" onclick="unlock({{ i }}, {{ j }})" src="/static/lock.png">

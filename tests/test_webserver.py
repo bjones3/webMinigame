@@ -2,7 +2,7 @@ import webserver
 import mock
 import json
 import uuid
-import game_config
+import rules
 from tests.common import GardenSimTest
 
 
@@ -12,7 +12,7 @@ class TestWebserver(GardenSimTest):
         super(TestWebserver, self).setUp()
         webserver.app.config['TESTING'] = True
         self.app = webserver.app.test_client()
-        self.game_config = game_config.get_config(True)
+        self.config = rules.Config(True)
         self.password = 'testpassword'
 
     def get(self, path):
@@ -43,10 +43,11 @@ class TestWebserver(GardenSimTest):
     def test_buy_first_seed(self):
         state = self.new_state()
         slug = state['slug']
-        first_seed = self.game_config['firstSeed']
+        first_recipe = self.config.general['firstRecipe']
+        first_seed = self.config.recipes[first_recipe]['seed_id']
         rv = self.post('/action/buy', {'slug': slug,
                                        'password': self.password,
-                                       'recipe_id': first_seed})
+                                       'recipe_id': first_recipe})
         new_state = rv['state']
         self.assertEquals(new_state['seedCounts'][first_seed], 1, "Could not buy initial seed")
 
@@ -54,13 +55,13 @@ class TestWebserver(GardenSimTest):
         """ Buy a seed over and over until you can't buy any more. """
         state = self.new_state()
         slug = state['slug']
-        first_seed = self.game_config['firstSeed']
+        first_recipe = self.config.general['firstRecipe']
 
         purchases = 100  # we should run out of money before buying 100 seeds
         while purchases > 0:
             response = self.post('/action/buy', {'slug': slug,
                                                  'password': self.password,
-                                                 'recipe_id': first_seed})
+                                                 'recipe_id': first_recipe})
             message = response['message']
             if not message.startswith('Bought a'):
                 return

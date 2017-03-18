@@ -5,7 +5,7 @@ import os
 import re
 from werkzeug.exceptions import Unauthorized, BadRequest
 
-import game_config
+import rules
 from game import GameState
 import db
 
@@ -16,8 +16,7 @@ if os.environ.get('DEBUG_MODE') == '1':
 else:
     DEBUG_MODE = False
 
-GAME_CONFIG = game_config.get_config(DEBUG_MODE)
-RECIPE_CONFIG = game_config.get_recipes()
+CONFIG = rules.Config(DEBUG_MODE)
 
 
 def make_response(game_state, message=None, recipes=None):
@@ -46,8 +45,8 @@ def default():
 
 @app.route('/game/')
 def game():
-    return render_template('frontEndLayout.html', seeds=GAME_CONFIG['seeds'],
-                           field_width=GAME_CONFIG['field_width'], field_height=GAME_CONFIG['field_height'])
+    return render_template('frontEndLayout.html', seeds=CONFIG.seeds, resources=CONFIG.resources,
+                           field_width=CONFIG.general['field_width'], field_height=CONFIG.general['field_height'])
 
 
 @app.route('/admin/', methods=['GET'])
@@ -60,12 +59,16 @@ def admin_post():
     data = db.get_admin_data()
     if request.form['password'] != data['password']:
         raise Unauthorized("Invalid password")
-    return render_template('admin.html', data=data, recipes=RECIPE_CONFIG['recipes'], seeds=GAME_CONFIG['seeds'])
+    return render_template('admin.html', data=data, config=CONFIG)
 
 
 @app.route('/game-config')
 def game_config():
-    return jsonify(GAME_CONFIG)
+    collapsed_config = {}
+    collapsed_config.update(CONFIG.general)
+    collapsed_config['seeds'] = CONFIG.seeds
+    collapsed_config['resources'] = CONFIG.resources
+    return jsonify(collapsed_config)
 
 
 @app.route('/game-state/<slug>', methods=['GET', 'POST'])
@@ -134,9 +137,9 @@ def recipe():
     game_state = GameState.load(data['slug'], data['password'])
 
     known_recipes = {}
-    for recipe_id in RECIPE_CONFIG['recipes']:
+    for recipe_id in CONFIG.recipes:
         if game_state.is_known_recipe(recipe_id):
-            known_recipes[recipe_id] = RECIPE_CONFIG['recipes'][recipe_id]
+            known_recipes[recipe_id] = CONFIG.recipes[recipe_id]
     return make_response(game_state, recipes=known_recipes)
 
 

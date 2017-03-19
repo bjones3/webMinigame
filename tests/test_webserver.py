@@ -44,7 +44,7 @@ class TestWebserver(GardenSimTest):
         state = self.new_state()
         slug = state['slug']
         first_recipe = self.config.general['firstRecipe']
-        first_seed = self.config.recipes[first_recipe]['seed_id']
+        first_seed = self.config.recipes[first_recipe]['seedId']
         rv = self.post('/action/buy', {'slug': slug,
                                        'password': self.password,
                                        'recipe_id': first_recipe})

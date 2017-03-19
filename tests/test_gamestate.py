@@ -21,7 +21,7 @@ class TestGameState(GardenSimTest):
         slug = "TEST" + uuid.uuid4().hex
         gs = GameState.new(slug, 'pwd')
         recipe_id = CONFIG.general['firstRecipe']
-        seed_id = CONFIG.recipes[recipe_id]['seed_id']
+        seed_id = CONFIG.recipes[recipe_id]['seedId']
         seed_data = CONFIG.seeds[seed_id]
         gs.buy(recipe_id)
         gs.sow(seed_id, 0, 0)
@@ -55,7 +55,7 @@ class TestGameState(GardenSimTest):
         just that the bad data causes some kind of exception
         """
         first_recipe_id = CONFIG.general['firstRecipe']
-        first_seed_id = CONFIG.recipes[first_recipe_id]['seed_id']
+        first_seed_id = CONFIG.recipes[first_recipe_id]['seedId']
 
         gs = self.new_game_state()
         # harvesting an empty plot

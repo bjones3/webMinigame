@@ -21,6 +21,16 @@ var sowX = null;
 var sowY = null;
 
 var showSowMenu = function(i, j) {
+    seedCount = 0;
+    for (var seedId in state.seedCounts) {
+        if (state.seedCounts.hasOwnProperty(seedId)) {
+            seedCount += state.seedCounts[seedId];
+        }
+    }
+    if (seedCount == 0) {
+        showFlash("No seeds to plant!");
+        return;
+    }
     sowX = i;
     sowY = j;
     document.getElementById("sowMenuBg").style.display = "block";
@@ -243,6 +253,22 @@ var logElement = function(msg) {
 
 var server = new Server(showFlash, logElement);
 
+var fetchRecipes = function() {
+    var callback = function(game_state, knownRecipes) {
+        RECIPE_CONFIG = knownRecipes;
+        createSeedMenu();
+        var newOrLoad = localStorage.getItem('newOrLoad');
+        if (newOrLoad == "new") {
+            gettingStarted();
+        }
+    };
+    var data = {
+        slug: state.slug,
+        password: localStorage.getItem('pwd_' + state.slug)
+    };
+    server.sendToServer('/recipe', data, callback);
+};
+
 var loadGameState = function() {
     slug = localStorage.getItem('slug');
     var data = {
@@ -252,24 +278,18 @@ var loadGameState = function() {
     var gameStateLoaded = function(gameState) {
         updateGameState(gameState);
         fetchRecipes();
-        // reset();
-    }
+        setInterval(tick, 200);
+    };
     server.sendToServer("/game-state/" + window.location.hash.substring(1), data, gameStateLoaded);
-}
+};
 
 var loadGameConfig = function() {
     var gameConfigLoaded = function(gameConfig) {
         GAME_CONFIG = gameConfig;
         loadGameState();
-    }
+    };
     server.getFromServer("/game-config", gameConfigLoaded);
-}
-
-var plotStatus = function(status, x, y) {
-    document.getElementById('plot' + x + '_' + y).classList.remove('sowable', 'growing', 'harvestable', 'locked');
-    document.getElementById('plot' + x + '_' + y).classList.add(status);
-}
-
+};
 
 document.onreadystatechange = function() {
     if (document.readyState === 'complete') {
@@ -291,15 +311,12 @@ var buy = function(recipeID) {
         showFlash("Can't buy any more " + GAME_CONFIG.seeds[recipeID].name + " seeds.");
         return;
     }
-    var callback = function(newState) {
-        updateGameState(newState);
-    }
     var data = {
         slug: state.slug,
         recipe_id: recipeID,
         password: localStorage.getItem('pwd_' + state.slug)
     };
-    server.sendToServer('/action/buy', data, callback);
+    server.sendToServer('/action/buy', data, updateGameState);
 }
 
 var sell = function(seed) {
@@ -326,10 +343,6 @@ var sow = function(seed) {
     if (state.plots[x + "_" + y].seedType != 0) {
         showFlash("A seed is already planted here.");
     }
-    var callback = function(newState) {
-        updateGameState(newState);
-        tick();
-    };
     var data = {
         slug: state.slug,
         seed: seed,
@@ -337,8 +350,8 @@ var sow = function(seed) {
         y: y,
         password: localStorage.getItem('pwd_' + state.slug)
     };
-    server.sendToServer('/action/sow', data, callback);
-}
+    server.sendToServer('/action/sow', data, updateGameState);
+};
 
 var harvest = function(x, y) {
     var callback = function(newState) {
@@ -370,17 +383,6 @@ var unlock = function(x, y) {
     server.sendToServer('/action/unlock', data, updateGameState);
 };
 
-var buyPlot = function() {
-    for (var i = 0; i < GAME_CONFIG.field_width; i++) {
-        for (var j = 0; j < GAME_CONFIG.field_height; j++) {
-            if (state.plots.hasOwnProperty(i + "_" + j) == False) {
-                unlock(i, j);
-                return;
-            }
-        }
-    }
-};
-
 var toggleSeedInfo = function(recipeId) {
     var hiding = document.getElementById('seedInfoRow_' + recipeId).style.display == 'table-row';
 
@@ -401,17 +403,6 @@ var createSeedInfo = function(container, recipeId) {
     var seedId = RECIPE_CONFIG[recipeId].seedId;
     var seed = GAME_CONFIG.seeds[seedId];
 
-
-    // var div = document.createElement("DIV");
-    //     var img = document.createElement("IMG");
-    //         img.src = seed.imageSmall;
-    //         img.style.display = 'inline';
-    //     var divName = document.createElement("DIV");
-    //         divName.innerHTML = seed.name;
-    //         divName.style.display = 'inline';
-    // div.appendChild(img);
-    // div.appendChild(divName);
-    // container.appendChild(div);
 
     var divCost = document.createElement("div");
         divCost.appendChild(document.createTextNode('Cost:'));
@@ -567,30 +558,11 @@ var toHHMMSS = function(sec_num) {
 
     if (hours   <= 0) {return minutes + ':' + seconds;}
     return hours + ':' + minutes + ':' + seconds;
-}
+};
 
-var createListener = function(fn,arg) {
-    return function(){fn(arg);};
-}
-var createListener2 = function(fn,arg,arg2,arg3) {
-    return function(){fn(arg,arg2,arg3);};
-}
-
-var fetchRecipes = function() {
-    var callback = function(game_state,knownRecipes) {
-        RECIPE_CONFIG = knownRecipes;
-        createSeedMenu();
-        var newOrLoad = localStorage.getItem('newOrLoad');
-        if (newOrLoad == "new") {
-            gettingStarted();
-        }
-    }
-    var data = {
-        slug: state.slug,
-        password: localStorage.getItem('pwd_' + state.slug)
-    };
-    server.sendToServer('/recipe', data, callback);
-}
+var createListener = function(fn, arg) {
+    return function() { fn(arg); };
+};
 
 var tick = function() {
     if (state == null) {
@@ -631,5 +603,3 @@ var tick = function() {
     };
     document.getElementById("title").innerHTML = readyToHarvest + " plots ready - Garden Sim 2K17";
 };
-
-setInterval(tick, 200);

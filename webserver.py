@@ -39,7 +39,7 @@ def valid_chars(slug):
 
 @app.route('/')
 def default():
-    leaderboard_data = db.get_leaderboard_data()
+    leaderboard_data = db.get_leaderboard_data(CONFIG)
     return render_template('defaultPage.html', leaderboard=leaderboard_data)
 
 

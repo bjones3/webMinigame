@@ -31,7 +31,7 @@ class GameState(object):
             raise Forbidden("Username already taken")
         else:
             first_recipe_id = CONFIG.general['firstRecipe']
-            first_recipe_seed_id = CONFIG.recipes[first_recipe_id]['seed_id']
+            first_recipe_seed_id = CONFIG.recipes[first_recipe_id]['seedId']
             game_state = GameState({
                 'resources': {},
                 'slug': slug,
@@ -124,7 +124,7 @@ class GameState(object):
 
     def buy(self, recipe_id):
         recipe_data = CONFIG.recipes[recipe_id]
-        seed_id = recipe_data['seed_id']
+        seed_id = recipe_data['seedId']
         for resource in recipe_data['cost']:
             if self.get_resource_count(resource) < recipe_data['cost'][resource]:
                 resource_name = CONFIG.resources[resource]['name']
@@ -172,7 +172,7 @@ class GameState(object):
         for recipe_id in recipe_list:
             if recipe_id not in self.data['recipes']:
                 self.data['recipes'].append(recipe_id)
-            seed_id = CONFIG.recipes[recipe_id]['seed_id']
+            seed_id = CONFIG.recipes[recipe_id]['seedId']
             if seed_id not in self.data['seedCounts']:
                 self.data['seedCounts'][seed_id] = 0
 

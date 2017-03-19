@@ -18,7 +18,7 @@
     <tr>
       <td>
         {% for recipe in config.recipes.values() %}
-          {% if recipe['seed_id'] == seed['id'] %}
+          {% if recipe['seedId'] == seed['id'] %}
             <li>{{ recipe['name'] }}</li>
             <ul>
               {% for res, qty in recipe['cost'].items() %}

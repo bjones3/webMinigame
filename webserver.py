@@ -46,7 +46,8 @@ def default():
 @app.route('/game/')
 def game():
     return render_template('frontEndLayout.html', seeds=CONFIG.seeds, resources=CONFIG.resources,
-                           field_width=CONFIG.general['field_width'], field_height=CONFIG.general['field_height'])
+                           field_width=CONFIG.general['field_width'], field_height=CONFIG.general['field_height'],
+                           cash_resource=CONFIG.CASH_RESOURCE)
 
 
 @app.route('/admin/', methods=['GET'])

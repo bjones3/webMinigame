@@ -34,7 +34,7 @@ class TestWebserver(GardenSimTest):
     @mock.patch('db.get_leaderboard_data')
     def test_homepage(self, get_leaderboard_data):
         get_leaderboard_data.side_effect = [
-            [('Player1', 1000, 10)],
+            [('Player1', 1000, 10, 40)],
         ]
         rv = self.app.get('/')
         self.assertIn('New Game', rv.data, "Can't see 'New Game' button on home screen")

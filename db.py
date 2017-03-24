@@ -43,14 +43,21 @@ def save(slug, data):
                            [slug, json_game_state, json_game_state])
 
 
-def get_leaderboard_data():
+def get_leaderboard_data(game_config):
     my_conn = get_conn()
     with my_conn:
         with my_conn.cursor() as cursor:
-            cursor.execute("SELECT slug, game_state->'resources'->'cash' AS cash, "
-                           "game_state->'seedCounts'->'m' AS m FROM game_states "
-                           "WHERE game_state->'resources'->'cash' IS NOT NULL "
-                           "ORDER BY 2 DESC LIMIT 10;")
+            cursor.execute("SELECT slug, "
+                           "COUNT(DISTINCT plots) AS plot_count, "
+                           "COUNT(DISTINCT seeds) AS seed_types, "
+                           "MAX(cash) AS CASH "
+                           "FROM (SELECT slug, "
+                           "    jsonb_object_keys(game_state->'plots') AS plots, "
+                           "    jsonb_object_keys(game_state->'seedCounts') AS seeds, "
+                           "    (game_state->'resources'->>'%s')::int AS cash "
+                           "    FROM game_states) AS subquery "
+                           "GROUP BY slug ORDER BY plot_count DESC, seed_types DESC, cash DESC "
+                           "LIMIT 20;" % game_config.CASH_RESOURCE)
             result = cursor.fetchall()
             return result
 

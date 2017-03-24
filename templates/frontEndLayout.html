@@ -19,42 +19,44 @@
         </tr>
     </table>
 
-    <div id="seedInfoContent" class="seedInfoContent">
-        <div>
-            <img id="seedInfoImg" style="display: inline;">
-            <div id="seedInfoName" style="display: inline;"></div>
-        </div>
-    </div>
+    <table>
+      <tbody id="resourceTable">
+        <tr>
+          <td><span id="resname_{{ cash_resource }}">Cash</span>:</td>
+          <td>$<span id="resvalue_{{ cash_resource }}"></span></td>
+        </tr>
+      </tbody>
+    </table>
 
-    <div id = "cash" class = "resource"></div>
-    <div id = "carrots" class = "resource"></div>
-    <div id = "grass" class = "resource"></div>
-    <div id = "fertilizer" class = "resource"></div>
-
-    <div class="dropdown">
-        <button class="dropbtn">Shop</button>
-        <div class="dropdown-content">
-            <button id="buyPlot"></button>
-        </div>
-    </div>
+    <span id="buyPlot">Click a plot to unlock</span>
 </div>
 
 
 <div class="gamePanel">
 <table style="border-spacing: 10px">
-{% for i in range(field_width) %}
+{% for j in range(field_height) %}
     <tr>
-    {% for j in range(field_height) %}
+    {% for i in range(field_width) %}
         <td>
-            <div id="plot{{ i }}_{{ j }}" class="plot">
-                <img class="sowable soil" src="/static/soil.png">
-                <p id="growing{{seed_letter}}{{ i }}_{{ j }}" class="growing harvestable growingImg"></p>
-                <img class="locked lock" onclick="unlock({{ i }}, {{ j }})" src="/static/lock.png">
-                <p class="growing progressBar">
-                    <div id="filler{{ i }}_{{ j }}" class="filler"></div>
-                    <div id="time{{ i }}_{{ j }}" class="time"></div>
-                </p>
-                <button class = "harvestable harvestBtn" onclick = "harvest({{ i }}, {{ j }})">Harvest</button>
+            <div id="plot{{ i }}_{{ j }}" class="plot locked">
+                <div id="sowable{{ i }}_{{ j }}" class="sowable" onclick="showSowMenu({{ i }}, {{ j }});">
+                  <img class="soil" src="/static/soil.png">
+                </div>
+                <div class="growing">
+                  <p class="growingImg"></p>
+                  <div class="progressBar">
+                      <div id="filler{{ i }}_{{ j }}" class="filler"></div>
+                      <div id="time{{ i }}_{{ j }}" class="time"></div>
+                  </div>
+                </div>
+                <div class="locked" onclick="unlock({{ i }}, {{ j }})">
+                  <img class="lock" src="/static/lock.png">
+                </div>
+                <div class="harvestable"  onclick="harvest({{ i }}, {{ j }})">
+                  <p class="growingImg"></p>
+                  <button class = "harvestable harvestBtn">Harvest</button>
+                </div>
+
             </div>
         </td>
     {% endfor %}
@@ -67,6 +69,16 @@
 
 <div id="notificationPanel">
 
+</div>
+
+<div id="sowMenuBg" onclick="hideSowMenu()">
+  <div style="position: absolute; top: 50%; left: 50%">
+    <div id="sowMenu">
+      <div id="sowButtonHolder">
+
+      </div>
+    </div>
+  </div>
 </div>
 
 <script type = "text/javascript" src = "/static/server.js"></script>

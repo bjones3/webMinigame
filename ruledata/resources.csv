@@ -1,0 +1,5 @@
+id,name,imageUrl
+res0,cash,/static/cash.png
+res1,fertilizer,/static/fertilizer_s.png
+res2,carrot,/static/carrot_s.png
+res3,grass,/static/grass_s.png

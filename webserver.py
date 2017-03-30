@@ -3,7 +3,7 @@
 from flask import Flask, render_template, request, jsonify
 import os
 import re
-from werkzeug.exceptions import Unauthorized, BadRequest
+from werkzeug.exceptions import Unauthorized, BadRequest, NotFound
 
 import rules
 from game import GameState
@@ -80,6 +80,8 @@ def state(slug):
         game_state = GameState.new(slug, body['password'])
     if body['newOrLoad'] == 'load':
         game_state = GameState.load(slug, body['password'])
+        if game_state is None:
+            raise NotFound("Game %s does not exist" % slug)
     db.save(slug, game_state.data)
     return make_response(game_state)
 

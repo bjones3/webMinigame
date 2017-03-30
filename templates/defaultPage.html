@@ -34,6 +34,15 @@
     table, th, td {
         border: 1px solid black;
     }
+    div#alertBox p {
+      background-color: beige;
+      padding: 10px;
+      text-align: center;
+    }
+    div#alertBox h1 {
+      font-size: 18px;
+      text-decoration: none;
+    }
 </style>
 <script type = "text/javascript" src = "/static/server.js"></script>
 <script type = "text/javascript" src = "/static/defaultPage.js"></script>
@@ -42,6 +51,8 @@
 <body>
 
 <h1>Gardening Simulator 2K17</h1>
+
+<div id="alertBox"></div>
 
 <button onclick="newOrLoadGame('new')" id="newGameButton">New Game</button>
 <button onclick="newOrLoadGame('load')" id="loadGameButton">Load Game</button>

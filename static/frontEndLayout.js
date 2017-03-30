@@ -131,7 +131,9 @@ var updateGameState = function(newGameState) {
                     }
                 }
 
-                valueElement.innerHTML = newGameState.resources[resourceId];
+                if (valueElement) {
+                    valueElement.innerHTML = newGameState.resources[resourceId];
+                }
             }
         }
     }

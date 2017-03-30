@@ -34,6 +34,15 @@
     table, th, td {
         border: 1px solid black;
     }
+    div#alertBox p {
+      background-color: beige;
+      padding: 10px;
+      text-align: center;
+    }
+    div#alertBox h1 {
+      font-size: 18px;
+      text-decoration: none;
+    }
 </style>
 <script type = "text/javascript" src = "/static/server.js"></script>
 <script type = "text/javascript" src = "/static/defaultPage.js"></script>
@@ -42,6 +51,8 @@
 <body>
 
 <h1>Gardening Simulator 2K17</h1>
+
+<div id="alertBox"></div>
 
 <button onclick="newOrLoadGame('new')" id="newGameButton">New Game</button>
 <button onclick="newOrLoadGame('load')" id="loadGameButton">Load Game</button>
@@ -57,21 +68,22 @@
 
 <table style = "width:40%; margin:auto; margin-top: 10px; display:none" id = "leaderboardsTable">
     <tr>
-        <th style = "width:10%" colspan="4">Leaderboards</th>
+        <th style = "width:10%" colspan="5">Leaderboards</th>
     </tr>
     <tr>
-        <th></th>
+        <th>Place</th>
         <th>Name</th>
+        <th>Plots Unlocked</th>
+        <th>Different Seeds Owned</th>
         <th>Cash</th>
-        <th># Garlic Seeds</th>
-
     </tr>
-    {% for leaderboard_name, leaderboard_cash, leaderboard_garlic in leaderboard %}
+    {% for leaderboard_name, leaderboard_plots, leaderboard_seeds, leaderboard_cash in leaderboard %}
         <tr>
-            <td>{{loop.index}}</td>
+            <td align="right">{{loop.index}}</td>
             <td>{{leaderboard_name}}</td>
-            <td>{{leaderboard_cash}}</td>
-            <td>{{leaderboard_garlic}}</td>
+            <td align="right">{{leaderboard_plots}}</td>
+            <td align="right">{{leaderboard_seeds}}</td>
+            <td align="right">{{leaderboard_cash}}</td>
         </tr>
     {% endfor %}
 </table>

@@ -4,39 +4,94 @@ html, body {
     overflow: hidden;
 }
 div.menuPanel {
-    width: 430px;
+    width: 450px;
     float: right;
 }
 div.gamePanel {
-    margin-right: 450px;
     overflow: scroll;
     height: 100%;
 }
-div.plotBox {
+div.plot {
     position: relative;
     width: 185px;
-    min-height: 185px;
+    height: 185px;
     border: 4px solid black;
-    margin: 5px;
     box-shadow: 3px 3px 3px green;
     overflow: auto;
 }
-div.sowPlantButton {
+
+div.plot > div {
+    height: 100%;
+    width: 100%;
     display: none;
+}
+
+div.locked .locked {
+  display: block;
+}
+div.sowable .sowable {
+  display: block;
+}
+div.growing .growing {
+  display: block;
+}
+div.harvestable .harvestable {
+  display: block;
+}
+
+button.sowBtn {
     float: left;
     width: 37px;
     height: 37px;
-    margin-left: 12px;
-    margin-right: 7px;
-    margin-top: 9px;
+    margin: 5px 10px;
     border: 2px solid black;
     border-radius: 5px;
     background-repeat: no-repeat;
     background-size: contain;
+    background-position: center center;
     cursor: pointer;
+    background-color:  white;
 }
-div.invisPlantContainer {
+
+div#sowMenuBg {
+    height: 100%;
+    width: 100%;
     display: none;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+}
+
+div#sowMenuBg:before {
+    z-index: -1;
+    content: '';
+    position: absolute;
+
+    opacity: 0.6;
+    height: 100%;
+    width: 100%;
+    background-color:black;
+}
+
+div#sowMenu {
+    background-color: papayawhip;
+    height: 480px;
+    width: 640px;
+    margin-left: -320px;
+    margin-top: -240px;
+
+    opacity: 1.0;
+    border: inset 4px black;
+    padding: 10px;
+}
+
+img.soil {
+    position: absolute;
+    width: 90%;
+    left: 5%;
+    bottom: 5px;
+}
+p.growingImg {
     position: absolute;
     width: 115px;
     height: 115px;
@@ -45,27 +100,12 @@ div.invisPlantContainer {
     background-repeat: no-repeat;
     background-size: contain;
 }
-img.soil {
-    display: none;
-    position: relative;
-    margin-top: 50%;
-    width: 100%;
-    bottom: 0px;
-}
 img.lock {
-    display: block;
-    margin: auto;
-    margin-top: 5%;
     height: 160px;
-}
-div.border {
-    border: 2px solid black;
-    box-shadow: 3px 3px 3px green;
-    cursor: pointer;
-    user-select: none;
+    margin: 12px 0px 0px 33px;
 }
 div.progressBar {
-    display: none;
+    display: block;
     position: absolute;
     width: 160px;
     height: 20px;
@@ -85,8 +125,7 @@ div.progressBar div.time {
     width: 100%;
     text-align: center;
 }
-button.button {
-    display: none;
+button.harvestBtn {
     position: absolute;
     width: 164px;
     height: 24px;
@@ -95,6 +134,13 @@ button.button {
     border: 2px solid black;
     cursor: pointer;
 }
+
+div.border {
+    border: 2px solid black;
+    box-shadow: 3px 3px 3px green;
+    cursor: pointer;
+    user-select: none;
+}
 div.resource {
     position: relative;
     top: 50px;
@@ -102,42 +148,15 @@ div.resource {
     font-size: 30px;
     font-weight: bold;
 }
-.dropdown {
-    position: fixed;
-    right: 0;
-    top: 80%;
-    display: inline-block;
-    float: right;
-}
-.dropbtn {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
-    font-size: 20px;
-    cursor: pointer;
-    border: none;
-}
-.dropbtn:hover {background-color: #3e8e41;}
 
-.dropdown-content {
-    display: block;
-    position: absolute;
-    right: 0;
-    box-shadow: 0px 8px 16px 0px green;
-    z-index: 1;
-}
-.dropdown-content button {
+span#buyPlot {
     padding: 12px 16px;
     display: block;
     width: 120px;
     background-color: #f9f9f9;
     border: 1px solid black;
     border-collapse: collapse;
-    cursor: pointer;
 }
-.dropdown-content button:hover {background-color: #f1f1f1;}
-
-.dropdown:hover .dropdown-content {display: block;}
 
 div.flash {
     position: absolute;
@@ -202,15 +221,15 @@ div#notificationPanel {
     padding: 10px;
     position: absolute;
     z-index: 1;
-    top: 150%;
-    left: 50%;
-    margin-left: -60px;
+    top: 30px;
+    left: 0%;
+    margin-left: 0px;
 }
 .tooltip .tooltiptext::after {
     content: "";
     position: absolute;
-    bottom: 100%;
-    left: 50%;
+    bottom: 99%;
+    left: 10px;
     margin-left: -5px;
     border-width: 5px;
     border-style: solid;
@@ -238,3 +257,9 @@ div.seedInfoContent img {height:30px;}
 }
 
 .seedInfoButton:hover .seedInfoContent {display: none;}
+
+img.resourceIcon, img.seedIcon {
+    height: 20px;
+    display: inline;
+    margin-left: 6px;
+}

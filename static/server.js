@@ -20,17 +20,19 @@ var Server = function(alertCallback, infoCallback) {
                     }, 2500);
                 } else if (this.status == 403) {
                     alertCallback(this.responseText);
+                } else if (this.status == 404) {
+                    alertCallback(this.responseText);
                 } else if (this.status == 503) {
                     alertCallback("Trouble contacting server");
                 } else {
                     infoCallback("Unknown error: %s" % this.status);
                 }
             }
-        }
+        };
         xhttp.open('POST', endpoint, true);
         xhttp.setRequestHeader('Content-type', 'application/json');
         xhttp.send(JSON.stringify(data));
-    }
+    };
 
     this.getFromServer = function(endpoint, callback) {
         var xhttp = new XMLHttpRequest();
@@ -42,8 +44,8 @@ var Server = function(alertCallback, infoCallback) {
                     alertCallback('Action not allowed.');
                }
             }
-        }
+        };
         xhttp.open('GET', endpoint, true);
         xhttp.send();
     }
-}
+};

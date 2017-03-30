@@ -1,6 +1,14 @@
 var newOrLoad;
 
-var server = new Server(alert, console.log);
+var frontPageAlert = function(payload) {
+    var alertElement = document.getElementById('alertBox');
+    alertElement.innerHTML = payload;
+    window.setTimeout(function () {
+        alertElement.innerHTML = '';
+    }, 4000);
+};
+
+var server = new Server(frontPageAlert, console.log);
 
 var startGame = function() {
     var slug = document.getElementById('gameNameInput').value;

@@ -109,22 +109,26 @@ var updateGameState = function(newGameState) {
 
                 if (! valueElement) {
                     // User's never seen this resource before-- add a row
-                    var resourceTable = document.getElementById("resourceTable");
-                        var row = document.createElement('tr');
-                            var nameTd = document.createElement('td');
-                                var nameSpan = document.createElement('span');
-                                nameSpan.id = "resname_" + resourceId;
-                                nameSpan.innerHTML = GAME_CONFIG.resources[resourceId].name;
-                            nameTd.appendChild(nameSpan);
-                                var nameColon = document.createTextNode(':');
-                            nameTd.appendChild(nameColon);
-                        row.appendChild(nameTd);
-                            var valueTd = document.createElement('td');
-                                var valueElement = document.createElement('span');
-                                valueElement.id = "resvalue_" + resourceId;
-                            valueTd.appendChild(valueElement);
-                        row.appendChild(valueElement);
-                    resourceTable.appendChild(row);
+                    if (GAME_CONFIG.resources[resourceId]) {
+                        var resourceTable = document.getElementById("resourceTable");
+                            var row = document.createElement('tr');
+                                var nameTd = document.createElement('td');
+                                    var nameSpan = document.createElement('span');
+                                    nameSpan.id = "resname_" + resourceId;
+                                    nameSpan.innerHTML = GAME_CONFIG.resources[resourceId].name;
+                                nameTd.appendChild(nameSpan);
+                                    var nameColon = document.createTextNode(':');
+                                nameTd.appendChild(nameColon);
+                            row.appendChild(nameTd);
+                                var valueTd = document.createElement('td');
+                                    var valueElement = document.createElement('span');
+                                    valueElement.id = "resvalue_" + resourceId;
+                                valueTd.appendChild(valueElement);
+                            row.appendChild(valueElement);
+                        resourceTable.appendChild(row);
+                    } else {
+                        console.log("Unknown resource: " + resourceId);
+                    }
                 }
 
                 valueElement.innerHTML = newGameState.resources[resourceId];

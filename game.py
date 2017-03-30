@@ -70,6 +70,19 @@ class GameState(object):
                         self.data['plots'][str(i) + '_' + str(j)]['seedType'] = self.data['plot' + str(i) + '_' + str(j)]['seedType']
                         self.data['plots'][str(i) + '_' + str(j)]['sowTime'] = self.data['plot' + str(i) + '_' + str(j)]['sowTime']
                     del self.data['plot' + str(i) + '_' + str(j)]
+                if self.data['plots'].get(str(i) + '_' + str(j)):
+                    seed_type = self.data['plots'][str(i) + '_' + str(j)]['seedType']
+                    if seed_type and seed_type not in CONFIG.seeds:
+                        if len(seed_type) == 1:
+                            new_seed = 'seed' + str(ord(seed_type) - ord('a'))
+                            if new_seed in CONFIG.seeds:
+                                self.data['plots'][str(i) + '_' + str(j)]['seedType'] = new_seed
+
+        for seed_id in self.data['seedCounts']:
+            if seed_id not in CONFIG.seeds and len(seed_id) == 1:
+                new_seed = 'seed' + str(ord(seed_id) - ord('a'))
+                if new_seed in CONFIG.seeds:
+                    self.data['seedCounts'][new_seed] = self.data['seedCounts'].pop(seed_id)
         # end temp
         for i in range(CONFIG.general['starting_field_width']):
             for j in range(CONFIG.general['starting_field_height']):

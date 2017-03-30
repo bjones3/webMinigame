@@ -53,7 +53,7 @@ class GameState(object):
 
     def initialize(self):
         for resource in CONFIG.general['starting_resources']:
-            if self.get_resource_count(resource) == 0:
+            if resource not in self.data['resources']:
                 self.data['resources'][resource] = CONFIG.general['starting_resources'][resource]
         # temp code for data migration of previous game_states
         if self.data.get('plots') is None:

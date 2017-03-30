@@ -2,6 +2,7 @@ import unittest
 import db
 import game
 import mock
+import uuid
 
 
 class MockDB(object):
@@ -29,3 +30,6 @@ class GardenSimTest(unittest.TestCase):
                                     lambda a, b: self._db.save_state(a, b))
         self.addCleanup(patcher.stop)
         patcher.start()
+
+    def new_game_state(self):
+        return game.GameState.new(uuid.uuid4().hex, 'pwd')

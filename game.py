@@ -83,6 +83,9 @@ class GameState(object):
                 new_seed = 'seed' + str(ord(seed_id) - ord('a'))
                 if new_seed in CONFIG.seeds:
                     self.data['seedCounts'][new_seed] = self.data['seedCounts'].pop(seed_id)
+        if 'cash' in self.data['resources']:
+            self.data['resources'][CONFIG.CASH_RESOURCE] += self.data['resources'].pop('cash')
+
         # end temp
         for i in range(CONFIG.general['starting_field_width']):
             for j in range(CONFIG.general['starting_field_height']):

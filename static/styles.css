@@ -301,7 +301,7 @@ div#vertPlank {
     position: fixed;
     right: 440px;
     top: 45px;
-    width: 10px;
+    width: 15px;
     height: calc(100% - 45px);
     background-image: url("/static/plank_vertical.jpg");
     background-size: contain;
@@ -309,6 +309,6 @@ div#vertPlank {
 .horPlank {
     background-image: url("/static/plank_horizontal.jpg");
     background-size: contain;
-    height: 10px;
+    height: 15px;
     width: 440px;
 }

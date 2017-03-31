@@ -1,7 +1,7 @@
 id,seedId,name
 a,seed0,Potato
 b,seed1,Cauliflower
-c,seed80,Plant pine cone
+c,seed80,Buy pine cone
 d,seed2,Grow carrots
 e,seed13,Grass
 f,seed16,Venus Flytrap
@@ -22,7 +22,7 @@ rec9,seed22,Corn Seed
 rec10,seed23,Sugar Cane
 rec11,seed24,Grape Seed
 rec12,seed25,Alcohol Distillery
-rec13,seed26,Wine Distillery
+rec13,seed26,Mash Grapes
 rec14,seed27,Pickle Jar
 rec15,seed28,Rutabega
 rec16,seed29,Onion
@@ -80,3 +80,24 @@ rec69,seed84,Squeeze mulberry juice
 rec70,seed84,Squeeze grape juice
 rec71,seed84,Squeeze pomegranate juice
 rec72,seed26,Ferment juice
+rec73,seed11,Grow beans
+rec74,seed3,Grow leek
+rec75,seed4,Grow broccoli
+rec76,seed6,Grow beet
+rec77,seed7,Grow bell pepper
+rec78,seed8,Grow eggplant
+rec79,seed25,Ferment grain
+rec80,seed85,Make breakfast
+rec81,seed86,Lovebird
+rec82,seed87,Plant cacao trees
+rec83,seed88,Make shovel
+rec84,seed89,Plant maple seed
+rec85,seed90,Plant walnut
+rec86,seed90,Buy walnut tree
+rec87,seed75,Raise silkworms
+rec88,seed91,Clear land manually
+rec89,seed92,Build orchard manually
+rec90,seed93,Grind up fish
+rec91,seed94,Attract flies
+rec92,seed94,Leave food out
+rec93,seed74,Attract spiders

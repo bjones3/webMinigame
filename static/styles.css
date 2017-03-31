@@ -3,13 +3,34 @@ html, body {
     margin: 0;
     overflow: hidden;
 }
-div.menuPanel {
-    width: 450px;
-    float: right;
-}
-div.gamePanel {
+div.seedPanel {
+    position: fixed;
+    top: 45px;
+    right: 0;
+    width: 440px;
+    height: calc(100% - 45px);
     overflow: scroll;
+}
+div.seedPanel:after {
+    content : "";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-image: url("/static/hardwood_bg.jpg");
+    background-size: contain;
+    width: 100%;
     height: 100%;
+    opacity : 0.5;
+    z-index: -1;
+}
+
+div.gamePanel {
+    position: relative;
+    top: 45px;
+    overflow: scroll;
+    height: calc(100% - 45px);
+    width: 65%;
 }
 div.plot {
     position: relative;
@@ -244,6 +265,7 @@ div.seedInfoContent img {height:30px;}
     border-radius: 50%;
     width: 17px;
     cursor: pointer;
+    background-color: white;
 }
 
 .seedInfoContent {
@@ -262,4 +284,31 @@ img.resourceIcon, img.seedIcon {
     height: 20px;
     display: inline;
     margin-left: 6px;
+}
+
+div.menuPanel {
+    position: fixed;
+    left: 5%;
+    width: 90%;
+    height: 30px;
+    border: 2px solid black;
+    border-top: none;
+    border-bottom-right-radius: 2em;
+    border-bottom-left-radius: 2em;
+}
+
+div#vertPlank {
+    position: fixed;
+    right: 440px;
+    top: 45px;
+    width: 10px;
+    height: calc(100% - 45px);
+    background-image: url("/static/plank_vertical.jpg");
+    background-size: contain;
+}
+.horPlank {
+    background-image: url("/static/plank_horizontal.jpg");
+    background-size: contain;
+    height: 10px;
+    width: 440px;
 }

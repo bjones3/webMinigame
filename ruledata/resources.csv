@@ -26,36 +26,36 @@ res23,Alcohol,/static/images/alcohol.png
 res25,Wine,/static/images/wine.png
 res26,Vinegar,/static/image/vinegar.png
 res27,Hole,/static/images/hole.png
-res28,Water,/static/images/unknown.png
-res29,Mosquitoes,/static/images/unknown.png
-res31,Guano,/static/images/unknown.png
-res32,Pickle,/static/images/unknown.png
-res33,Vegetable Waste,/static/images/unknown.png
-res34,Scarecrow,/static/images/unknown.png
-res35,Straw,/static/images/unknown.png
-res36,Grain,/static/images/unknown.png
-res38,Flour,/static/images/unknown.png
-res39,Egg,/static/images/unknown.png
-res40,Mutton,/static/images/unknown.png
-res41,Apple,/static/images/unknown.png
-res42,Cake,/static/images/unknown.png
-res43,Chocolate,/static/images/unknown.png
-res44,Pie,/static/images/unknown.png
-res45,Wool,/static/images/unknown.png
-res46,Hay,/static/images/unknown.png
-res47,Barn Stall,/static/images/unknown.png
-res48,Citrus Fruit,/static/images/unknown.png
-res49,Orchard,/static/images/unknown.png
-res50,Silk,/static/images/unknown.png
-res52,Rose Petals,/static/images/unknown.png
-res53,Pomegranate,/static/images/unknown.png
-res54,Kiwi,/static/images/unknown.png
-res55,Pasture,/static/images/unknown.png
-res56,Fish,/static/images/unknown.png
-res57,Timbers,/static/images/unknown.png
-res58,Mulberry,/static/images/unknown.png
-res59,Silkworm Cocoon,/static/images/unknown.png
-res60,Avocado,/static/images/unknown.png
-res61,Juice,/static/images/unknown.png
-res62,Walnut,/static/images/unknown.png
-res63,Humus,/static/images/unknown.png
+res28,Water,/static/images/water.png
+res29,Mosquitoes,/static/images/mosquitoes.png
+res31,Guano,/static/images/guano.png
+res32,Pickle,/static/images/pickle.png
+res33,Vegetable Waste,/static/images/waste.png
+res34,Scarecrow,/static/images/scarecrow.png
+res35,Straw,/static/images/straw.png
+res36,Grain,/static/images/grain.png
+res38,Flour,/static/images/flour.png
+res39,Egg,/static/images/egg.png
+res40,Mutton,/static/images/mutton.png
+res41,Apple,/static/images/apple.png
+res42,Cake,/static/images/cake.png
+res43,Chocolate,/static/images/chocolate.png
+res44,Pie,/static/images/pie.png
+res45,Wool,/static/images/wool.png
+res46,Hay,/static/images/hay.png
+res47,Barn Stall,/static/images/barn.png
+res48,Citrus Fruit,/static/images/citrus.png
+res49,Orchard,/static/images/orchard.png
+res50,Silk,/static/images/silk.png
+res52,Rose Petals,/static/images/rosepetals.png
+res53,Pomegranate,/static/images/pomegranite.png
+res54,Kiwi,/static/images/kiwi.png
+res55,Pasture,/static/images/pasture.png
+res56,Fish,/static/images/fish.png
+res57,Timbers,/static/images/timbers.png
+res58,Mulberry,/static/images/mulberry.png
+res59,Silkworm Cocoon,/static/images/cocoon.png
+res60,Avocado,/static/images/avocado.png
+res61,Juice,/static/images/juice.png
+res62,Walnut,/static/images/walnut.png
+res63,Humus,/static/images/humus.png

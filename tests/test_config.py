@@ -54,7 +54,10 @@ class TestConfig(GardenSimTest):
         for recipe in webserver.CONFIG.recipes.values():
             all_resource_ids -= set(r for r in recipe['cost'] if recipe['cost'][r])
         self.assertFalse(all_resource_ids,
-                         "Found resources that are never used: %s" % ','.join(all_resource_ids))
+                         "Found resources that are never used: %s\n%s" % (
+                             ','.join(all_resource_ids),
+                             '\n'.join(webserver.CONFIG.resources[r]['name'] for r in all_resource_ids)
+                         ))
 
     def test_all_resources_generated(self):
         all_resource_ids = set(webserver.CONFIG.resources)
@@ -96,4 +99,7 @@ class TestConfig(GardenSimTest):
                     break
 
         self.assertFalse(all_recipe_ids,
-                         "Found recipes that can't be reached: %s" % ','.join(all_recipe_ids))
+                         "Found recipes that can't be reached: %s\n%s" % (
+                             ','.join(all_recipe_ids),
+                             '\n'.join(webserver.CONFIG.recipes[r]['name'] for r in all_recipe_ids)
+                         ))

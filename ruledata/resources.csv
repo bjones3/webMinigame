@@ -1,6 +1,6 @@
 id,name,imageUrl
 res0,cash,/static/cash.png
-res1,Fertilizer,/static/images/unknown.png
+res1,Fertilizer,/static/images/manure_s.png
 res2,Pig Feed,/static/carrot_s.png
 res3,Grass,/static/grass_s.png
 res4,Fly,/static/fly.png
@@ -13,19 +13,19 @@ res10,Butter,/static/butter.png
 res11,Pollen,/static/pollen.png
 res12,Bee Larvae,/static/larvae.png
 res13,Lumber,/static/lumber.png
-res14,Bird Seed,/static/images/unknown.png
-res15,Corn,/static/images/unknown.png
-res16,Cucumber,/static/images/unknown.png
-res17,Compost,/static/images/unknown.png
-res18,Insecticide,/static/images/unknown.png
-res19,Plowed Field,/static/images/unknown.png
-res20,Irrigated Field,/static/images/unknown.png
-res21,Sugar,/static/images/unknown.png
-res22,Grapes,/static/images/unknown.png
-res23,Alcohol,/static/images/unknown.png
-res25,Wine,/static/images/unknown.png
-res26,Vinegar,/static/image/unknown.png
-res27,Hole,/static/images/unknown.png
+res14,Bird Seed,/static/images/birdseed.png
+res15,Corn,/static/images/corn.png
+res16,Cucumber,/static/images/cucumber.png
+res17,Compost,/static/images/compost.png
+res18,Insecticide,/static/images/insecticide.png
+res19,Plowed Field,/static/images/plowedfield.png
+res20,Irrigated Field,/static/images/irrigatedfield.png
+res21,Sugar,/static/images/sugar.png
+res22,Grapes,/static/images/grapes.png
+res23,Alcohol,/static/images/alcohol.png
+res25,Wine,/static/images/wine.png
+res26,Vinegar,/static/image/vinegar.png
+res27,Hole,/static/images/hole.png
 res28,Water,/static/images/unknown.png
 res29,Mosquitoes,/static/images/unknown.png
 res31,Guano,/static/images/unknown.png

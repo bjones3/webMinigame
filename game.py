@@ -181,7 +181,8 @@ class GameState(object):
             if self.get_resource_count(resource) == 0:
                 for recipe_id in CONFIG.recipes:
                     if CONFIG.recipes[recipe_id]['cost'].get(resource, 0) > 0:
-                        recipe_list.remove(recipe_id)
+                        if recipe_id in recipe_list:
+                            recipe_list.remove(recipe_id)
         for recipe_id in recipe_list:
             if recipe_id not in self.data['recipes']:
                 self.data['recipes'].append(recipe_id)
@@ -227,6 +228,8 @@ class GameState(object):
         self.data['seedCounts'][seed_type] = seed_count
         plot['seedType'] = 0
         message = "Harvested a %s." % CONFIG.seeds[seed_type]['name']
+        if bonus == -1:
+            message += ' Item was destroyed.'
         if bonus == 1:
             message += ' Got 1 bonus seed!'
         if bonus > 1:
@@ -254,6 +257,12 @@ def generate(seed_id):
 
 
 def bonus_yield(seed_id):
+    # detrimental yield for certain seeds
+    if CONFIG.seeds[seed_id]['name'] == 'Shovel' or CONFIG.seeds[seed_id]['name'] == 'Well':
+        detriment = 0
+        if generate(seed_id) == 1:
+            detriment = -1
+        return detriment
     bonus = 0
     while generate(seed_id) == 1:
         bonus += 1

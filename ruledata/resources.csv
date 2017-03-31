@@ -1,5 +1,16 @@
 id,name,imageUrl
 res0,cash,/static/cash.png
-res1,fertilizer,/static/fertilizer_s.png
-res2,carrot,/static/carrot_s.png
-res3,grass,/static/grass_s.png
+res1,Lumber,/static/lumber.png
+res2,Carrot,/static/carrot_s.png
+res3,Grass,/static/grass_s.png
+res4,Fly,/static/fly.png
+res5,Mulch,/static/mulch.png
+res6,Fencing,/static/fencing.png
+res7,Bacon,/static/bacon.png
+res8,Milk,/static/milk.png
+res9,Manure,/static/manure.png
+res10,Butter,/static/butter.png
+res11,Pollen,/static/pollen.png
+res12,Bee Larvae,/static/larvae.png
+
+

@@ -1,17 +1,15 @@
 id,seedId,name
 a,seed0,Potato
 b,seed1,Cauliflower
-c,seed2,Carrot
-d,seed3,Leek
-e,seed4,Broccoli
-f,seed5,Turnip
-g,seed6,Beet
-h,seed7,Bell Pepper
-i,seed8,Eggplant
-j,seed9,Chili Pepper
-k,seed10,Tomato
-l,seed11,Beans
-m,seed12,Garlic
-n,seed13,Grass
-o,seed14,Pig
-p,seed15,Cow
+c,seed2,Pine Cone
+d,seed3,Carrot
+e,seed4,Grass
+f,seed5,Venus Flytrap
+g,seed6,Acorn
+h,seed7,Lumber Mill
+i,seed8,Pig
+j,seed9,Cow
+k,seed10,Butter Churn
+l,seed11,Butterfly
+m,seed12,Wooden Beehive
+n,seed13,Bees

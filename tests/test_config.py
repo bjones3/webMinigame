@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-import unittest
-
-=======
->>>>>>> master
 import webserver
 from tests.common import GardenSimTest
 

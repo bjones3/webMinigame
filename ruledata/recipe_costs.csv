@@ -54,7 +54,6 @@ id,recipe_id,resource_id,quantity
 53,rec8,res9,13
 54,rec9,res9,13
 55,rec9,res0,13
-56,rec0,res0,13
 57,rec6,res28,13
 58,rec6,res27,13
 59,rec7,res29,13
@@ -160,7 +159,7 @@ id,recipe_id,resource_id,quantity
 162,rec83,res13,13
 163,rec85,res62,13
 164,rec84,res0,13
-165,rec86,res0,13
+165,rec86,res0,20000
 166,rec87,res59,13
 167,rec34,res55,13
 168,rec35,res55,13
@@ -168,7 +167,6 @@ id,recipe_id,resource_id,quantity
 170,rec89,res0,13
 171,rec88,res0,13
 172,rec89,res55,13
-
 173,rec90,res56,13
 174,rec64,res1,13
 175,rec80,res48,13
@@ -200,3 +198,17 @@ id,recipe_id,resource_id,quantity
 201,rec100,res0,13
 202,rec99,res0,13
 203,rec101,res0,13
+204,rec100,res1,13
+205,rec101,res17,13
+206,rec101,res1,13
+207,rec99,res17,13
+208,rec82,res0,13
+209,rec85,res49,13
+210,rec73,res63,13
+211,rec58,res63,13
+212,rec25,res63,13
+213,rec85,res63,13
+214,rec60,res63,13
+215,rec60,res28,13
+216,rec86,res5,13
+217,rec62,res50,13

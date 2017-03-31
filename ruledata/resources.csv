@@ -23,7 +23,6 @@ res20,Irrigated Field,/static/images/unknown.png
 res21,Sugar,/static/images/unknown.png
 res22,Grapes,/static/images/unknown.png
 res23,Alcohol,/static/images/unknown.png
-res24,Pine Tree,/static/images/unknown.png
 res25,Wine,/static/images/unknown.png
 res26,Vinegar,/static/image/unknown.png
 res27,Hole,/static/images/unknown.png
@@ -49,5 +48,12 @@ res48,Citrus Fruit,/static/images/unknown.png
 res49,Orchard,/static/images/unknown.png
 res50,Silk,/static/images/unknown.png
 res52,Rose Petals,/static/images/unknown.png
-res53,Pomegranite,/static/images/unknown.png
+res53,Pomegranate,/static/images/unknown.png
 res54,Kiwi,/static/images/unknown.png
+res55,Pasture,/static/images/unknown.png
+res56,Fish,/static/images/unknown.png
+res57,Timbers,/static/images/unknown.png
+res58,Mulberry,/static/images/unknown.png
+res59,Silkworm Cocoon,/static/images/unknown.png
+res60,Avocado,/static/images/unknown.png
+res61,Juice,/static/images/unknown.png

@@ -6,6 +6,8 @@ ID_COLUMN = 'id'
 
 def try_parse(value):
     """ Convert a value to a float or int if possible """
+    if value is None:
+        return None
     try:
         if '.' in value:
             return float(value)

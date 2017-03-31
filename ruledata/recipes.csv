@@ -1,15 +1,73 @@
 id,seedId,name
 a,seed0,Potato
 b,seed1,Cauliflower
-c,seed2,Pine Cone
-d,seed3,Carrot
+c,seed2,Plant pine cone
+d,seed3,Grow carrots
 e,seed4,Grass
 f,seed5,Venus Flytrap
-g,seed6,Acorn
-h,seed7,Lumber Mill
+g,seed6,Plant acorn
+h,seed7,Build lumber mill
 i,seed8,Pig
 j,seed9,Cow
 k,seed10,Butter Churn
 l,seed11,Butterfly
 m,seed12,Wooden Beehive
 n,seed13,Bees
+rec0,seed14,Acorn
+rec5,seed18,Well
+rec6,seed19,Koi Pond
+rec7,seed20,Bat
+rec8,seed21,Cucumber Seed
+rec9,seed22,Corn Seed
+rec10,seed23,Sugar Cane
+rec11,seed24,Grape Seed
+rec12,seed25,Alcohol Distillery
+rec13,seed26,Wine Distillery
+rec14,seed27,Pickle Jar
+rec15,seed28,Rutabega
+rec16,seed29,Onion
+rec17,seed30,Kohlrabi
+rec18,seed31,Goat
+rec19,seed32,Compost Bin
+rec20,seed33,Mushrooms
+rec21,seed34,Blueberries
+rec22,seed35,Turnip
+rec23,seed36,Kale
+rec24,seed37,Okra
+rec25,seed38,Chili Pepper
+rec26,seed39,Zucchini
+rec27,seed40,Garlic
+rec28,seed41,Tomato
+rec29,seed42,Radish
+rec30,seed43,Irrigation
+rec31,seed44,Donkey
+rec32,seed45,Mule
+rec33,seed46,Horse
+rec34,seed47,Sheep
+rec35,seed48,Llama
+rec36,seed49,Cake Bakery
+rec37,seed50,Pie Bakery
+rec38,seed51,Grain Mill
+rec39,seed52,Chicken
+rec40,seed53,Oats
+rec41,seed54,Wheat
+rec42,seed55,Barley
+rec43,seed56,Alfalfa
+rec44,seed57,Rye
+rec45,seed58,Kiwi Bird
+rec46,seed59,Crow
+rec48,seed61,Sunflower
+rec49,seed62,Rose
+rec50,seed63,Tulip
+rec51,seed64,Daisy
+rec52,seed65,Apple Tree
+rec53,seed66,Pomegranite Tree
+rec54,seed67,Kiwi Tree
+rec55,seed68,Lemon Tree
+rec56,seed69,Orange Tree
+rec57,seed70,Gramefruit Tree
+rec58,seed71,Avocado Tree
+rec59,seed72,Stall Construction
+rec60,seed73,Bamboo
+rec61,seed74,Spider
+rec62,seed75,Silkworm

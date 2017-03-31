@@ -1,4 +1,5 @@
 import unittest
+
 import webserver
 
 
@@ -25,3 +26,15 @@ class TestConfig(unittest.TestCase):
             for resource_id in seed['yield']:
                 self.assertIn(resource_id, webserver.CONFIG.resources,
                               "Seed %s uses unknown resource %s" % (seed['id'], resource_id))
+
+    def test_duplicate_names(self):
+        def check_dupes(collection, col_name):
+            all_names = [item['name'] for item in collection.values()]
+            for name in set(all_names):
+                all_names.remove(name)
+            self.assertFalse(all_names,
+                             "Duplicate %s names: %s" % (col_name, ', '.join(all_names)))
+
+        check_dupes(webserver.CONFIG.resources, 'resource')
+        check_dupes(webserver.CONFIG.seeds, 'seed')
+        check_dupes(webserver.CONFIG.recipes, 'recipe')

@@ -1,7 +1,7 @@
 id,name,imageUrl
 res0,cash,/static/cash.png
-res1,Lumber,/static/lumber.png
-res2,Carrot,/static/carrot_s.png
+res1,Fertilizer,/static/images/unknown.png
+res2,Pig Feed,/static/carrot_s.png
 res3,Grass,/static/grass_s.png
 res4,Fly,/static/fly.png
 res5,Mulch,/static/mulch.png
@@ -12,5 +12,49 @@ res9,Manure,/static/manure.png
 res10,Butter,/static/butter.png
 res11,Pollen,/static/pollen.png
 res12,Bee Larvae,/static/larvae.png
-
-
+res13,Lumber,/static/lumber.png
+res14,Bird Seed,/static/images/unknown.png
+res15,Corn,/static/images/unknown.png
+res16,Cucumber,/static/images/unknown.png
+res17,Compost,/static/images/unknown.png
+res18,Insecticide,/static/images/unknown.png
+res19,Plowed Field,/static/images/unknown.png
+res20,Irrigated Field,/static/images/unknown.png
+res21,Sugar,/static/images/unknown.png
+res22,Grapes,/static/images/unknown.png
+res23,Alcohol,/static/images/unknown.png
+res25,Wine,/static/images/unknown.png
+res26,Vinegar,/static/image/unknown.png
+res27,Hole,/static/images/unknown.png
+res28,Water,/static/images/unknown.png
+res29,Mosquitoes,/static/images/unknown.png
+res31,Guano,/static/images/unknown.png
+res32,Pickle,/static/images/unknown.png
+res33,Vegetable Waste,/static/images/unknown.png
+res34,Scarecrow,/static/images/unknown.png
+res35,Straw,/static/images/unknown.png
+res36,Grain,/static/images/unknown.png
+res38,Flour,/static/images/unknown.png
+res39,Egg,/static/images/unknown.png
+res40,Mutton,/static/images/unknown.png
+res41,Apple,/static/images/unknown.png
+res42,Cake,/static/images/unknown.png
+res43,Chocolate,/static/images/unknown.png
+res44,Pie,/static/images/unknown.png
+res45,Wool,/static/images/unknown.png
+res46,Hay,/static/images/unknown.png
+res47,Barn Stall,/static/images/unknown.png
+res48,Citrus Fruit,/static/images/unknown.png
+res49,Orchard,/static/images/unknown.png
+res50,Silk,/static/images/unknown.png
+res52,Rose Petals,/static/images/unknown.png
+res53,Pomegranate,/static/images/unknown.png
+res54,Kiwi,/static/images/unknown.png
+res55,Pasture,/static/images/unknown.png
+res56,Fish,/static/images/unknown.png
+res57,Timbers,/static/images/unknown.png
+res58,Mulberry,/static/images/unknown.png
+res59,Silkworm Cocoon,/static/images/unknown.png
+res60,Avocado,/static/images/unknown.png
+res61,Juice,/static/images/unknown.png
+res62,Walnut,/static/images/unknown.png

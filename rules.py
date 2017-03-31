@@ -6,6 +6,8 @@ ID_COLUMN = 'id'
 
 def try_parse(value):
     """ Convert a value to a float or int if possible """
+    if value is None:
+        return None
     try:
         if '.' in value:
             return float(value)
@@ -44,7 +46,24 @@ class DictRuleSet(dict):
 
 
 class Config(object):
+    @staticmethod
+    def verify_unique_indices(fn):
+        """ Simple check that the first column of a csv is unique. """
+        with open(fn) as f:
+            lines = f.readlines()
+            indices = [line.split(',')[0] for line in lines if line.strip()]
+        for index in set(indices):
+            indices.remove(index)
+        assert not indices, "Duplicate indices found in %s: %s" % (fn, ', '.join(indices))
+
     def __init__(self, debug_mode):
+        # sanity check before proceeding
+        Config.verify_unique_indices('ruledata/seeds.csv')
+        Config.verify_unique_indices('ruledata/recipes.csv')
+        Config.verify_unique_indices('ruledata/resources.csv')
+        Config.verify_unique_indices('ruledata/seed_yields.csv')
+        Config.verify_unique_indices('ruledata/recipe_costs.csv')
+
         self.seeds = CSVRuleSet('ruledata/seeds.csv')
         self.seeds.apply_associative_table('yield', 'ruledata/seed_yields.csv', 'seed_id', 'resource_id')
         self.resources = CSVRuleSet('ruledata/resources.csv')

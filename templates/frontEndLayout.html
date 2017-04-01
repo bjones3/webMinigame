@@ -11,7 +11,6 @@
 <div class="menuPanel">
     <span style="display: inline; padding: 0px 10px; font-size: 20px;">Username's Garden</span>
     <button style="display: inline; padding: 0px 10px; font-size: 20px;">Return to Main Menu</button>
-
 </div>
 
 <div class="gamePanel">
@@ -38,7 +37,6 @@
                   <p class="growingImg"></p>
                   <button class = "harvestable harvestBtn">Harvest</button>
                 </div>
-
             </div>
         </td>
     {% endfor %}
@@ -65,7 +63,7 @@
     <div class="horPlank"></div>
 
     <div style="max-height: 40%; overflow: scroll; padding-left: 150px;">
-    <table>
+    <table style="display: inline-block;">
       <tbody id="resourceTable">
         <tr>
           <td><span id="resname_{{ cash_resource }}">Cash</span>:</td>

@@ -30,7 +30,7 @@ div.gamePanel {
     top: 45px;
     overflow: scroll;
     height: calc(100% - 45px);
-    width: 65%;
+    width: calc(100% - 450px);
 }
 div.plot {
     position: relative;

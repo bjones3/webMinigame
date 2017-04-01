@@ -1,18 +1,18 @@
 id,name,imageUrl
-res0,cash,/static/cash.png
+res0,cash,/static/images/cash.png
 res1,Fertilizer,/static/images/manure_s.png
-res2,Pig Feed,/static/carrot_s.png
-res3,Grass,/static/grass_s.png
-res4,Fly,/static/fly.png
-res5,Mulch,/static/mulch.png
-res6,Fencing,/static/fencing.png
-res7,Bacon,/static/bacon.png
-res8,Milk,/static/milk.png
-res9,Manure,/static/manure.png
-res10,Butter,/static/butter.png
-res11,Pollen,/static/pollen.png
-res12,Bee Larvae,/static/larvae.png
-res13,Lumber,/static/lumber.png
+res2,Pig Feed,/static/images/carrot_s.png
+res3,Grass,/static/images/grass_s.png
+res4,Fly,/static/images/fly.png
+res5,Mulch,/static/images/mulch.png
+res6,Fencing,/static/images/fencing.png
+res7,Bacon,/static/images/bacon.png
+res8,Milk,/static/images/milk.png
+res9,Manure,/static/images/manure.png
+res10,Butter,/static/images/butter.png
+res11,Pollen,/static/images/pollen.png
+res12,Bee Larvae,/static/images/larvae.png
+res13,Lumber,/static/images/lumber.png
 res14,Bird Seed,/static/images/birdseed.png
 res15,Corn,/static/images/corn.png
 res16,Cucumber,/static/images/cucumber.png
@@ -24,7 +24,7 @@ res21,Sugar,/static/images/sugar.png
 res22,Grapes,/static/images/grapes.png
 res23,Alcohol,/static/images/alcohol.png
 res25,Wine,/static/images/wine.png
-res26,Vinegar,/static/image/vinegar.png
+res26,Vinegar,/static/images/vinegar.png
 res27,Hole,/static/images/hole.png
 res28,Water,/static/images/water.png
 res29,Mosquitoes,/static/images/mosquitoes.png

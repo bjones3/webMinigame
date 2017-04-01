@@ -1,6 +1,6 @@
 id,recipe_id,resource_id,quantity
-1,a,res0,5
-2,b,res0,20
+1,a,res0,29
+2,b,res0,5
 3,c,res0,1
 4,d,res0,100
 5,e,res0,200

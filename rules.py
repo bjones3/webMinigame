@@ -86,7 +86,7 @@ class Config(object):
             'starting_resources': {
                 self.CASH_RESOURCE: 10,
             },
-            'firstRecipe': 'a',
+            'firstRecipe': 'b',
         })
 
         if debug_mode:

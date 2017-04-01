@@ -257,6 +257,7 @@ div#notificationPanel {
     border-color: transparent transparent black transparent;
 }
 table#seedCosts img {height:20px;}
+#resourceTable img {height:20px;}
 
 div.seedInfoContent img {height:30px;}
 
@@ -303,11 +304,11 @@ div#vertPlank {
     top: 45px;
     width: 15px;
     height: calc(100% - 45px);
-    background-image: url("/static/images/plank_vertical.jpg");
+    background-image: url("/static/images/wood_frame_v.jpg");
     background-size: contain;
 }
 .horPlank {
-    background-image: url("/static/images/plank_horizontal.jpg");
+    background-image: url("/static/images/wood_frame_h.jpg");
     background-size: contain;
     height: 15px;
     width: 440px;

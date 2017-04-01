@@ -103,3 +103,9 @@ class TestConfig(GardenSimTest):
                              ','.join(all_recipe_ids),
                              '\n'.join(webserver.CONFIG.recipes[r]['name'] for r in all_recipe_ids)
                          ))
+
+    def test_deprecate_autoseeds(self):
+        """ Deprecating seeds making more of themselves for free """
+        for seed in webserver.CONFIG.seeds.values():
+            self.assertFalse(seed['seed'],
+                             "%s has autoseeds.  Convert to probability" % seed['name'])

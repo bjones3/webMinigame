@@ -213,3 +213,11 @@ id,recipe_id,resource_id,quantity
 212,rec98,res0,150000
 213,rec99,res0,3000000
 214,rec99,res17,3000
+216,rec27,res63,13
+217,a,res19,13
+218,d,res19,13
+220,rec9,res19,13
+222,rec23,res17,13
+224,rec17,res17,13
+227,rec60,res17,13
+228,f,res63,13

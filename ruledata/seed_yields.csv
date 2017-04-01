@@ -118,3 +118,8 @@ id,seed_id,resource_id,quantity
 117,seed96,res0,75000000
 118,seed97,res0,1000000000
 119,seed98,res35,3
+120,seed8,res33,1
+121,seed21,res33,3
+123,seed77,res33,7
+124,seed77,res63,9
+125,seed39,res33,23

@@ -112,6 +112,9 @@ var updateGameState = function(newGameState) {
                     if (GAME_CONFIG.resources[resourceId]) {
                         var resourceTable = document.getElementById("resourceTable");
                             var row = document.createElement('tr');
+                                var imgTd = document.createElement('img');
+                                imgTd.src = GAME_CONFIG.resources[resourceId].imageUrl;
+                            row.appendChild(imgTd);
                                 var nameTd = document.createElement('td');
                                     var nameSpan = document.createElement('span');
                                     nameSpan.id = "resname_" + resourceId;

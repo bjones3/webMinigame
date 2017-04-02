@@ -220,3 +220,5 @@ id,recipe_id,resource_id,quantity
 224,rec17,res17,13
 227,rec60,res17,13
 228,f,res63,13
+229,rec29,res63,1
+230,rec25,res63,3

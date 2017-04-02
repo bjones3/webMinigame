@@ -1,110 +1,110 @@
-id,seedId,name
-a,seed0,Potato
-b,seed1,Cauliflower
-c,seed80,Buy pine cone
-d,seed2,Grow carrots
-e,seed13,Grass
-f,seed16,Venus Flytrap
-g,seed83,Plant acorn
-h,seed82,Build lumber mill
-i,seed14,Pig
-j,seed15,Cow
-k,seed17,Butter Churn
-l,seed78,Butterfly
-m,seed79,Wooden Beehive
-n,seed81,Bees
-rec5,seed18,Well
-rec6,seed19,Koi Pond
-rec7,seed20,Bat
-rec8,seed21,Cucumber Seed
-rec9,seed22,Corn Seed
-rec10,seed23,Sugar Cane
-rec11,seed24,Grape Seed
-rec12,seed25,Alcohol Distillery
-rec13,seed26,Mash Grapes
-rec14,seed27,Pickle Jar
-rec15,seed28,Rutabaga
-rec16,seed29,Onion
-rec17,seed30,Kohlrabi
-rec18,seed31,Goat
-rec19,seed32,Compost Bin
-rec20,seed33,Mushrooms
-rec21,seed34,Blueberries
-rec22,seed5,Turnip
-rec23,seed36,Kale
-rec24,seed37,Okra
-rec25,seed9,Chili Pepper
-rec26,seed39,Zucchini
-rec27,seed12,Garlic
-rec28,seed10,Tomato
-rec29,seed42,Radish
-rec30,seed43,Irrigation
-rec31,seed44,Donkey
-rec32,seed45,Mule
-rec33,seed46,Horse
-rec34,seed47,Sheep
-rec35,seed48,Llama
-rec36,seed49,Cake Bakery
-rec37,seed50,Make mulberry pie
-rec38,seed51,Grain Mill
-rec39,seed52,Chicken
-rec40,seed53,Oats
-rec41,seed54,Wheat
-rec42,seed55,Barley
-rec43,seed56,Alfalfa
-rec44,seed57,Rye
-rec45,seed58,Kiwi Bird
-rec46,seed59,Crow
-rec48,seed61,Sunflower
-rec49,seed62,Rose
-rec50,seed63,Tulip
-rec51,seed64,Daisy
-rec52,seed65,Apple Tree
-rec53,seed66,Pomegranate Tree
-rec54,seed67,Kiwi Tree
-rec55,seed68,Lemon Tree
-rec56,seed69,Orange Tree
-rec57,seed70,Grapefruit Tree
-rec58,seed71,Avocado Tree
-rec59,seed72,Stall Construction
-rec60,seed73,Bamboo
-rec61,seed74,Spider
-rec62,seed75,Buy Silkworm
-rec63,seed76,Plant mulberry orchard
-rec64,seed77,Artichoke
-rec65,seed50,Make meat pie
-rec66,seed50,Make apple pie
-rec68,seed84,Squeeze apple juice
-rec69,seed84,Squeeze mulberry juice
-rec70,seed84,Squeeze grape juice
-rec71,seed84,Squeeze pomegranate juice
-rec72,seed26,Ferment juice
-rec73,seed11,Grow beans
-rec74,seed3,Grow leek
-rec75,seed4,Grow broccoli
-rec76,seed6,Grow beet
-rec77,seed7,Grow bell pepper
-rec78,seed8,Grow eggplant
-rec79,seed25,Ferment grain
-rec80,seed85,Make breakfast
-rec81,seed86,Lovebird
-rec82,seed87,Plant cacao trees
-rec83,seed88,Make shovel
-rec84,seed89,Plant maple seed
-rec85,seed90,Plant walnut
-rec86,seed90,Buy walnut tree
-rec87,seed75,Raise silkworms
-rec88,seed91,Clear land manually
-rec89,seed92,Build orchard manually
-rec90,seed93,Grind up fish
-rec91,seed94,Attract flies
-rec92,seed94,Leave food out
-rec93,seed74,Attract spiders
-rec94,seed22,Replant corn
-rec95,seed95,Make chips and guacamole
-rec96,seed96,Make clothes
-rec97,seed97,Throw a party
-rec98,seed98,Scavenge for straw
-rec99,seed65,Buy apple seeds
-rec100,seed67,Buy kiwi seeds
-rec101,seed66,Buy pomegranate seeds
+id,seedId,name,sortOrder
+a,seed0,Potato,10160
+b,seed1,Cauliflower,10010
+c,seed80,Buy pine cone,20020
+d,seed2,Grow carrots,99999
+e,seed13,Grass,99999
+f,seed16,Venus Flytrap,99999
+g,seed83,Plant acorn,99999
+h,seed82,Build lumber mill,99999
+i,seed14,Pig,99999
+j,seed15,Cow,99999
+k,seed17,Butter Churn,99999
+l,seed78,Butterfly,99999
+m,seed79,Wooden Beehive,99999
+n,seed81,Bees,99999
+rec5,seed18,Well,99999
+rec6,seed19,Koi Pond,99999
+rec7,seed20,Bat,99999
+rec8,seed21,Cucumber Seed,99999
+rec9,seed22,Corn Seed,99999
+rec10,seed23,Sugar Cane,99999
+rec11,seed24,Grape Seed,99999
+rec12,seed25,Alcohol Distillery,99999
+rec13,seed26,Mash Grapes,99999
+rec14,seed27,Pickle Jar,99999
+rec15,seed28,Rutabaga,10130
+rec16,seed29,Onion,10180
+rec17,seed30,Kohlrabi,10230
+rec18,seed31,Goat,99999
+rec19,seed32,Compost Bin,99999
+rec20,seed33,Mushrooms,99999
+rec21,seed34,Blueberries,99999
+rec22,seed5,Turnip,10200
+rec23,seed36,Kale,10210
+rec24,seed37,Okra,10220
+rec25,seed9,Chili Pepper,10070
+rec26,seed39,Zucchini,99999
+rec27,seed12,Garlic,10100
+rec28,seed10,Tomato,10080
+rec29,seed42,Radish,10060
+rec30,seed43,Irrigation,99999
+rec31,seed44,Donkey,50080
+rec32,seed45,Mule,50060
+rec33,seed46,Horse,50110
+rec34,seed47,Sheep,50090
+rec35,seed48,Llama,50070
+rec36,seed49,Cake Bakery,99999
+rec37,seed50,Make mulberry pie,99999
+rec38,seed51,Grain Mill,99999
+rec39,seed52,Chicken,50010
+rec40,seed53,Oats,30060
+rec41,seed54,Wheat,30040
+rec42,seed55,Barley,30050
+rec43,seed56,Alfalfa,30020
+rec44,seed57,Rye,30030
+rec45,seed58,Kiwi Bird,60020
+rec46,seed59,Crow,60010
+rec48,seed61,Sunflower,40040
+rec49,seed62,Rose,40030
+rec50,seed63,Tulip,40020
+rec51,seed64,Daisy,40010
+rec52,seed65,Apple Tree,25040
+rec53,seed66,Pomegranate Tree,25070
+rec54,seed67,Kiwi Tree,25060
+rec55,seed68,Lemon Tree,25010
+rec56,seed69,Orange Tree,25020
+rec57,seed70,Grapefruit Tree,25020
+rec58,seed71,Avocado Tree,25050
+rec59,seed72,Stall Construction,99999
+rec60,seed73,Bamboo,99999
+rec61,seed74,Spider,99999
+rec62,seed75,Buy Silkworm,99999
+rec63,seed76,Plant mulberry orchard,99999
+rec64,seed77,Artichoke,99999
+rec65,seed50,Make meat pie,99999
+rec66,seed50,Make apple pie,99999
+rec68,seed84,Squeeze apple juice,99999
+rec69,seed84,Squeeze mulberry juice,99999
+rec70,seed84,Squeeze grape juice,99999
+rec71,seed84,Squeeze pomegranate juice,99999
+rec72,seed26,Ferment juice,99999
+rec73,seed11,Grow beans,99999
+rec74,seed3,Grow leek,10030
+rec75,seed4,Grow broccoli,10020
+rec76,seed6,Grow beet,10040
+rec77,seed7,Grow bell pepper,99999
+rec78,seed8,Grow eggplant,99999
+rec79,seed25,Ferment grain,99999
+rec80,seed85,Make breakfast,99999
+rec81,seed86,Lovebird,99999
+rec82,seed87,Plant cacao trees,99999
+rec83,seed88,Make shovel,99999
+rec84,seed89,Plant maple seed,99999
+rec85,seed90,Plant walnut,99999
+rec86,seed90,Buy walnut tree,99999
+rec87,seed75,Raise silkworms,99999
+rec88,seed91,Clear land manually,99999
+rec89,seed92,Build orchard manually,99999
+rec90,seed93,Grind up fish,99999
+rec91,seed94,Attract flies,99999
+rec92,seed94,Leave food out,99999
+rec93,seed74,Attract spiders,99999
+rec94,seed22,Replant corn,99999
+rec95,seed95,Make chips and guacamole,99999
+rec96,seed96,Make clothes,99999
+rec97,seed97,Throw a party,99999
+rec98,seed98,Scavenge for straw,99999
+rec99,seed65,Buy apple seeds,99999
+rec100,seed67,Buy kiwi seeds,99999
+rec101,seed66,Buy pomegranate seeds,99999

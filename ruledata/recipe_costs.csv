@@ -1,11 +1,9 @@
 id,recipe_id,resource_id,quantity
 1,a,res0,29
 2,b,res0,5
-3,c,res0,1
 4,d,res0,100
 5,e,res0,200
 6,f,res0,400
-7,g,res0,1
 8,h,res13,100
 9,h,res57,2
 10,i,res2,10
@@ -180,11 +178,9 @@ id,recipe_id,resource_id,quantity
 181,rec82,res49,1
 182,rec82,res0,25000000
 183,rec83,res13,50
-184,rec84,res0,450000
 185,rec85,res49,1
 186,rec85,res63,30
 187,rec85,res62,1
-188,rec86,res0,20000
 189,rec86,res5,24
 190,rec87,res59,1
 191,rec88,res0,350000
@@ -223,3 +219,7 @@ id,recipe_id,resource_id,quantity
 231,rec28,res63,3
 232,rec27,res63,30
 233,rec36,res10,13
+234,c,res0,100
+235,g,res0,10000
+236,rec84,res0,1000000
+237,rec86,res0,100000000

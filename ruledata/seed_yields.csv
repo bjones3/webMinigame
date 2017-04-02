@@ -99,7 +99,6 @@ id,seed_id,resource_id,quantity
 99,seed82,res6,15
 100,seed82,res5,1
 101,seed83,res13,100
-102,seed83,res5,20
 103,seed84,res61,7
 104,seed85,res0,12000000
 105,seed86,res18,30
@@ -126,3 +125,8 @@ id,seed_id,resource_id,quantity
 127,seed12,res63,1
 128,seed10,res63,8
 129,seed11,res63,65
+130,seed99,res5,15
+131,seed80,res5,60
+132,seed83,res5,200
+133,seed89,res5,800
+134,seed90,res5,11000

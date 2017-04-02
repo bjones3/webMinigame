@@ -181,7 +181,6 @@ id,recipe_id,resource_id,quantity
 185,rec85,res49,1
 186,rec85,res63,30
 187,rec85,res62,1
-189,rec86,res5,24
 190,rec87,res59,1
 191,rec88,res0,350000
 192,rec88,res13,2000
@@ -223,3 +222,9 @@ id,recipe_id,resource_id,quantity
 235,g,res0,10000
 236,rec84,res0,1000000
 237,rec86,res0,100000000
+238,rec102,res63,13
+239,c,res5,1
+240,g,res5,5
+241,rec84,res5,30
+242,rec85,res5,90
+243,rec86,res5,80

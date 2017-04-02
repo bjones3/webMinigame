@@ -307,12 +307,6 @@ div#vertPlank {
     background-image: url("/static/images/wood_frame_v.jpg");
     background-size: contain;
 }
-.horPlank {
-    background-image: url("/static/images/wood_frame_h.jpg");
-    background-size: contain;
-    height: 15px;
-    width: 440px;
-}
 
 @font-face {
     font-family: meriendaFont;

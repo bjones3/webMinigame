@@ -2,34 +2,34 @@ id,seedId,name,sortOrder
 a,seed0,Potato,10160
 b,seed1,Cauliflower,10010
 c,seed80,Buy pine cone,20020
-d,seed2,Grow carrots,99999
-e,seed13,Grass,99999
-f,seed16,Venus Flytrap,99999
-g,seed83,Plant acorn,99999
+d,seed2,Grow carrots,10170
+e,seed13,Grass,30010
+f,seed16,Venus Flytrap,10250
+g,seed83,Plant acorn,20030
 h,seed82,Build lumber mill,99999
 i,seed14,Pig,50020
 j,seed15,Cow,50100
 k,seed17,Butter Churn,99999
-l,seed78,Butterfly,99999
+l,seed78,Butterfly,70010
 m,seed79,Wooden Beehive,99999
-n,seed81,Bees,99999
+n,seed81,Bees,70030
 rec5,seed18,Well,99999
 rec6,seed19,Koi Pond,99999
 rec7,seed20,Bat,60030
 rec8,seed21,Cucumber Seed,10120
-rec9,seed22,Corn Seed,99999
-rec10,seed23,Sugar Cane,99999
-rec11,seed24,Grape Seed,99999
-rec12,seed25,Alcohol Distillery,99999
-rec13,seed26,Mash Grapes,99999
+rec9,seed22,Corn Seed,10160
+rec10,seed23,Sugar Cane,10280
+rec11,seed24,Grape Seed,10270
+rec12,seed25,Alcohol Distillery,82120
+rec13,seed26,Mash Grapes,82110
 rec14,seed27,Pickle Jar,99999
 rec15,seed28,Rutabaga,10130
 rec16,seed29,Onion,10180
 rec17,seed30,Kohlrabi,10230
-rec18,seed31,Goat,99999
+rec18,seed31,Goat,50040
 rec19,seed32,Compost Bin,99999
-rec20,seed33,Mushrooms,99999
-rec21,seed34,Blueberries,99999
+rec20,seed33,Mushrooms,10240
+rec21,seed34,Blueberries,10260
 rec22,seed5,Turnip,10200
 rec23,seed36,Kale,10210
 rec24,seed37,Okra,10220
@@ -45,7 +45,7 @@ rec33,seed46,Horse,50110
 rec34,seed47,Sheep,50090
 rec35,seed48,Llama,50070
 rec36,seed49,Cake Bakery,99999
-rec37,seed50,Make mulberry pie,99999
+rec37,seed50,Make berry pie,82070
 rec38,seed51,Grain Mill,99999
 rec39,seed52,Chicken,50010
 rec40,seed53,Oats,30060
@@ -67,11 +67,11 @@ rec56,seed69,Orange Tree,25020
 rec57,seed70,Grapefruit Tree,25020
 rec58,seed71,Avocado Tree,25050
 rec59,seed72,Stall Construction,99999
-rec60,seed73,Bamboo,99999
-rec61,seed74,Spider,99999
-rec62,seed75,Buy Silkworm,99999
-rec63,seed76,Plant mulberry orchard,99999
-rec64,seed77,Artichoke,99999
+rec60,seed73,Bamboo,10290
+rec61,seed74,Spider,70020
+rec62,seed75,Buy Silkworm,70040
+rec63,seed76,Plant mulberry orchard,25100
+rec64,seed77,Artichoke,10140
 rec65,seed50,Make meat pie,99999
 rec66,seed50,Make apple pie,99999
 rec68,seed84,Squeeze apple juice,99999
@@ -87,24 +87,24 @@ rec77,seed7,Grow bell pepper,10050
 rec78,seed8,Grow eggplant,10111
 rec79,seed25,Ferment grain,99999
 rec80,seed85,Make breakfast,99999
-rec81,seed86,Lovebird,99999
-rec82,seed87,Plant cacao trees,99999
+rec81,seed86,Lovebird,60040
+rec82,seed87,Plant cacao trees,25090
 rec83,seed88,Make shovel,99999
-rec84,seed89,Plant maple seed,99999
-rec85,seed90,Plant walnut,99999
-rec86,seed90,Buy walnut tree,99999
-rec87,seed75,Raise silkworms,99999
-rec88,seed91,Clear land manually,99999
-rec89,seed92,Build orchard manually,99999
+rec84,seed89,Plant maple seed,20041
+rec85,seed90,Plant walnut,20051
+rec86,seed90,Buy walnut tree,20050
+rec87,seed75,Raise silkworms,70041
+rec88,seed91,Clear land manually,80010
+rec89,seed92,Build orchard manually,80020
 rec90,seed93,Grind up fish,99999
 rec91,seed94,Attract flies,99999
 rec92,seed94,Leave food out,99999
-rec93,seed74,Attract spiders,99999
-rec94,seed22,Replant corn,99999
+rec93,seed74,Attract spiders,70021
+rec94,seed22,Replant corn,10191
 rec95,seed95,Make chips and guacamole,99999
 rec96,seed96,Make clothes,99999
 rec97,seed97,Throw a party,99999
 rec98,seed98,Scavenge for straw,99999
-rec99,seed65,Buy apple seeds,99999
-rec100,seed67,Buy kiwi seeds,99999
-rec101,seed66,Buy pomegranate seeds,99999
+rec99,seed65,Buy apple seeds,25041
+rec100,seed67,Buy kiwi seeds,25061
+rec101,seed66,Buy pomegranate seeds,25071

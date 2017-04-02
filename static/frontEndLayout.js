@@ -268,7 +268,7 @@ var buy = function(recipeID) {
     for (var resource in state.resources) {
         if (state.resources.hasOwnProperty(resource)) {
             if (state.resources[resource] < RECIPE_CONFIG[recipeID].cost[resource]) {
-                showFlash("Not enough " + resource + ".");
+                showFlash("Not enough " + GAME_CONFIG.resources[resource].name + ".");
                 return;
             }
         }

@@ -52,7 +52,6 @@ id,recipe_id,resource_id,quantity
 51,rec23,res9,2000
 52,rec24,res17,15000
 53,rec25,res0,60000
-54,rec25,res63,25
 55,rec26,res19,1
 56,rec26,res17,12500000
 57,rec27,res18,145000
@@ -161,7 +160,7 @@ id,recipe_id,resource_id,quantity
 160,rec72,res61,1000
 161,rec73,res0,1000000
 162,rec73,res63,40
-163,rec74,res28,300
+163,rec74,res28,1
 164,rec74,res0,300
 165,rec75,res0,1000
 166,rec76,res0,5000

@@ -9,9 +9,11 @@
 </head>
 <body>
 
+<img id="wateringCan" src="/static/images/watering_can.png">
+
 <div class="menuPanel">
     <span id="nameGarden"></span>
-    <button onclick="mainMenu()" style="display: inline; font-size: 20px;">Return to Main Menu</button>
+    <button onclick="mainMenu()" style="display: inline; font-size: 20px; margin: 0px 10px;">Return to Main Menu</button>
     <span id="buyPlot">Click a plot to unlock</span>
 </div>
 
@@ -26,7 +28,7 @@
                   <img class="soil" src="/static/images/soil.png">
                 </div>
                 <div class="growing">
-                  <p class="growingImg"></p>
+                  <div class="growingImg"></div>
                   <div class="progressBar">
                       <div id="filler{{ i }}_{{ j }}" class="filler"></div>
                       <div id="time{{ i }}_{{ j }}" class="time"></div>
@@ -36,7 +38,7 @@
                   <img class="lock" src="/static/images/lock.png">
                 </div>
                 <div class="harvestable"  onclick="harvest({{ i }}, {{ j }})">
-                  <p class="growingImg"></p>
+                  <div class="growingImg"></div>
                   <button class = "harvestable harvestBtn">Harvest</button>
                 </div>
             </div>

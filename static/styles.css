@@ -113,13 +113,13 @@ img.soil {
     left: 5%;
     bottom: 5px;
 }
-p.growingImg {
-    position: absolute;
-    width: 115px;
-    height: 115px;
-    top: 20px;
-    left: 33px;
-    background-repeat: no-repeat;
+div.growingImg {
+    width: 167px;
+    height: 130px;
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    background: no-repeat center;
     background-size: contain;
 }
 img.lock {
@@ -277,8 +277,8 @@ img.resourceIcon, img.seedIcon {
 
 div.menuPanel {
     position: fixed;
-    left: 5%;
-    width: 90%;
+    left: 60px;
+    width: calc(100% - 120px);
     height: 30px;
     border: 2px solid black;
     border-top: none;
@@ -313,4 +313,11 @@ span#buyPlot {
     font-size: 20px;
     position: relative;
     top: 4px;
+}
+
+img#wateringCan {
+    position: fixed;
+    top: 2px;
+    left: 5px;
+    height: 40px;
 }

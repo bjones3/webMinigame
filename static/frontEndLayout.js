@@ -180,8 +180,8 @@ var updateGameState = function(newGameState) {
             }
         }
     }
-
     state = newGameState;
+    document.getElementById('nameGarden').innerHTML = state.slug + "'s Garden";
 };
 
 var toolTip = function(msg, id) {

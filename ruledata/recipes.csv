@@ -7,16 +7,16 @@ e,seed13,Grass,99999
 f,seed16,Venus Flytrap,99999
 g,seed83,Plant acorn,99999
 h,seed82,Build lumber mill,99999
-i,seed14,Pig,99999
-j,seed15,Cow,99999
+i,seed14,Pig,50020
+j,seed15,Cow,50100
 k,seed17,Butter Churn,99999
 l,seed78,Butterfly,99999
 m,seed79,Wooden Beehive,99999
 n,seed81,Bees,99999
 rec5,seed18,Well,99999
 rec6,seed19,Koi Pond,99999
-rec7,seed20,Bat,99999
-rec8,seed21,Cucumber Seed,99999
+rec7,seed20,Bat,60030
+rec8,seed21,Cucumber Seed,10120
 rec9,seed22,Corn Seed,99999
 rec10,seed23,Sugar Cane,99999
 rec11,seed24,Grape Seed,99999
@@ -34,11 +34,11 @@ rec22,seed5,Turnip,10200
 rec23,seed36,Kale,10210
 rec24,seed37,Okra,10220
 rec25,seed9,Chili Pepper,10070
-rec26,seed39,Zucchini,99999
-rec27,seed12,Garlic,10100
-rec28,seed10,Tomato,10080
+rec26,seed39,Zucchini,10150
+rec27,seed12,Garlic,10080
+rec28,seed10,Tomato,10090
 rec29,seed42,Radish,10060
-rec30,seed43,Irrigation,99999
+rec30,seed43,Irrigation,82180
 rec31,seed44,Donkey,50080
 rec32,seed45,Mule,50060
 rec33,seed46,Horse,50110
@@ -79,12 +79,12 @@ rec69,seed84,Squeeze mulberry juice,99999
 rec70,seed84,Squeeze grape juice,99999
 rec71,seed84,Squeeze pomegranate juice,99999
 rec72,seed26,Ferment juice,99999
-rec73,seed11,Grow beans,99999
+rec73,seed11,Grow beans,10100
 rec74,seed3,Grow leek,10030
 rec75,seed4,Grow broccoli,10020
 rec76,seed6,Grow beet,10040
-rec77,seed7,Grow bell pepper,99999
-rec78,seed8,Grow eggplant,99999
+rec77,seed7,Grow bell pepper,10050
+rec78,seed8,Grow eggplant,10111
 rec79,seed25,Ferment grain,99999
 rec80,seed85,Make breakfast,99999
 rec81,seed86,Lovebird,99999

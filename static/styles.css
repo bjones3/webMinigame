@@ -298,7 +298,7 @@ div.menuPanel {
     border-bottom-left-radius: 2em;
 }
 
-div#vertPlank {
+div#woodBorderV {
     position: fixed;
     right: 440px;
     top: 45px;
@@ -315,7 +315,7 @@ div#vertPlank {
 span#nameGarden {
     font-family: meriendaFont;
     display: inline;
-    padding: 0px 10px;
+    padding: 0px 30px 10px;
     font-size: 20px;
     text-shadow: 1px 1px lightgreen;
 }

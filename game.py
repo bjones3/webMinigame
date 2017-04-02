@@ -267,6 +267,6 @@ def bonus_yield(seed_id):
             detriment = -1
         return detriment
     bonus = 0
-    while generate(seed_id) == 1:
+    if generate(seed_id) == 1:
         bonus += 1
     return bonus

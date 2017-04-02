@@ -38,6 +38,7 @@ var showSowMenu = function(i, j) {
     sowX = i;
     sowY = j;
     document.getElementById("sowMenuBg").style.display = "block";
+    tutorialTransition(3);
 };
 
 var hideSowMenu = function() {
@@ -169,7 +170,9 @@ var updateGameState = function(newGameState) {
                             var sowButton = document.createElement("button");
                             sowButton.id = 'sowBtn_' + seedId;
                             sowButton.classList.add('sowBtn');
+                            sowButton.classList.add('tstage3');
                             sowButton.style.backgroundImage = "url(" + GAME_CONFIG.seeds[seedId].imageMedium + ")";
+                            toolTip("Plant seed", sowButton);
                             sowButton.onclick = (function(seedId) {return function() { sow(seedId); }})(seedId);
                             container.appendChild(sowButton);
                         }
@@ -187,72 +190,29 @@ var updateGameState = function(newGameState) {
     document.getElementById('nameGarden').innerHTML = state.slug + "'s Garden";
 };
 
-var toolTip = function(msg, id) {
-    var span = document.createElement("SPAN");
+var toolTip = function(msg, element) {
+    var span = document.createElement("span");
     span.classList.add("tooltiptext");
     var txt = document.createTextNode(msg);
     span.appendChild(txt);
-    var container = document.getElementById(id);
-    container.classList.add("tooltip");
-    container.appendChild(span);
+    element.classList.add("tooltip");
+    element.appendChild(span);
 };
 
-var clearTooltips = function() {
-    var tooltip = document.getElementsByClassName("tooltiptext");
-    for(var i = 0; i < tooltip.length; i++) {
-        tooltip[i].style.display = "none";
-    }
-};
-
-var gettingStarted = function() {
-    var buyBtn = document.getElementById("buy" + GAME_CONFIG.firstRecipe);
-    var firstRecipe = RECIPE_CONFIG[GAME_CONFIG.firstRecipe];
-    toolTip("Buy a " + GAME_CONFIG.seeds[firstRecipe.seedId].name + " seed", "buy" + GAME_CONFIG.firstRecipe);
-    buyBtn.style.animationName = 'borderChange';
-    buyBtn.style.animationDuration = '2s';
-    buyBtn.style.animationIterationCount = 'infinite';
-    buyBtn.addEventListener('click', afterBuy);
-};
-
-var afterBuy = function() {
-    clearTooltips();
-    var buyBtn = document.getElementById("buy" + GAME_CONFIG.firstRecipe);
-    buyBtn.style.animationIterationCount = '0';
-    toolTip("Select a plot", "plot0_0");
-    var plots = document.getElementsByClassName("plot");
-    for (var i = 0; i < plots.length; i++) {
-        if (plots[i].classList.contains("sowable")) {
-            plots[i].style.animationName = 'borderChange';
-            plots[i].style.animationDuration = '2s';
-            plots[i].style.animationIterationCount = 'infinite';
-            plots[i].addEventListener('click', afterBuyMenuOpen);
-        }
+var tutorialTransition = function(toStage) {
+    var from = toStage - 1;
+    var container = document.getElementById("body");
+    if (!from || container.classList.contains('tutorial_stage' + from)) {
+        container.classList.remove('tutorial_stage' + from);
+        container.classList.add('tutorial_stage' + toStage);
     }
 };
 
-var afterBuyMenuOpen = function() {
-    clearTooltips();
-    var plots = document.getElementsByClassName("plot");
-    for (var i = 0; i < plots.length; i++) {
-        plots[i].style.animationIterationCount = '0';
-    }
-    var sowBtn = document.getElementsByClassName("sowBtn");
-    toolTip("Plant seed", "sowBtn_" + RECIPE_CONFIG[GAME_CONFIG.firstRecipe].seedId);
-    for (var i = 0; i < sowBtn.length; i++) {
-        sowBtn[i].style.animationName = 'borderChange';
-        sowBtn[i].style.animationDuration = '2s';
-        sowBtn[i].style.animationIterationCount = 'infinite';
-        sowBtn[i].addEventListener('click', afterSow);
-    }
-}
-var afterSow = function() {
-    clearTooltips();
-    var sowBtn = document.getElementsByClassName("sowBtn");
-    for (var i = 0; i < sowBtn.length; i++) {
-        sowBtn[i].style.animationIterationCount = '0';
-    }
+var endTutorial = function() {
+    var body = document.getElementById("body");
+    body.classList.remove('tutorial_stage1', 'tutorial_stage2', 'tutorial_stage3');
     localStorage.setItem("newOrLoad", "load");
-}
+};
 
 var logElement = function(msg) {
     var div = document.createElement("DIV");
@@ -261,7 +221,7 @@ var logElement = function(msg) {
     var container = document.getElementById("notificationPanel");
     container.appendChild(div);
     container.scrollTop = div.offsetTop;
-}
+};
 
 var server = new Server(showFlash, logElement);
 
@@ -271,7 +231,7 @@ var fetchRecipes = function() {
         createSeedMenu();
         var newOrLoad = localStorage.getItem('newOrLoad');
         if (newOrLoad == "new") {
-            gettingStarted();
+            tutorialTransition(1);
         }
     };
     var data = {
@@ -314,7 +274,7 @@ var buy = function(recipeID) {
     for (var resource in state.resources) {
         if (state.resources.hasOwnProperty(resource)) {
             if (state.resources[resource] < RECIPE_CONFIG[recipeID].cost[resource]) {
-                showFlash("Not enough " + resource + ".");
+                showFlash("Not enough " + GAME_CONFIG.resources[resource].name + ".");
                 return;
             }
         }
@@ -328,8 +288,12 @@ var buy = function(recipeID) {
         recipe_id: recipeID,
         password: localStorage.getItem('pwd_' + state.slug)
     };
-    server.sendToServer('/action/buy', data, updateGameState);
-}
+    var buyCallback = function(response) {
+        updateGameState(response);
+        tutorialTransition(2);
+    };
+    server.sendToServer('/action/buy', data, buyCallback);
+};
 
 var sell = function(seed) {
     if (state.seedCounts[seed] <= 0) {
@@ -342,7 +306,7 @@ var sell = function(seed) {
         password: localStorage.getItem('pwd_' + state.slug)
     };
     server.sendToServer('/action/sell', data, updateGameState);
-}
+};
 
 var sow = function(seed) {
     // boo globals :(
@@ -362,7 +326,11 @@ var sow = function(seed) {
         y: y,
         password: localStorage.getItem('pwd_' + state.slug)
     };
-    server.sendToServer('/action/sow', data, updateGameState);
+    var sowCallback = function(response) {
+        updateGameState(response);
+        endTutorial();
+    };
+    server.sendToServer('/action/sow', data, sowCallback);
 };
 
 var harvest = function(x, y) {
@@ -532,11 +500,16 @@ var createSeedMenu = function() {
                     var div5 = document.createElement("DIV");
                     div5.classList.add('border');
                     div5.id = 'buy' + recipeId;
+
                     if (RECIPE_CONFIG[recipeId].cost.hasOwnProperty('res0')) {
                         div5.innerHTML = "$" + RECIPE_CONFIG[recipeId].cost['res0'];
                     }
                     else {
                         div5.innerHTML = "$0";
+                    }
+                    if (GAME_CONFIG.firstRecipe == recipeId) {
+                        div5.classList.add('tstage1');
+                        toolTip("Buy a " + GAME_CONFIG.seeds[seedId].name + " seed", div5);
                     }
                     div5.addEventListener('click',createListener(buy,recipeId));
                         var div5a = document.createElement("DIV");

@@ -48,6 +48,11 @@ div.plot > div {
     display: none;
 }
 
+div.plot > div.sowable {
+    height: 175px;
+    width: 175px;
+}
+
 div.locked .locked {
   display: block;
 }
@@ -111,7 +116,7 @@ img.soil {
     position: absolute;
     width: 90%;
     left: 5%;
-    bottom: 5px;
+    bottom: 10px;
 }
 div.growingImg {
     width: 167px;
@@ -218,7 +223,6 @@ div#notificationPanel {
 }
 .tooltip {
     position: relative;
-    border-bottom: 1px dotted black;
 }
 .tooltip .tooltiptext {
     visibility: visible;
@@ -320,4 +324,26 @@ img#wateringCan {
     top: 2px;
     left: 5px;
     height: 40px;
+}
+
+.tooltip .tooltiptext {
+    display: none;
+}
+
+ {
+    display: block;
+}
+
+body.tutorial_stage1 .tstage1,
+body.tutorial_stage2 .tstage2,
+body.tutorial_stage3 .tstage3 {
+    animation-name: borderChange;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+}
+
+body.tutorial_stage1 .tstage1 .tooltiptext,
+body.tutorial_stage2 .tstage2 .tooltiptext,
+body.tutorial_stage3 .tstage3 .tooltiptext {
+    display: block;
 }

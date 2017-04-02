@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="/static/styles.css">
 <link rel="stylesheet" href="/static/sharedStyles.css">
 </head>
-<body>
+<body id="body">
 
 <img id="wateringCan" src="/static/images/watering_can.png">
 
@@ -24,7 +24,8 @@
     {% for i in range(field_width) %}
         <td>
             <div id="plot{{ i }}_{{ j }}" class="plot locked">
-                <div id="sowable{{ i }}_{{ j }}" class="sowable" onclick="showSowMenu({{ i }}, {{ j }});">
+                <div id="sowable{{ i }}_{{ j }}" class="sowable tooltip tstage2" onclick="showSowMenu({{ i }}, {{ j }});">
+                  <span class="tooltiptext">Select a plot</span>
                   <img class="soil" src="/static/images/soil.png">
                 </div>
                 <div class="growing">

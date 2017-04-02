@@ -2,6 +2,10 @@ var GAME_CONFIG = null;
 var RECIPE_CONFIG = null;
 var state = null;
 
+var mainMenu = function() {
+    window.location.href = '/';
+}
+
 var hideFlash = function() {
   var element = document.getElementById('flash');
   flash.classList.remove('in');
@@ -58,7 +62,6 @@ var updateGameState = function(newGameState) {
     from scratch every time.
 
     */
-
     if (!state || state.plots != newGameState.plots) {
         // Plots differ!  Figure out how:
 
@@ -529,7 +532,12 @@ var createSeedMenu = function() {
                     var div5 = document.createElement("DIV");
                     div5.classList.add('border');
                     div5.id = 'buy' + recipeId;
-                    div5.innerHTML = "$" + RECIPE_CONFIG[recipeId].cost['res0'];
+                    if (RECIPE_CONFIG[recipeId].cost.hasOwnProperty('res0')) {
+                        div5.innerHTML = "$" + RECIPE_CONFIG[recipeId].cost['res0'];
+                    }
+                    else {
+                        div5.innerHTML = "$0";
+                    }
                     div5.addEventListener('click',createListener(buy,recipeId));
                         var div5a = document.createElement("DIV");
                             div5a.id = "buy" + recipeId + "_label";
@@ -611,4 +619,17 @@ var tick = function() {
         }
     };
     document.getElementById("title").innerHTML = readyToHarvest + " plots ready - Garden Sim 2K17";
+
+    //move out of tick to separate function, called on every game state change
+    for (var recipeId in RECIPE_CONFIG) {
+        for (var resource in RECIPE_CONFIG[recipeId].cost) {
+            if (state.resources[resource] < RECIPE_CONFIG[recipeId].cost[resource]) {
+                document.getElementById('buy' + recipeId).style.boxShadow = '3px 3px 3px red';
+                document.getElementById('buy' + recipeId).style.opacity = '0.5';
+                break;
+            }
+            document.getElementById('buy' + recipeId).style.boxShadow = '3px 3px 3px green';
+            document.getElementById('buy' + recipeId).style.opacity = '1';
+        }
+    }
 };

@@ -26,13 +26,13 @@ var startGame = function() {
     localStorage.setItem('newOrLoad', newOrLoad);
     var callback = function(pass) {
         window.location.href = '/game/#' + slug;
-    }
+    };
     var data = {
         password: gamePassword,
         newOrLoad: newOrLoad
     };
     server.sendToServer('game-state/' + slug, data, callback);
-}
+};
 
 var newOrLoadGame = function(newLoad) {
     document.getElementById("newGameButton").style.display = "none";
@@ -45,7 +45,7 @@ var newOrLoadGame = function(newLoad) {
     document.getElementById("gamePasswordInput").style.display = "block";
     document.getElementById("startButton").style.display = "block";
     newOrLoad = newLoad;
-}
+};
 
 var mainMenu = function() {
     document.getElementById("newGameButton").style.display = "block";
@@ -58,7 +58,7 @@ var mainMenu = function() {
     document.getElementById("gamePasswordInput").style.display = "none";
     document.getElementById("startButton").style.display = "none";
     document.getElementById("leaderboardsTable").style.display = "none";
-}
+};
 
 var leaderboards = function() {
     document.getElementById("newGameButton").style.display = "none";
@@ -66,7 +66,7 @@ var leaderboards = function() {
     document.getElementById("leaderboardsButton").style.display = "none";
     document.getElementById("mainMenuButton").style.display = "block";
     document.getElementById("leaderboardsTable").style.display = "block";
-}
+};
 
 //startButton is clicked upon pressing 'enter' in gamePasswordInput
 document.onreadystatechange = function() {
@@ -79,4 +79,4 @@ document.onreadystatechange = function() {
             }
         });
     }
-}
+};

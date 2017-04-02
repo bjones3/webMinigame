@@ -6,15 +6,15 @@
     <link rel="shortcut icon" href="/static/chilipepper_s.png">
 <link rel="stylesheet" href="/static/styles.css">
 </head>
-<body>
+<body id="body">
 
 <div class="menuPanel">
     <table id = "seedCosts" style = "text-align: center;">
         <tr>
             {% for heading in ('', '', 'Seed', 'Sell', 'Owned', 'Buy',) %}
-            <td>
+            <th>
                 {{ heading }}
-            </td>
+            </th>
             {% endfor %}
         </tr>
     </table>
@@ -39,7 +39,8 @@
     {% for i in range(field_width) %}
         <td>
             <div id="plot{{ i }}_{{ j }}" class="plot locked">
-                <div id="sowable{{ i }}_{{ j }}" class="sowable" onclick="showSowMenu({{ i }}, {{ j }});">
+                <div id="sowable{{ i }}_{{ j }}" class="sowable tooltip tstage2" onclick="showSowMenu({{ i }}, {{ j }});">
+                  <span class="tooltiptext">Select a plot</span>
                   <img class="soil" src="/static/soil.png">
                 </div>
                 <div class="growing">
@@ -56,7 +57,6 @@
                   <p class="growingImg"></p>
                   <button class = "harvestable harvestBtn">Harvest</button>
                 </div>
-
             </div>
         </td>
     {% endfor %}

@@ -10,6 +10,7 @@ div.seedPanel {
     width: 440px;
     height: calc(100% - 45px);
     overflow: scroll;
+    font-weight: bold;
 }
 div.seedPanel:after {
     content : "";
@@ -30,7 +31,7 @@ div.gamePanel {
     top: 45px;
     overflow: scroll;
     height: calc(100% - 45px);
-    width: calc(100% - 450px);
+    width: calc(100% - 455px);
 }
 div.plot {
     position: relative;
@@ -170,15 +171,6 @@ div.resource {
     font-weight: bold;
 }
 
-span#buyPlot {
-    padding: 12px 16px;
-    display: block;
-    width: 120px;
-    background-color: #f9f9f9;
-    border: 1px solid black;
-    border-collapse: collapse;
-}
-
 div.flash {
     position: absolute;
     width: 40%;
@@ -215,12 +207,8 @@ div.flash.out {
 div#notificationPanel {
     position: fixed;
     bottom: 0px;
-    left: 2%;
-    width: 20%;
-    max-height: 10%;
-    border: 3px solid black;
-    border-bottom: none;
-    background: white;
+    width: 440px;
+    max-height: calc(20% - 40px);
     overflow: scroll;
 }
 @keyframes borderChange {
@@ -315,7 +303,14 @@ div#woodBorderV {
 span#nameGarden {
     font-family: meriendaFont;
     display: inline;
-    padding: 0px 30px 10px;
+    padding: 0px 10px 0px 30px;
     font-size: 20px;
     text-shadow: 1px 1px lightgreen;
+}
+span#buyPlot {
+    float: right;
+    padding: 0px 30px 0px 10px;
+    font-size: 20px;
+    position: relative;
+    top: 4px;
 }

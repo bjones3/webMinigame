@@ -256,7 +256,7 @@ var afterSow = function() {
 
 var logElement = function(msg) {
     var div = document.createElement("DIV");
-    var txt = document.createTextNode(msg);
+    var txt = document.createTextNode(" - - - - - " + msg);
     div.appendChild(txt);
     var container = document.getElementById("notificationPanel");
     container.appendChild(div);

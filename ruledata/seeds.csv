@@ -86,7 +86,7 @@ seed88,Shovel,/static/images/shovel.png,/static/images/shovel.png,/static/images
 seed89,Maple Tree,/static/images/mapletree.png,/static/images/mapletree.png,/static/images/mapletree.png,1,0,64,0.0,
 seed90,Walnut Tree,/static/images/walnuttree.png,/static/images/walnuttree.png,/static/images/walnuttree.png,1,0,2029,0.0,
 seed91,Cleared Land,/static/images/clearedland.png,/static/images/clearedland.png,/static/images/clearedland.png,1,0,59,0.0,
-seed92,Made Orchard,/static/images/unknown.png,/static/images/unknown.png,/static/images/unknown.png,1,0,118,0.0,
+seed92,Orchard,/static/images/unknown.png,/static/images/unknown.png,/static/images/unknown.png,1,0,118,0.0,
 seed93,Fish Meal,/static/images/fishmeal.png,/static/images/fishmeal.png,/static/images/fishmeal.png,1,0,59,0.0,
 seed94,Mound of poo,/static/images/moundofpoo.png,/static/images/moundofpoo.png,/static/images/moundofpoo.png,1,0,28,0.0,
 seed95,Chips and guac,/static/images/chipsandguac.png,/static/images/chipsandguac.png,/static/images/chipsandguac.png,1,0,324658,0.0,
